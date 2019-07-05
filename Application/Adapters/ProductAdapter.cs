@@ -7,40 +7,39 @@ using Domain.Contracts.Aggregates;
 
 namespace Application.Adapters
 {
-  public class ProductAdapter : IProductAdapter
-  {
-    public IDto Adapt(IAggregate aggregate)
+    public class ProductAdapter : IProductAdapter
     {
-      var product = (Product) aggregate;
-      return new ProductDto
-      {
-        Id = product.Id,
-        Category = product.Category,
-        Name = product.Name,
-        Price = product.Price
-      };
-    }
+        public IDto Adapt(Product aggregate)
+        {
+            return new ProductDto
+            {
+                Id = aggregate.Id,
+                Category = aggregate.Category,
+                Name = aggregate.Name,
+                Price = aggregate.Price
+            };
+        }
 
-    public IEnumerable<IDto> AdaptBulk(IEnumerable<IAggregate> aggregates)
-    {
-      return aggregates.Select(Adapt);
-    }
+        public IEnumerable<IDto> AdaptRange(IEnumerable<Product> aggregates)
+        {
+            return aggregates.Select(Adapt);
+        }
 
-    public IAggregate Adapt(IDto dto)
-    {
-      var productDto = (ProductDto) dto;
-      return new Product
-      {
-        Id = productDto.Id,
-        Category = productDto.Category,
-        Name = productDto.Name,
-        Price = productDto.Price
-      };
-    }
+        public Product Adapt(IDto dto)
+        {
+            var productDto = (ProductDto)dto;
+            return new Product
+            {
+                Id = productDto.Id,
+                Category = productDto.Category,
+                Name = productDto.Name,
+                Price = productDto.Price
+            };
+        }
 
-    public IEnumerable<IAggregate> AdaptBulk(IEnumerable<IDto> dtos)
-    {
-      return dtos.Select(Adapt);
+        public IEnumerable<Product> AdaptRange(IEnumerable<IDto> dtos)
+        {
+            return dtos.Select(Adapt);
+        }
     }
-  }
 }

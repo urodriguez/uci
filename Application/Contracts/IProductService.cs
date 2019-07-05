@@ -1,8 +1,8 @@
-﻿using Application.Contracts;
+﻿using Domain.Aggregates;
 
-namespace Application
+namespace Application.Contracts
 {
-  public interface IProductService : ICrudService
+  public interface IProductService : ICrudService<Product>
   {
   }
 }

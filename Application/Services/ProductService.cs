@@ -1,12 +1,14 @@
-﻿using Application.Contracts.Adapters;
+﻿using Application.Contracts;
+using Application.Contracts.Adapters;
+using Domain.Aggregates;
 using Domain.Contracts.Repositories;
-using Persistence.Repositories;
+using Persistence;
 
 namespace Application.Services
 {
-    public class ProductService : CrudService, IProductService
+    public class ProductService : CrudService<Product>, IProductService
     {
-      public ProductService(IProductRepository repository, IProductAdapter adapter) : base(repository, adapter)
+      public ProductService(IProductRepository productRepository, IProductAdapter adapter) : base(productRepository, adapter)
       {
       }
     }

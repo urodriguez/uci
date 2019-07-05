@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregates\Product.cs" />
-    <Compile Include="Contracts\Aggregates\IAggregate.cs" />
+    <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
     <Compile Include="Contracts\Repositories\IProductRepository.cs" />
     <Compile Include="Contracts\Repositories\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

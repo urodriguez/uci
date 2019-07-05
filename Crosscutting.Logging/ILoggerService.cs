@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-
-namespace Crosscutting.Logging
+﻿namespace Crosscutting.Logging
 {
   public interface ILoggerService
   {
