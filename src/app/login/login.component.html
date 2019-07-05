@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <div class="card">
+
+        <div class="card-image">
+          <img id="loginImage" class="responsive-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlHEIYHD-Tzl5ItzHcGuDtoTZfvFgl75k9rXR_F9MMvvgbAhyU"/>
+        </div>
+
+        <div class="card-content">
+          <div class='row'>
+            <div class='input-field col s12'>
+              <input 
+                class='validate' 
+                type='text' 
+                name='userName' 
+                id='userName' 
+                maxlength='50' 
+                required="" 
+                aria-required="true" 
+                placeholder=""
+                [(ngModel)]="login.userName"
+              />
+              <label for='userName'>UserName</label>
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class='input-field col s12'>
+              <input 
+                class='validate' 
+                type='password' 
+                name='password' 
+                id='password' 
+                required="" 
+                aria-required="true" 
+                placeholder=""
+                [(ngModel)]="login.password"
+              />
+              <label for='password'>Password</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-action">
+          <div class='row'>
+            <button type='submit' class='col s12 btn btn-large waves-effect blue darken-4' (click)="processLogin()">Login</button>                                                                        
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
