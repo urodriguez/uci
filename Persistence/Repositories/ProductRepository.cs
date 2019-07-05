@@ -10,7 +10,7 @@ namespace Persistence.Repositories
     {
         private IList<Product> Products { get; set; }
 
-        public ProductRepository(IList<Product> products) : base(products)
+        public ProductRepository(IList<Product> products) : base("Product")
         {
         }
 

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using Dapper;
 using Domain.Aggregates;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
@@ -9,13 +13,20 @@ namespace Persistence.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
-
+        private readonly string _tableName;
         protected IList<TAggregateRoot> AggregateRoots { get; set; }
-
-        protected Repository(IList<TAggregateRoot> aggregateRoots)
+      internal IDbConnection Connection
+      {
+        get
         {
-            AggregateRoots = aggregateRoots;
+          return new SqlConnection(ConfigurationManager.ConnectionStrings["UciContext"].ConnectionString);
         }
+      }
+
+      public Repository(string tableName)
+      {
+        _tableName = tableName;
+      }
 
         public IEnumerable<TAggregateRoot> GetAll()
         {
@@ -24,8 +35,15 @@ namespace Persistence.Repositories
 
         public TAggregateRoot GetById(int id)
         {
-            //open db connection
-            return AggregateRoots.FirstOrDefault(ar => ar.Id == id);
+          TAggregateRoot item = default(TAggregateRoot);
+
+          using (IDbConnection cn = Connection)
+          {
+            cn.Open();
+            item = cn.Query<TAggregateRoot>("SELECT * FROM " + _tableName + " WHERE ID=@ID", new { ID = id }).SingleOrDefault();
+          }
+
+          return item;
         }
 
         public void Update(TAggregateRoot aggregateRoot)
