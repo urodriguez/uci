@@ -2,7 +2,6 @@
 using Application.Contracts.Adapters;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
-using Persistence;
 
 namespace Application.Services
 {

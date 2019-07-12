@@ -1,7 +1,9 @@
-﻿namespace Domain.Contracts.Aggregates
+﻿using System;
+
+namespace Domain.Contracts.Aggregates
 {
-  public interface IAggregateRoot
-  {
-    int Id { get; set; }
-  }
+    public interface IAggregateRoot
+    {
+        Guid Id { get; set; }
+    }
 }

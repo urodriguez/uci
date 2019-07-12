@@ -33,7 +33,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(Guid id)
         {
             try
             {
@@ -56,18 +56,17 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public IHttpActionResult Update(int id, [FromBody] ProductDto productDto)
+        public IHttpActionResult Update(Guid id, [FromBody] ProductDto productDto)
         {
-            var productDtoUpdated = _productService.Update(productDto);
+            productDto.Id = id;
+            _productService.Update(productDto);
 
-            return Ok(productDtoUpdated);
+            return Ok();
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(Guid id)
         {
-            if (id <= 0) return BadRequest("Not a valid id");
-
             try
             {
                 _productService.Delete(id);

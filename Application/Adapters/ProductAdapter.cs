@@ -3,7 +3,6 @@ using System.Linq;
 using Application.Contracts.Adapters;
 using Application.Dtos;
 using Domain.Aggregates;
-using Domain.Contracts.Aggregates;
 
 namespace Application.Adapters
 {

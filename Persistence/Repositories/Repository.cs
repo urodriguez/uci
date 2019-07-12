@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using Domain.Aggregates;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
 
@@ -13,63 +12,65 @@ namespace Persistence.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
-        private readonly string _tableName;
-        protected IList<TAggregateRoot> AggregateRoots { get; set; }
-      internal IDbConnection Connection
-      {
-        get
-        {
-          return new SqlConnection(ConfigurationManager.ConnectionStrings["UciContext"].ConnectionString);
-        }
-      }
+        private readonly Table<TAggregateRoot> _table;
+        internal IDbConnection Connection => new SqlConnection(ConfigurationManager.ConnectionStrings["UciContext"].ConnectionString);
 
-      public Repository(string tableName)
-      {
-        _tableName = tableName;
-      }
+        protected Repository()
+        {
+            _table = new Table<TAggregateRoot>();
+        }
 
         public IEnumerable<TAggregateRoot> GetAll()
         {
-            return AggregateRoots;
+            using (IDbConnection cn = Connection)
+            {
+                cn.Open();
+                return cn.Query<TAggregateRoot>("SELECT * FROM " + _table.Name);
+            }
         }
 
-        public TAggregateRoot GetById(int id)
+        public TAggregateRoot GetById(Guid id)
         {
-          TAggregateRoot item = default(TAggregateRoot);
-
-          using (IDbConnection cn = Connection)
-          {
-            cn.Open();
-            item = cn.Query<TAggregateRoot>("SELECT * FROM " + _tableName + " WHERE ID=@ID", new { ID = id }).SingleOrDefault();
-          }
-
-          return item;
+            using (IDbConnection cn = Connection)
+            {
+                cn.Open();
+                return cn.Query<TAggregateRoot>($"SELECT * FROM {_table.Name} WHERE Id=@Id", new { Id = id }).SingleOrDefault();
+            }
         }
 
         public void Update(TAggregateRoot aggregateRoot)
         {
-            var aggregateRootFound = AggregateRoots.FirstOrDefault(ar => ar.Id == aggregateRoot.Id);
+            var query = $"UPDATE {_table.Name} SET {_table.GetColumnsJoinedWithParameters()} WHERE Id=@Id";
 
-            if (aggregateRootFound == null) return;
-
-            aggregateRootFound.Id = aggregateRoot.Id;
-            //aggregateRootFound.Name = aggregateRoot.Name;
-            //aggregateRootFound.Category = aggregateRoot.Category;
-            //aggregateRootFound.Price = aggregateRoot.Price;
+            using (var connection = Connection)
+            {
+                connection.Open();
+                connection.Execute(query, aggregateRoot);
+            }
         }
 
-        public void Remove(int id)
+        public void Remove(Guid id)
         {
-            var aggregateRootFound = AggregateRoots.FirstOrDefault(ar => ar.Id == id);
-            if (aggregateRootFound == null) return;
+            string sql = $"DELETE FROM {_table.Name} WHERE Id = @Id";
 
-            AggregateRoots.Remove(aggregateRootFound);
+            using (var cn = Connection)
+            {
+                cn.Open();
+                cn.Execute(sql, new { Id = id });
+            }
         }
 
         public void Add(TAggregateRoot aggregate)
         {
-            aggregate.Id = new Random().Next(0, 1000);
-            AggregateRoots.Add(aggregate);
+            aggregate.Id = Guid.NewGuid();
+            
+            var query = $"INSERT INTO {_table.Name} ({_table.GetColumnsJoined()}) VALUES ({_table.GetColumnParameters()})";
+
+            using (var connection = Connection)
+            {
+                connection.Open();
+                connection.Execute(query, aggregate);
+            }
         }
     }
 }

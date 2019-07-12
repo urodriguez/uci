@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Application.Contracts;
 using Application.Contracts.Adapters;
 using Application.Dtos;
@@ -27,35 +28,31 @@ namespace Application.Services
             return dtos;
         }
 
-        public IDto GetById(int id)
+        public IDto GetById(Guid id)
         {
             var aggregate = _repository.GetById(id);
             var dto = _adapter.Adapt(aggregate);
             return dto;
         }
 
-        public IDto Create(IDto dto)
+        public Guid Create(IDto dto)
         {
             var aggregate = _adapter.Adapt(dto);
             //_businessValidator.Validate(aggregate)
             _repository.Add(aggregate);
-            //save changes
-            return _adapter.Adapt(aggregate);
+            return aggregate.Id;
         }
 
-        public IDto Update(IDto dto)
+        public void Update(IDto dto)
         {
             var aggregate = _adapter.Adapt(dto);
             //_businessValidator.Validate(aggregate)
-            //_repository.Update(aggregate);
-            //save changes
-            return _adapter.Adapt(aggregate);
+            _repository.Update(aggregate);
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
-            //_repository.Remove(id);
-            //save changes
+            _repository.Remove(id);
         }
 
         public void DeleteRange(IEnumerable<int> ids)
