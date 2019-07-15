@@ -12,6 +12,6 @@ namespace Application.Contracts
         Guid Create(IDto dto);
         void Update(IDto dto);
         void Delete(Guid id);
-        void DeleteRange(IEnumerable<int> ids);
+        void DeleteRange(IEnumerable<Guid> ids);
     }
 }

@@ -11,5 +11,6 @@ namespace Domain.Contracts.Repositories
         void Update(TAggregateRoot dto);
         void Remove(Guid id);
         void Add(TAggregateRoot aggregate);
+        void RemoveRange(IEnumerable<Guid> ids);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Application.Contracts;
@@ -33,7 +32,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get(Guid id)
+        public IHttpActionResult Get([FromUri] Guid id)
         {
             try
             {
@@ -51,21 +50,35 @@ namespace WebApi.Controllers
         [HttpPost]
         public IHttpActionResult Create([FromBody] ProductDto productDto)
         {
-            var productDtoCreated = _productService.Create(productDto);
-            return Ok(productDtoCreated);
+            try
+            {
+                var productCreatedId = _productService.Create(productDto);
+                return Ok(productCreatedId);
+            }
+            catch (Exception e)
+            {
+                return InternalServerError();
+            }
         }
 
         [HttpPut]
-        public IHttpActionResult Update(Guid id, [FromBody] ProductDto productDto)
+        public IHttpActionResult Update([FromUri] Guid id, [FromBody] ProductDto productDto)
         {
-            productDto.Id = id;
-            _productService.Update(productDto);
+            try
+            {
+                productDto.Id = id;
+                _productService.Update(productDto);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return InternalServerError();
+            }
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(Guid id)
+        public IHttpActionResult Delete([FromUri] Guid id)
         {
             try
             {
@@ -76,25 +89,7 @@ namespace WebApi.Controllers
                 return InternalServerError();
             }
 
-
             return Ok();
-        }
-
-        [HttpDelete]
-        public IHttpActionResult DeleteRange(string ids)
-        {
-            try
-            {
-                var idsList = ids.Split(';').Select(id => Convert.ToInt32(id));
-
-                _productService.DeleteRange(idsList);
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest("ids must be only positive integer numbers");
-            }
         }
     }
 }

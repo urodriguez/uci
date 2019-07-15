@@ -49,6 +49,19 @@ namespace Persistence.Repositories
             }
         }
 
+        public void Add(TAggregateRoot aggregate)
+        {
+            aggregate.Id = Guid.NewGuid();
+            
+            var query = $"INSERT INTO {_table.Name} ({_table.GetColumnsJoined()}) VALUES ({_table.GetColumnParameters()})";
+
+            using (var connection = Connection)
+            {
+                connection.Open();
+                connection.Execute(query, aggregate);
+            }
+        }
+
         public void Remove(Guid id)
         {
             string sql = $"DELETE FROM {_table.Name} WHERE Id = @Id";
@@ -60,16 +73,14 @@ namespace Persistence.Repositories
             }
         }
 
-        public void Add(TAggregateRoot aggregate)
+        public void RemoveRange(IEnumerable<Guid> ids)
         {
-            aggregate.Id = Guid.NewGuid();
-            
-            var query = $"INSERT INTO {_table.Name} ({_table.GetColumnsJoined()}) VALUES ({_table.GetColumnParameters()})";
+            string sql = $"DELETE FROM {_table.Name} WHERE Id IN @Ids";
 
-            using (var connection = Connection)
+            using (var cn = Connection)
             {
-                connection.Open();
-                connection.Execute(query, aggregate);
+                cn.Open();
+                cn.Execute(sql, new { Ids = ids });
             }
         }
     }

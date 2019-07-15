@@ -55,10 +55,9 @@ namespace Application.Services
             _repository.Remove(id);
         }
 
-        public void DeleteRange(IEnumerable<int> ids)
+        public void DeleteRange(IEnumerable<Guid> ids)
         {
-            //_repository.Remove(id);
-            //save changes
+            _repository.RemoveRange(ids);
         }
     }
 }
