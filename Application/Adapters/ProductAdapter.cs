@@ -8,7 +8,7 @@ namespace Application.Adapters
 {
     public class ProductAdapter : IProductAdapter
     {
-        public IDto Adapt(Product aggregate)
+        public ProductDto Adapt(Product aggregate)
         {
             return new ProductDto
             {
@@ -19,12 +19,12 @@ namespace Application.Adapters
             };
         }
 
-        public IEnumerable<IDto> AdaptRange(IEnumerable<Product> aggregates)
+        public IEnumerable<ProductDto> AdaptRange(IEnumerable<Product> aggregates)
         {
             return aggregates.Select(Adapt);
         }
 
-        public Product Adapt(IDto dto)
+        public Product Adapt(ProductDto dto)
         {
             var productDto = (ProductDto)dto;
             return new Product
@@ -36,7 +36,7 @@ namespace Application.Adapters
             };
         }
 
-        public IEnumerable<Product> AdaptRange(IEnumerable<IDto> dtos)
+        public IEnumerable<Product> AdaptRange(IEnumerable<ProductDto> dtos)
         {
             return dtos.Select(Adapt);
         }

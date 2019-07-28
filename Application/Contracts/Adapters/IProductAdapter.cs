@@ -1,8 +1,9 @@
-﻿using Domain.Aggregates;
+﻿using Application.Dtos;
+using Domain.Aggregates;
 
 namespace Application.Contracts.Adapters
 {
-  public interface IProductAdapter : IAdapter<Product>
+  public interface IProductAdapter : IAdapter<ProductDto, Product>
   {
   }
 }

@@ -9,6 +9,7 @@ using Application.Services;
 using Application.Adapters;
 using Application.Contracts;
 using Application.Contracts.Adapters;
+using Application.Contracts.Services;
 
 namespace WebApi
 {

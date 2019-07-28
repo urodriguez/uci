@@ -4,11 +4,11 @@ using Domain.Contracts.Aggregates;
 
 namespace Application.Contracts.Adapters
 {
-  public interface IAdapter<TAggregateRoot> where TAggregateRoot : IAggregateRoot
+    public interface IAdapter<TDto, TAggregateRoot> where TAggregateRoot : IAggregateRoot where TDto : IDto
     {
-    IDto Adapt(TAggregateRoot aggregate);
-    IEnumerable<IDto> AdaptRange(IEnumerable<TAggregateRoot> aggregates);
-    TAggregateRoot Adapt(IDto dto);
-    IEnumerable<TAggregateRoot> AdaptRange(IEnumerable<IDto> dtos);
-  }
+        TDto Adapt(TAggregateRoot aggregate);
+        IEnumerable<TDto> AdaptRange(IEnumerable<TAggregateRoot> aggregates);
+        TAggregateRoot Adapt(TDto dto);
+        IEnumerable<TAggregateRoot> AdaptRange(IEnumerable<TDto> dtos);
+    }
 }

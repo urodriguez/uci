@@ -1,41 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using Application.Contracts;
 using Application.Contracts.Adapters;
+using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
 
 namespace Application.Services
 {
-    public class CrudService<TAggregateRoot> : ICrudService<TAggregateRoot> where TAggregateRoot : IAggregateRoot
+    public class CrudService<TDto, TAggregateRoot> : ICrudService<TDto, TAggregateRoot> where TAggregateRoot : IAggregateRoot where TDto : IDto
     {
         private readonly IRepository<TAggregateRoot> _repository;
-        private readonly IAdapter<TAggregateRoot> _adapter;
+        private readonly IAdapter<TDto, TAggregateRoot> _adapter;
         //private readonly IBusinessValidator _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-      public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TAggregateRoot> adapter)
+      public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter)
         {
             _repository = repository;
             _adapter = adapter;
         }
 
-        public IEnumerable<IDto> GetAll()
+        public IEnumerable<TDto> GetAll()
         {
             var aggregates = _repository.GetAll();
             var dtos = _adapter.AdaptRange(aggregates);
             return dtos;
         }
 
-        public IDto GetById(Guid id)
+        public TDto GetById(Guid id)
         {
             var aggregate = _repository.GetById(id);
-            var dto = _adapter.Adapt(aggregate);
-            return dto;
+            return aggregate != null ? _adapter.Adapt(aggregate) : default(TDto);
         }
 
-        public Guid Create(IDto dto)
+        public Guid Create(TDto dto)
         {
             var aggregate = _adapter.Adapt(dto);
             //_businessValidator.Validate(aggregate)
@@ -43,9 +42,10 @@ namespace Application.Services
             return aggregate.Id;
         }
 
-        public void Update(IDto dto)
+        public void Update(Guid id, TDto dto)
         {
             var aggregate = _adapter.Adapt(dto);
+            aggregate.Id = id;
             //_businessValidator.Validate(aggregate)
             _repository.Update(aggregate);
         }

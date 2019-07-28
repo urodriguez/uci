@@ -43,11 +43,11 @@
     <Compile Include="Adapters\ProductAdapter.cs" />
     <Compile Include="Contracts\Adapters\IAdapter.cs" />
     <Compile Include="Contracts\Adapters\IProductAdapter.cs" />
-    <Compile Include="Contracts\IProductService.cs" />
+    <Compile Include="Contracts\Services\IProductService.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Services\CrudService.cs" />
-    <Compile Include="Contracts\ICrudService.cs" />
+    <Compile Include="Contracts\Services\ICrudService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
