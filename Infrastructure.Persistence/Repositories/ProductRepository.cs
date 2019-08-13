@@ -3,7 +3,7 @@ using System.Linq;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 
-namespace Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {

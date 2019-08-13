@@ -8,7 +8,7 @@ using Dapper;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
 
-namespace Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {

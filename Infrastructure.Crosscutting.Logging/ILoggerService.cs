@@ -1,4 +1,4 @@
-﻿namespace Crosscutting.Logging
+﻿namespace Infrastructure.Crosscutting.Logging
 {
     public interface ILoggerService
     {

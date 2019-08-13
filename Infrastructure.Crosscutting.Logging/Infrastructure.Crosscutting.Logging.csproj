@@ -7,8 +7,8 @@
     <ProjectGuid>{2CE96471-091D-4462-B660-69992253B826}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crosscutting.Logging</RootNamespace>
-    <AssemblyName>Crosscutting.Logging</AssemblyName>
+    <RootNamespace>Infrastructure.Crosscutting.Logging</RootNamespace>
+    <AssemblyName>Infrastructure.Crosscutting.Logging</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

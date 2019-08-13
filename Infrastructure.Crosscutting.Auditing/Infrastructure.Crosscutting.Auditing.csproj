@@ -7,8 +7,8 @@
     <ProjectGuid>{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crosscutting.Auditing</RootNamespace>
-    <AssemblyName>Crosscutting.Auditing</AssemblyName>
+    <RootNamespace>Infrastructure.Crosscutting.Auditing</RootNamespace>
+    <AssemblyName>Infrastructure.Crosscutting.Auditing</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

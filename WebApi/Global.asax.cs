@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Infrastructure.Crosscutting.DependencyInjection;
 
 namespace WebApi
 {
@@ -7,7 +8,7 @@ namespace WebApi
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            UnityConfig.RegisterComponents();
+            GlobalConfiguration.Configuration.DependencyResolver = DependencyResolverFactory.GetConfiguredDependencyResolver();
         }
     }
 }

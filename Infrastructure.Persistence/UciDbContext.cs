@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Domain.Aggregates;
 
-namespace Persistence
+namespace Infrastructure.Persistence
 {
     public class UciDbContext : DbContext
     {

@@ -1,7 +1,7 @@
 ﻿using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 
-namespace Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories
 {
     public class ProductTypeRepository: Repository<ProductType>, IProductTypeRepository
     {

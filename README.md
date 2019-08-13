@@ -37,9 +37,12 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 * implement auditing
 * implement mailing
 * implement reporting
+* implement caching
+* implement authentication use JWT to authenticate
 * use hangfire
+* use IIS
+* use Jenkins/TeamCity
 * implement integration events with NServiceBus
-* use JWT to authenticate
 * implement at least one soap service
 * implement import using Excel library
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NLog;
 
-namespace Crosscutting.Logging
+namespace Infrastructure.Crosscutting.Logging
 {
     //https://github.com/NLog/NLog/wiki/Tutorial
     public class NLogService : ILoggerService

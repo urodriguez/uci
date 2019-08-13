@@ -7,8 +7,8 @@
     <ProjectGuid>{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crosscutting.Mailing</RootNamespace>
-    <AssemblyName>Crosscutting.Mailing</AssemblyName>
+    <RootNamespace>Infrastructure.Crosscutting.Mailing</RootNamespace>
+    <AssemblyName>Infrastructure.Crosscutting.Mailing</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

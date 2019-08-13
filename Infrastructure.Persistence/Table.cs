@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Domain.Contracts.Aggregates;
 
-namespace Persistence
+namespace Infrastructure.Persistence
 {
     internal class Table<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
