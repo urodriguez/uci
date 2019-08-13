@@ -9,7 +9,7 @@ namespace Application.Services
 {
     public class ProductService : CrudService<ProductDto, Product>, IProductService
     {
-      public ProductService(IProductRepository productRepository, IProductAdapter adapter) : base(productRepository, adapter)
+      public ProductService(IProductRepository repository, IProductAdapter adapter) : base(repository, adapter)
       {
       }
     }

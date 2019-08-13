@@ -41,15 +41,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\ProductAdapter.cs" />
+    <Compile Include="Adapters\ProductTypeAdapter.cs" />
     <Compile Include="Contracts\Adapters\IAdapter.cs" />
     <Compile Include="Contracts\Adapters\IProductAdapter.cs" />
+    <Compile Include="Contracts\Adapters\IProductTypeAdapter.cs" />
     <Compile Include="Contracts\Services\IProductService.cs" />
+    <Compile Include="Contracts\Services\IProductTypeService.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
+    <Compile Include="Dtos\ProductTypeDto.cs" />
     <Compile Include="Services\CrudService.cs" />
     <Compile Include="Contracts\Services\ICrudService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ProductTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Crosscutting.Logging\Crosscutting.Logging.csproj">

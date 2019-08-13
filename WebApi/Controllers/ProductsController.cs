@@ -4,7 +4,6 @@ using Domain.Aggregates;
 
 namespace WebApi.Controllers
 {
-    
     public class ProductsController : CrudController<ProductDto, Product>
     {
         private readonly IProductService _productService;

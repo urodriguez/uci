@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{49E8F2B1-C861-4878-A469-F28A1E271C4E}"
 EndProject
@@ -12,6 +12,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.Logging", "Crosscutting.Logging\Crosscutting.Logging.csproj", "{2CE96471-091D-4462-B660-69992253B826}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{3A4E28A5-05CF-4ADF-90FF-24B6524B6928}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.Auditing", "Crosscutting.Auditing\Crosscutting.Auditing.csproj", "{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.Mailing", "Crosscutting.Mailing\Crosscutting.Mailing.csproj", "{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +43,19 @@ Global
 		{3A4E28A5-05CF-4ADF-90FF-24B6524B6928}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A4E28A5-05CF-4ADF-90FF-24B6524B6928}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A4E28A5-05CF-4ADF-90FF-24B6524B6928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9EA0AE4-3F0B-4B8D-9D56-6C4C6F3DB1B9}
 	EndGlobalSection
 EndGlobal

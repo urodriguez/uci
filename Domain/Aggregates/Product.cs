@@ -1,5 +1,4 @@
-﻿using System;
-using Domain.Contracts.Aggregates;
+﻿using Domain.Contracts.Aggregates;
 using Domain.Entities;
 
 namespace Domain.Aggregates

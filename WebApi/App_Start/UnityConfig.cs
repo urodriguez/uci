@@ -7,7 +7,6 @@ using Unity.Lifetime;
 using Crosscutting.Logging;
 using Application.Services;
 using Application.Adapters;
-using Application.Contracts;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 
@@ -21,9 +20,15 @@ namespace WebApi
 
             // register all your components with the container here
             container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
+            container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
+
             container.RegisterType<ILoggerService, NLogService>(new PerThreadLifetimeManager());
+
             container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
+            container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
+
             container.RegisterType<IProductAdapter, ProductAdapter>(new PerThreadLifetimeManager());
+            container.RegisterType<IProductTypeAdapter, ProductTypeAdapter>(new PerThreadLifetimeManager());
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
