@@ -2,13 +2,13 @@
 using Domain.Contracts.Repositories;
 using Unity;
 using Unity.WebApi;
-using Persistence.Repositories;
 using Unity.Lifetime;
-using Crosscutting.Logging;
 using Application.Services;
 using Application.Adapters;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
+using Persistence.Repositories;
+using Crosscutting.Logging;
 
 namespace WebApi
 {

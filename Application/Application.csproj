@@ -57,17 +57,9 @@
     <Compile Include="Services\ProductTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crosscutting.Logging\Crosscutting.Logging.csproj">
-      <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
-      <Name>Crosscutting.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Persistence\Persistence.csproj">
-      <Project>{18189842-FCB8-4B9C-94BA-C93C10836540}</Project>
-      <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
