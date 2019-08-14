@@ -2,10 +2,13 @@
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Services;
+using AutoMapper;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.Mapping;
 using Infrastructure.Persistence.Repositories;
 using Unity;
+using Unity.Injection;
 using Unity.WebApi;
 using Unity.Lifetime;
 
@@ -27,6 +30,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection
 
             //Infrastructure.Crosscutting
             container.RegisterType<ILoggerService, NLogService>(new PerThreadLifetimeManager());
+            container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMApper().CreateMapper());
 
             //Infrastructure.Persistence
             container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
