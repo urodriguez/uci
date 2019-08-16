@@ -1,30 +1,14 @@
-﻿using System.Collections.Generic;
-using Application.Contracts.Adapters;
+﻿using Application.Contracts.Adapters;
 using Application.Dtos;
+using AutoMapper;
 using Domain.Aggregates;
 
 namespace Application.Adapters
 {
-    public class ProductTypeAdapter : IProductTypeAdapter
+    public class ProductTypeAdapter : Adapter<ProductTypeDto, ProductType>,  IProductTypeAdapter
     {
-        public ProductTypeDto Adapt(ProductType aggregate)
+        public ProductTypeAdapter(IMapper mapper) : base(mapper)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnumerable<ProductTypeDto> AdaptRange(IEnumerable<ProductType> aggregates)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ProductType Adapt(ProductTypeDto dto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnumerable<ProductType> AdaptRange(IEnumerable<ProductTypeDto> dtos)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

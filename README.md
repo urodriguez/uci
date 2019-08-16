@@ -28,7 +28,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## TODO list - backend
-* automapper
+* automapper -> DONE
 * move tables to own db
 * refector repositories to use no hardcoded querys
 * implement dbConection 

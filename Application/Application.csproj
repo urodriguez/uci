@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\Adapter.cs" />
     <Compile Include="Adapters\ProductAdapter.cs" />
     <Compile Include="Adapters\ProductTypeAdapter.cs" />
     <Compile Include="Contracts\Adapters\IAdapter.cs" />
