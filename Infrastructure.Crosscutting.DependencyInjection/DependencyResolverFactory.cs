@@ -1,4 +1,5 @@
-﻿using Application.Adapters;
+﻿using System.Web.Http.Dependencies;
+using Application.Adapters;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Services;
@@ -8,7 +9,6 @@ using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mapping;
 using Infrastructure.Persistence.Repositories;
 using Unity;
-using Unity.Injection;
 using Unity.WebApi;
 using Unity.Lifetime;
 
@@ -16,7 +16,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection
 {
     public class DependencyResolverFactory
     {
-        public static UnityDependencyResolver GetConfiguredDependencyResolver()
+        public static IDependencyResolver GetConfiguredDependencyResolver()
         {
             var container = new UnityContainer();
 
