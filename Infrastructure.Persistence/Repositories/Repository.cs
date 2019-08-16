@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Repositories
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
         private readonly Table<TAggregateRoot> _table;
-        internal IDbConnection Connection => new SqlConnection(ConfigurationManager.ConnectionStrings["UciContext"].ConnectionString);
+        internal IDbConnection Connection => new SqlConnection(ConfigurationManager.ConnectionStrings["InventappContext"].ConnectionString);
 
         protected Repository()
         {
