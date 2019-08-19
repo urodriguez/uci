@@ -1,10 +1,9 @@
 ﻿using Application.Contracts.Services;
 using Application.Dtos;
-using Domain.Aggregates;
 
 namespace WebApi.Controllers
 {
-    public class ProductsController : CrudController<ProductDto, Product>
+    public class ProductsController : CrudController<ProductDto>
     {
         private readonly IProductService _productService;
 

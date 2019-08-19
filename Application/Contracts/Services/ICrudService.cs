@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.Dtos;
-using Domain.Contracts.Aggregates;
 
 namespace Application.Contracts.Services
 {
-    public interface ICrudService<TDto, TAggregateRoot> where TAggregateRoot : IAggregateRoot where TDto : IDto
+    public interface ICrudService<TDto> where TDto : IDto
     {
         IEnumerable<TDto> GetAll();
         TDto GetById(Guid id);

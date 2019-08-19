@@ -3,7 +3,7 @@ using Domain.Aggregates;
 
 namespace Application.Contracts.Services
 {
-    public interface IProductTypeService : ICrudService<ProductTypeDto, ProductType>
+    public interface IProductTypeService : ICrudService<ProductTypeDto>
     {
         
     }

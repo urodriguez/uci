@@ -8,7 +8,7 @@ using Domain.Contracts.Repositories;
 
 namespace Application.Services
 {
-    public class CrudService<TDto, TAggregateRoot> : ICrudService<TDto, TAggregateRoot> where TAggregateRoot : IAggregateRoot where TDto : IDto
+    public class CrudService<TDto, TAggregateRoot> : ICrudService<TDto> where TAggregateRoot : IAggregateRoot where TDto : IDto
     {
         private readonly IRepository<TAggregateRoot> _repository;
         private readonly IAdapter<TDto, TAggregateRoot> _adapter;

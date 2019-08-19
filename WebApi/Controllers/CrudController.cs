@@ -3,16 +3,15 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Domain.Contracts.Aggregates;
 
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class CrudController<TDto, TAggregateRoot> : ApiController where TAggregateRoot : IAggregateRoot where TDto : IDto
+    public class CrudController<TDto> : ApiController where TDto : IDto
     {
-        private readonly ICrudService<TDto, TAggregateRoot> _crudService;
+        private readonly ICrudService<TDto> _crudService;
 
-        public CrudController(ICrudService<TDto, TAggregateRoot> crudService)
+        public CrudController(ICrudService<TDto> crudService)
         {
             _crudService = crudService;
         }
@@ -91,6 +90,5 @@ namespace WebApi.Controllers
 
             return Ok();
         }
-
     }
 }
