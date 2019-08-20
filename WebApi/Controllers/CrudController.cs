@@ -27,7 +27,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError();
+                return InternalServerError(e);
             }
         }
 
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError();
+                return InternalServerError(e);
             }
         }
 
@@ -57,7 +57,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError();
+                return InternalServerError(e);
             }
         }
 
@@ -72,7 +72,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError();
+                return InternalServerError(e);
             }
         }
 
@@ -85,7 +85,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError();
+                return InternalServerError(e);
             }
 
             return Ok();

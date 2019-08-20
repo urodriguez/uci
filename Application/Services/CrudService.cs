@@ -52,12 +52,7 @@ namespace Application.Services
 
         public void Delete(Guid id)
         {
-            _repository.Remove(id);
-        }
-
-        public void DeleteRange(IEnumerable<Guid> ids)
-        {
-            _repository.RemoveRange(ids);
+            _repository.Delete(id);
         }
     }
 }

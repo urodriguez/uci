@@ -9,8 +9,7 @@ namespace Domain.Contracts.Repositories
         IEnumerable<TAggregateRoot> GetAll();
         TAggregateRoot GetById(Guid id);
         void Update(TAggregateRoot dto);
-        void Remove(Guid id);
+        void Delete(Guid id);
         void Add(TAggregateRoot aggregate);
-        void RemoveRange(IEnumerable<Guid> ids);
     }
 }

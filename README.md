@@ -29,8 +29,8 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## TODO list - backend
 * automapper -> DONE
-* move tables to own db
-* refector repositories to use no hardcoded querys
+* move tables to own db -> DONE
+* refector repositories to use no hardcoded querys -> DONE
 * implement dbConection 
 * use correlation id on log
 * use swagger

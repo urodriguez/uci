@@ -1,7 +1,7 @@
 ﻿namespace Application.Dtos
 {
-  public interface IDto
-  {
-    
-  }
+    public interface IDto
+    {
+
+    }
 }

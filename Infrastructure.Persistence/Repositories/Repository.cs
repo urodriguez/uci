@@ -4,20 +4,19 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using Dapper;
+using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
+    public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        private readonly Table<TAggregateRoot> _table;
         internal IDbConnection Connection => new SqlConnection(ConfigurationManager.ConnectionStrings["InventappContext"].ConnectionString);
 
         protected Repository()
         {
-            _table = new Table<TAggregateRoot>();
+            var x = typeof(Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
 
         public IEnumerable<TAggregateRoot> GetAll()
@@ -25,7 +24,7 @@ namespace Infrastructure.Persistence.Repositories
             using (IDbConnection cn = Connection)
             {
                 cn.Open();
-                return cn.Query<TAggregateRoot>("SELECT * FROM " + _table.Name);
+                return cn.GetList<TAggregateRoot>().ToList();
             }
         }
 
@@ -34,18 +33,16 @@ namespace Infrastructure.Persistence.Repositories
             using (IDbConnection cn = Connection)
             {
                 cn.Open();
-                return cn.Query<TAggregateRoot>($"SELECT * FROM {_table.Name} WHERE Id=@Id", new { Id = id }).SingleOrDefault();
+                return cn.Get<TAggregateRoot>(id);
             }
         }
 
         public void Update(TAggregateRoot aggregateRoot)
         {
-            var query = $"UPDATE {_table.Name} SET {_table.GetColumnsJoinedWithParameters()} WHERE Id=@Id";
-
             using (var connection = Connection)
             {
                 connection.Open();
-                connection.Execute(query, aggregateRoot);
+                connection.Update(aggregateRoot);
             }
         }
 
@@ -53,34 +50,20 @@ namespace Infrastructure.Persistence.Repositories
         {
             aggregate.Id = Guid.NewGuid();
             
-            var query = $"INSERT INTO {_table.Name} ({_table.GetColumnsJoined()}) VALUES ({_table.GetColumnParameters()})";
-
             using (var connection = Connection)
             {
                 connection.Open();
-                connection.Execute(query, aggregate);
+                connection.Insert(aggregate);
             }
         }
 
-        public void Remove(Guid id)
+        public void Delete(Guid id)
         {
-            string sql = $"DELETE FROM {_table.Name} WHERE Id = @Id";
-
             using (var cn = Connection)
             {
                 cn.Open();
-                cn.Execute(sql, new { Id = id });
-            }
-        }
-
-        public void RemoveRange(IEnumerable<Guid> ids)
-        {
-            string sql = $"DELETE FROM {_table.Name} WHERE Id IN @Ids";
-
-            using (var cn = Connection)
-            {
-                cn.Open();
-                cn.Execute(sql, new { Ids = ids });
+                var aggregate = cn.Get<TAggregateRoot>(id);
+                cn.Delete(aggregate);
             }
         }
     }
