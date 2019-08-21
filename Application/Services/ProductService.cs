@@ -1,4 +1,5 @@
-﻿using Application.Contracts.Adapters;
+﻿using System.Collections.Generic;
+using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
@@ -8,8 +9,16 @@ namespace Application.Services
 {
     public class ProductService : CrudService<ProductDto, Product>, IProductService
     {
-        public ProductService(IProductRepository repository, IProductAdapter adapter) : base(repository, adapter)
+        private readonly IProductRepository _productRepository;
+        public ProductService(IProductRepository productRepository, IProductAdapter adapter) : base(productRepository, adapter)
         {
+            _productRepository = productRepository;
+        }
+
+        public IEnumerable<ProductDto> GetCheapest(decimal maxPrice)
+        {
+            var cheapestProducts = _productRepository.GetCheapest(maxPrice);
+            return _adapter.AdaptRange(cheapestProducts);
         }
     }
 }

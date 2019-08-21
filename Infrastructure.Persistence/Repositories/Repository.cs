@@ -9,7 +9,7 @@ namespace Infrastructure.Persistence.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        private readonly IDbConnectionFactory _dbConnectionFactory;
+        protected readonly IDbConnectionFactory _dbConnectionFactory;
 
         protected Repository(IDbConnectionFactory dbConnectionFactory)
         {

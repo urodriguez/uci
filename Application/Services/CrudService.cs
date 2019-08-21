@@ -11,11 +11,11 @@ namespace Application.Services
     public class CrudService<TDto, TAggregateRoot> : ICrudService<TDto> where TAggregateRoot : IAggregateRoot where TDto : IDto
     {
         private readonly IRepository<TAggregateRoot> _repository;
-        private readonly IAdapter<TDto, TAggregateRoot> _adapter;
+        protected readonly IAdapter<TDto, TAggregateRoot> _adapter;
         //private readonly IBusinessValidator _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-      public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter)
+        public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter)
         {
             _repository = repository;
             _adapter = adapter;

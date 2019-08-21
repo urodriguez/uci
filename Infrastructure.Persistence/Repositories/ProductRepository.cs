@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using DapperExtensions;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 
@@ -12,8 +14,14 @@ namespace Infrastructure.Persistence.Repositories
 
         public IEnumerable<Product> GetCheapest(decimal maxPrice)
         {
-            //return Products.Where(p => p.Price < maxPrice);
-            return new List<Product>();
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
+            {
+                //return sqlConnection.GetList<TAggregateRoot>().ToList();
+                var predicate = Predicates.Field<Product>(p => p.Price, Operator.Lt, maxPrice);
+                var list = sqlConnection.GetList<Product>(predicate).ToList();
+
+                return list;
+            }
         }
     }
 }
