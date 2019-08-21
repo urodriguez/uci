@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mapping;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Unity;
 using Unity.WebApi;
@@ -33,6 +34,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMApper().CreateMapper());
 
             //Infrastructure.Persistence
+            container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
             container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
 

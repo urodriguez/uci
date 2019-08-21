@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
@@ -12,37 +9,35 @@ namespace Infrastructure.Persistence.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        internal IDbConnection Connection => new SqlConnection(ConfigurationManager.ConnectionStrings["InventappContext"].ConnectionString);
+        private readonly IDbConnectionFactory _dbConnectionFactory;
 
-        protected Repository()
+        protected Repository(IDbConnectionFactory dbConnectionFactory)
         {
+            _dbConnectionFactory = dbConnectionFactory;
             var x = typeof(Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
 
         public IEnumerable<TAggregateRoot> GetAll()
         {
-            using (IDbConnection cn = Connection)
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                cn.Open();
-                return cn.GetList<TAggregateRoot>().ToList();
+                return sqlConnection.GetList<TAggregateRoot>().ToList();
             }
         }
 
         public TAggregateRoot GetById(Guid id)
         {
-            using (IDbConnection cn = Connection)
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                cn.Open();
-                return cn.Get<TAggregateRoot>(id);
+                return sqlConnection.Get<TAggregateRoot>(id);
             }
         }
 
         public void Update(TAggregateRoot aggregateRoot)
         {
-            using (var connection = Connection)
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                connection.Open();
-                connection.Update(aggregateRoot);
+                sqlConnection.Update(aggregateRoot);
             }
         }
 
@@ -50,20 +45,18 @@ namespace Infrastructure.Persistence.Repositories
         {
             aggregate.Id = Guid.NewGuid();
             
-            using (var connection = Connection)
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                connection.Open();
-                connection.Insert(aggregate);
+                sqlConnection.Insert(aggregate);
             }
         }
 
         public void Delete(Guid id)
         {
-            using (var cn = Connection)
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                cn.Open();
-                var aggregate = cn.Get<TAggregateRoot>(id);
-                cn.Delete(aggregate);
+                var aggregate = sqlConnection.Get<TAggregateRoot>(id);
+                sqlConnection.Delete(aggregate);
             }
         }
     }
