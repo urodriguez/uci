@@ -5,6 +5,7 @@ using Application.Dtos;
 
 namespace WebApi.Controllers
 {
+    [RoutePrefix("api/products")]
     public class ProductsController : CrudController<ProductDto>
     {
         private readonly IProductService _productService;
@@ -15,14 +16,12 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/products/cheapest")]
-        public IHttpActionResult GetCheapest()
+        [Route("cheapest")]
+        public IHttpActionResult GetCheapest(decimal maxPrice)
         {
-            //TODO: see https://www.tutorialsteacher.com/webapi/web-api-routing
-            //TODO: use maxPrice
             try
             {
-                var dtos = _productService.GetCheapest(100);
+                var dtos = _productService.GetCheapest(maxPrice);
                 return Ok(dtos);
             }
             catch (Exception e)

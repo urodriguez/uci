@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 //return sqlConnection.GetList<TAggregateRoot>().ToList();
-                var predicate = Predicates.Field<Product>(p => p.Price, Operator.Lt, maxPrice);
+                var predicate = Predicates.Field<Product>(p => p.Price, Operator.Le, maxPrice);
                 var list = sqlConnection.GetList<Product>(predicate).ToList();
 
                 return list;
