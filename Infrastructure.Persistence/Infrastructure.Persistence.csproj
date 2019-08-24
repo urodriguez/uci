@@ -37,6 +37,12 @@
       <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MiniProfiler, Version=3.2.0.157, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <HintPath>..\packages\MiniProfiler.3.2.0.157\lib\net40\MiniProfiler.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler.Integrations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MiniProfiler.Integrations.2.3.1\lib\MiniProfiler.Integrations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -46,8 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbConnectionFactory.cs" />
-    <Compile Include="DbContext.cs" />
     <Compile Include="IDbConnectionFactory.cs" />
+    <Compile Include="InventappDbConection.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ProductTypeRepository.cs" />
@@ -58,9 +64,15 @@
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting.Logging\Infrastructure.Crosscutting.Logging.csproj">
+      <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
+      <Name>Infrastructure.Crosscutting.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

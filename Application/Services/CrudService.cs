@@ -52,7 +52,8 @@ namespace Application.Services
 
         public void Delete(Guid id)
         {
-            _repository.Delete(id);
+            var aggregate = _repository.GetById(id);
+            _repository.Delete(aggregate);
         }
     }
 }

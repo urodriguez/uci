@@ -4,16 +4,20 @@ using System.Linq;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
+using Infrastructure.Crosscutting.Logging;
+using MiniProfiler.Integrations;
 
 namespace Infrastructure.Persistence.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        protected readonly IDbConnectionFactory _dbConnectionFactory;
+        private readonly IDbConnectionFactory _dbConnectionFactory;
+        private readonly ILoggerService _loggerService;
 
-        protected Repository(IDbConnectionFactory dbConnectionFactory)
+        protected Repository(IDbConnectionFactory dbConnectionFactory, ILoggerService loggerService)
         {
             _dbConnectionFactory = dbConnectionFactory;
+            _loggerService = loggerService;
             var x = typeof(Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
 
@@ -51,12 +55,35 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
-        public void Delete(Guid id)
+        public void Delete(TAggregateRoot aggregate)
         {
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                var aggregate = sqlConnection.Get<TAggregateRoot>(id);
                 sqlConnection.Delete(aggregate);
+            }
+        }
+
+        protected IEnumerable<TAggregateRoot> ExecuteGetList(IFieldPredicate predicate)
+        {
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
+            {
+                var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
+
+                _loggerService.Log(new LogMessage(CustomDbProfiler.Current.GetCommands(), LogLevel.Trace));
+
+                return dbResultList;
+            }
+        }
+
+        protected TAggregateRoot ExecuteGet(IFieldPredicate predicate)
+        {
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
+            {
+                var dbResult = sqlConnection.Get<TAggregateRoot>(predicate);
+
+                _loggerService.Log(new LogMessage(CustomDbProfiler.Current.GetCommands(), LogLevel.Trace));
+
+                return dbResult;
             }
         }
     }

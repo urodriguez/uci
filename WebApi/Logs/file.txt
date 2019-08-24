@@ -8,3 +8,14 @@
 2019-07-04 18:45:10.1980|TRACE|Crosscutting.Logging.NLogService|{"Id":1,"Name":"Tomato Soup","Category":"Groceries","Price":1.0}
 2019-07-04 18:45:10.2369|TRACE|Crosscutting.Logging.NLogService|Action Method Get executing at 04-Jul-19
 2019-07-04 18:45:10.2369|TRACE|Crosscutting.Logging.NLogService|Action Method Get executed at 04-Jul-19
+2019-08-23 21:13:19.3421|TRACE|Infrastructure.Crosscutting.Logging.NLogService|ExecutedCommands
+###
+CommandType: Text, CommandText: SELECT [Product].[Name], [Product].[Category], [Product].[Price], [Product].[Id] FROM [Product] WHERE ([Product].[Price] <= @Price_0)
+Database: UciRod.Inventapp, ConnectionString: Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;MultipleActiveResultSets=True;
+Parameters:
+Name: Price_0, Value: 12
+--------------
+FailedCommands
+###
+
+

@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
+using MiniProfiler.Integrations;
 
 namespace Infrastructure.Persistence
 {
@@ -8,10 +8,7 @@ namespace Infrastructure.Persistence
     {
         public IDbConnection GetSqlConnection()
         {
-            var sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["InventappContext"].ConnectionString);
-            sqlConnection.Open();
-
-            return sqlConnection;
+            return ProfiledDbConnectionFactory.New(new SqlServerDbConnectionFactory(ConfigurationManager.ConnectionStrings["InventappContext"].ConnectionString), CustomDbProfiler.Current);
         }
     }
 }
