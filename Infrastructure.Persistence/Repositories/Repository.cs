@@ -25,7 +25,11 @@ namespace Infrastructure.Persistence.Repositories
         {
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                return sqlConnection.GetList<TAggregateRoot>().ToList();
+                var aggregates = sqlConnection.GetList<TAggregateRoot>().ToList();
+
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+
+                return aggregates;
             }
         }
 
@@ -33,7 +37,11 @@ namespace Infrastructure.Persistence.Repositories
         {
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                return sqlConnection.Get<TAggregateRoot>(id);
+                var aggregate = sqlConnection.Get<TAggregateRoot>(id);
+
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+
+                return aggregate;
             }
         }
 
@@ -42,6 +50,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
             }
         }
 
@@ -52,6 +61,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
             }
         }
 
@@ -60,6 +70,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
             }
         }
 
@@ -69,7 +80,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
 
-                _loggerService.Log(new LogMessage(CustomDbProfiler.Current.GetCommands(), LogLevel.Trace));
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
 
                 return dbResultList;
             }
@@ -81,7 +92,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var dbResult = sqlConnection.Get<TAggregateRoot>(predicate);
 
-                _loggerService.Log(new LogMessage(CustomDbProfiler.Current.GetCommands(), LogLevel.Trace));
+                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
 
                 return dbResult;
             }

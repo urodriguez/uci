@@ -2,8 +2,10 @@
 {
     public interface ILoggerService
     {
-        void Log(LogMessage logMessage);
-        void QueueLogMessage(LogMessage logMessage);
-        void FlushQueueLogMessages();
+        void LogTrace(string logMessage);
+        void LogError(string logMessage);
+        void QueueMessageTrace(string messageToLog);
+        void QueueMessageError(string messageToLog);
+        void FlushQueueMessages();
     }
 }

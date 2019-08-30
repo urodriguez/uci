@@ -27,33 +27,40 @@ namespace Infrastructure.Crosscutting.Logging
             _logMessagesQueued = new List<LogMessage>();
         }
 
-        public void Log(LogMessage logMessage)
+        public void LogTrace(string messageToLog)
         {
-            switch (logMessage.LogLevel)
-            {
-                case LogLevel.Trace:
-                    Logger.Trace(logMessage.Message);
-                    break;
-
-                case LogLevel.Error:
-                    Logger.Error(logMessage.Message);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            Logger.Trace(messageToLog);
         }
 
-        public void QueueLogMessage(LogMessage logMessage)
+        public void LogError(string messageToLog)
         {
-            _logMessagesQueued.Add(logMessage);
+            Logger.Error(messageToLog);
         }
 
-        public void FlushQueueLogMessages()
+        public void QueueMessageTrace(string messageToLog)
+        {
+            _logMessagesQueued.Add(new LogMessage(messageToLog, LogLevel.Trace));
+        }
+
+        public void QueueMessageError(string messageToLog)
+        {
+            _logMessagesQueued.Add(new LogMessage(messageToLog, LogLevel.Error));
+        }
+
+        public void FlushQueueMessages()
         {
             foreach (var logMessageQueued in _logMessagesQueued)
             {
-                Log(logMessageQueued);
+                switch (logMessageQueued.LogLevel)
+                {
+                    case LogLevel.Trace:
+                        Logger.Trace(logMessageQueued.Message);
+                        break;
+
+                    case LogLevel.Error:
+                        Logger.Error(logMessageQueued.Message);
+                        break;
+                }
             }
         }
     }
