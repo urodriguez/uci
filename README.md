@@ -7,7 +7,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * refector repositories to use no hardcoded querys -> DONE
 * implement dbConectionFactory -> DONE 
 * log database queries -> DONE
-* spread log db queries over all repo methods
+* spread log db queries over all repo methods -> DONE
+
 * remove LogMessage object in Log method for LogService, idem LogLevel
 * formatter for generated sql queries to avoid copy paste query parameter
 * apply internal on classes when is necessary
