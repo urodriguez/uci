@@ -15,7 +15,16 @@ namespace Infrastructure.Persistence.Repositories
 
         public IEnumerable<Product> GetCheapest(decimal maxPrice)
         {
-            return ExecuteGetList(Predicates.Field<Product>(p => p.Price, Operator.Le, maxPrice)).ToList();
+            var pg = new PredicateGroup
+            {
+                Operator = GroupOperator.And,
+                Predicates = new List<IPredicate>
+                {
+                    Predicates.Field<Product>(p => p.Price, Operator.Le, maxPrice),
+                    Predicates.Field<Product>(p => p.Category, Operator.Eq, "A")
+                }
+            };
+            return ExecuteGetList(pg).ToList();
         }
     }
 }

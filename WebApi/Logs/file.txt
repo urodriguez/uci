@@ -111,3 +111,42 @@ FailedCommands
 ###
 
 
+2019-08-30 20:52:23.1167|TRACE|Infrastructure.Crosscutting.Logging.NLogService|ExecutedCommands
+###
+CommandType: Text, CommandText: 
+SELECT [Product].[Name], [Product].[Category], [Product].[Price], [Product].[Id] FROM [Product]
+Database: UciRod.Inventapp, ConnectionString: Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;MultipleActiveResultSets=True;
+Parameters:
+--------------
+FailedCommands
+###
+
+
+2019-08-30 20:52:39.3954|TRACE|Infrastructure.Crosscutting.Logging.NLogService|ExecutedCommands
+###
+CommandType: Text, CommandText: 
+SELECT [Product].[Name], [Product].[Category], [Product].[Price], [Product].[Id] FROM [Product]
+Database: UciRod.Inventapp, ConnectionString: Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;MultipleActiveResultSets=True;
+Parameters:
+--------------
+FailedCommands
+###
+
+
+2019-08-30 20:52:39.3954|TRACE|Infrastructure.Crosscutting.Logging.NLogService|ExecutedCommands
+###
+CommandType: Text, CommandText: 
+SELECT [Product].[Name], [Product].[Category], [Product].[Price], [Product].[Id] FROM [Product]
+Database: UciRod.Inventapp, ConnectionString: Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;MultipleActiveResultSets=True;
+Parameters:
+
+----
+CommandType: Text, CommandText: SELECT [Product].[Name], [Product].[Category], [Product].[Price], [Product].[Id] FROM [Product] WHERE ([Product].[Id] = baadf277-a4b9-4bca-8751-8a0e7e1c3177)
+Database: UciRod.Inventapp, ConnectionString: Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;MultipleActiveResultSets=True;
+Parameters:
+Name: Id_0, Value: baadf277-a4b9-4bca-8751-8a0e7e1c3177
+--------------
+FailedCommands
+###
+
+

@@ -13,11 +13,14 @@ namespace Infrastructure.Persistence.Repositories
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
         private readonly ILoggerService _loggerService;
+        private readonly QueryFormatter _queryFormatter;
 
         protected Repository(IDbConnectionFactory dbConnectionFactory, ILoggerService loggerService)
         {
             _dbConnectionFactory = dbConnectionFactory;
             _loggerService = loggerService;
+            _queryFormatter = new QueryFormatter();
+
             var x = typeof(Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
 
@@ -27,7 +30,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var aggregates = sqlConnection.GetList<TAggregateRoot>().ToList();
 
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
 
                 return aggregates;
             }
@@ -39,7 +42,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var aggregate = sqlConnection.Get<TAggregateRoot>(id);
 
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
 
                 return aggregate;
             }
@@ -50,7 +53,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
             }
         }
 
@@ -61,7 +64,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
             }
         }
 
@@ -70,29 +73,29 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
             }
         }
 
-        protected IEnumerable<TAggregateRoot> ExecuteGetList(IFieldPredicate predicate)
+        protected IEnumerable<TAggregateRoot> ExecuteGetList(IPredicate predicate)
         {
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
 
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
 
                 return dbResultList;
             }
         }
 
-        protected TAggregateRoot ExecuteGet(IFieldPredicate predicate)
+        protected TAggregateRoot ExecuteGet(IPredicate predicate)
         {
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 var dbResult = sqlConnection.Get<TAggregateRoot>(predicate);
 
-                _loggerService.QueueMessageTrace(CustomDbProfiler.Current.GetCommands());
+                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
 
                 return dbResult;
             }

@@ -9,14 +9,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * log database queries -> DONE
 * spread log db queries over all repo methods -> DONE
 * remove LogMessage object in Log method for LogService, idem LogLevel -> DONE
+* formatter for generated sql queries to avoid copy paste query parameter -> DONE
 
-* formatter for generated sql queries to avoid copy paste query parameter
+* use swagger
 * apply internal on classes when is necessary
 * gitignore logs.txt
-* improve logs history
+* improve logs history with more files
 * try-catch wrapping in controllers
 * use correlation id on log
-* use swagger
 * implement auditing
 * implement mailing
 * implement reporting
