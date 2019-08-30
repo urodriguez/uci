@@ -8,8 +8,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * implement dbConectionFactory -> DONE 
 * log database queries -> DONE
 * spread log db queries over all repo methods -> DONE
+* remove LogMessage object in Log method for LogService, idem LogLevel -> DONE
 
-* remove LogMessage object in Log method for LogService, idem LogLevel
 * formatter for generated sql queries to avoid copy paste query parameter
 * apply internal on classes when is necessary
 * gitignore logs.txt
@@ -28,6 +28,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * implement integration events with NServiceBus
 * implement at least one soap service
 * implement import using Excel library
+* create application to show logs (maybe will be necessary to migrate to a database)
 
 
 ## Angular architercure styleguide
