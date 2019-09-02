@@ -30,7 +30,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection
             container.RegisterType<IProductTypeAdapter, ProductTypeAdapter>(new PerThreadLifetimeManager());
 
             //Infrastructure.Crosscutting
-            container.RegisterType<ILoggerService, NLogService>(new PerThreadLifetimeManager());
+            container.RegisterType<ILogService, NLogService>(new PerThreadLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMApper().CreateMapper());
 
             //Infrastructure.Persistence

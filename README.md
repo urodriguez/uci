@@ -12,6 +12,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * formatter for generated sql queries to avoid copy paste query parameter -> DONE
 
 * use swagger
+* implement await/async
 * apply internal on classes when is necessary
 * gitignore logs.txt
 * improve logs history with more files

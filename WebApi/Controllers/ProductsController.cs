@@ -11,7 +11,7 @@ namespace WebApi.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductsController(IProductService productService, ILoggerService loggerService) : base(productService, loggerService)
+        public ProductsController(IProductService productService, ILogService loggerService) : base(productService, loggerService)
         {
             _productService = productService;
         }
@@ -23,11 +23,12 @@ namespace WebApi.Controllers
             try
             {
                 var dtos = _productService.GetCheapest(maxPrice);
-                return Ok(dtos);
+
+                return SendOk(dtos);
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                return SendInternalServerError(e);
             }
         }
     }

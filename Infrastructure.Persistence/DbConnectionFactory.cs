@@ -8,6 +8,7 @@ namespace Infrastructure.Persistence
     {
         public IDbConnection GetSqlConnection()
         {
+            CustomDbProfiler.Current.ProfilerContext.Reset();
             return ProfiledDbConnectionFactory.New(new SqlServerDbConnectionFactory(ConfigurationManager.ConnectionStrings["InventappContext"].ConnectionString), CustomDbProfiler.Current);
         }
     }

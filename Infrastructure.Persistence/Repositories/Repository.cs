@@ -12,14 +12,12 @@ namespace Infrastructure.Persistence.Repositories
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
-        private readonly ILoggerService _loggerService;
-        private readonly QueryFormatter _queryFormatter;
+        private readonly ILogService _logService;
 
-        protected Repository(IDbConnectionFactory dbConnectionFactory, ILoggerService loggerService)
+        protected Repository(IDbConnectionFactory dbConnectionFactory, ILogService logService)
         {
             _dbConnectionFactory = dbConnectionFactory;
-            _loggerService = loggerService;
-            _queryFormatter = new QueryFormatter();
+            _logService = logService;
 
             var x = typeof(Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
@@ -30,7 +28,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var aggregates = sqlConnection.GetList<TAggregateRoot>().ToList();
 
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return aggregates;
             }
@@ -42,7 +40,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var aggregate = sqlConnection.Get<TAggregateRoot>(id);
 
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return aggregate;
             }
@@ -53,7 +51,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -64,7 +62,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -73,7 +71,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -83,7 +81,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
 
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResultList;
             }
@@ -95,7 +93,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var dbResult = sqlConnection.Get<TAggregateRoot>(predicate);
 
-                _loggerService.QueueMessageTrace(_queryFormatter.Format(CustomDbProfiler.Current.GetCommands()));
+                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResult;
             }

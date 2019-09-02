@@ -6,7 +6,7 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class ProductTypeRepository: Repository<ProductType>, IProductTypeRepository
     {
-        public ProductTypeRepository(IDbConnectionFactory dbConnectionFactory, ILoggerService loggerService) : base(dbConnectionFactory, loggerService)
+        public ProductTypeRepository(IDbConnectionFactory dbConnectionFactory, ILogService loggerService) : base(dbConnectionFactory, loggerService)
         {
         }
     }

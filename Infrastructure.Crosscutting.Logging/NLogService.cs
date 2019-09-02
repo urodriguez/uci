@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NLog;
 
 namespace Infrastructure.Crosscutting.Logging
 {
     //https://github.com/NLog/NLog/wiki/Tutorial
-    public class NLogService : ILoggerService
+    public class NLogService : ILogService
     {
-      private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IList<LogMessage> _logMessagesQueued;
+        private readonly QueryFormatter _queryFormatter;
+        private IList<LogMessage> _logMessagesQueued;
 
         public NLogService()
         {
@@ -24,6 +24,7 @@ namespace Infrastructure.Crosscutting.Logging
             // Apply config           
             LogManager.Configuration = config;
 
+            _queryFormatter = new QueryFormatter();
             _logMessagesQueued = new List<LogMessage>();
         }
 
@@ -37,14 +38,32 @@ namespace Infrastructure.Crosscutting.Logging
             Logger.Error(messageToLog);
         }
 
-        public void QueueMessageTrace(string messageToLog)
+        public void QueueTraceMessage(string messageToLog, MessageType messageType = MessageType.Text)
         {
-            _logMessagesQueued.Add(new LogMessage(messageToLog, LogLevel.Trace));
+            switch (messageType)
+            {
+                case MessageType.Text:
+                    _logMessagesQueued.Add(new LogMessage(messageToLog, LogLevel.Trace));
+                    break;
+
+                case MessageType.Query:
+                    _logMessagesQueued.Add(new LogMessage(_queryFormatter.Format(messageToLog), LogLevel.Trace));
+                    break;
+            }
         }
 
-        public void QueueMessageError(string messageToLog)
+        public void QueueErrorMessage(string messageToLog, MessageType messageType = MessageType.Text)
         {
-            _logMessagesQueued.Add(new LogMessage(messageToLog, LogLevel.Error));
+            switch (messageType)
+            {
+                case MessageType.Text:
+                    _logMessagesQueued.Add(new LogMessage(messageToLog, LogLevel.Error));
+                    break;
+
+                case MessageType.Query:
+                    _logMessagesQueued.Add(new LogMessage(_queryFormatter.Format(messageToLog), LogLevel.Error));
+                    break;
+            }
         }
 
         public void FlushQueueMessages()
@@ -62,6 +81,7 @@ namespace Infrastructure.Crosscutting.Logging
                         break;
                 }
             }
+            _logMessagesQueued.Clear();
         }
     }
 }

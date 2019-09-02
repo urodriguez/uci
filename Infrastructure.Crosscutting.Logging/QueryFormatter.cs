@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Infrastructure.Persistence
+namespace Infrastructure.Crosscutting.Logging
 {
     internal class QueryFormatter
     {
         public string Format(string query)
         {
             var columnValue = new Dictionary<string, string>();
-            var statements = query.Split('\n');
+            var statements = query.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             foreach (var statement in statements)
             {
                 if (statement.Contains("Name: "))
                 {
                     var column = statement.Split(',').First().Substring(6);
-                    var value = statement.Split(',').Last().Substring(8).Replace("\r", string.Empty);
+                    var value = statement.Split(',').Last().Substring(8);
                     columnValue.Add(column, value);
                 }
             }

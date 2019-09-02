@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Application.Contracts.Services;
@@ -12,33 +11,33 @@ namespace WebApi.Controllers
     public class CrudController<TDto> : ApiController where TDto : IDto
     {
         private readonly ICrudService<TDto> _crudService;
-        private readonly ILoggerService _loggerService;
+        private readonly ILogService _loggerService;
 
-        public CrudController(ICrudService<TDto> crudService, ILoggerService loggerService)
+        public CrudController(ICrudService<TDto> crudService, ILogService loggerService)
         {
             _crudService = crudService;
             _loggerService = loggerService;
         }
 
-        private IHttpActionResult SendOk()
+        protected IHttpActionResult SendOk()
         {
             _loggerService.FlushQueueMessages();
             return Ok();
         }
 
-        private IHttpActionResult SendOk<T>(T data)
+        protected IHttpActionResult SendOk<T>(T data)
         {
             _loggerService.FlushQueueMessages();
             return Ok(data);
         }
 
-        private IHttpActionResult SendInternalServerError()
+        protected IHttpActionResult SendInternalServerError()
         {
             _loggerService.FlushQueueMessages();
             return InternalServerError();
         }
 
-        private IHttpActionResult SendInternalServerError(Exception e)
+        protected IHttpActionResult SendInternalServerError(Exception e)
         {
             _loggerService.FlushQueueMessages();
             return InternalServerError(e);

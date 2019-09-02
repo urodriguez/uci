@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using DapperExtensions;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
@@ -9,7 +8,7 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        public ProductRepository(IDbConnectionFactory dbConnectionFactory, ILoggerService loggerService) : base(dbConnectionFactory, loggerService)
+        public ProductRepository(IDbConnectionFactory dbConnectionFactory, ILogService loggerService) : base(dbConnectionFactory, loggerService)
         {
         }
 
@@ -24,7 +23,7 @@ namespace Infrastructure.Persistence.Repositories
                     Predicates.Field<Product>(p => p.Category, Operator.Eq, "A")
                 }
             };
-            return ExecuteGetList(pg).ToList();
+            return ExecuteGetList(pg);
         }
     }
 }
