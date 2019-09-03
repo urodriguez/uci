@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Infrastructure.Crosscutting.DependencyInjection;
+using Infrastructure.Crosscutting.Documentation.Swagger;
 
 namespace WebApi
 {
@@ -8,7 +9,8 @@ namespace WebApi
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            GlobalConfiguration.Configuration.DependencyResolver = DependencyResolverFactory.GetConfiguredDependencyResolver();
+            DependencyResolverConfigurator.Configure(GlobalConfiguration.Configuration);
+            SwaggerConfigurator.Configure(GlobalConfiguration.Configuration);
         }
     }
 }

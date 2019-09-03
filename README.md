@@ -10,8 +10,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * spread log db queries over all repo methods -> DONE
 * remove LogMessage object in Log method for LogService, idem LogLevel -> DONE
 * formatter for generated sql queries to avoid copy paste query parameter -> DONE
+* use swagger -> DONE
 
-* use swagger
 * implement await/async
 * apply internal on classes when is necessary
 * gitignore logs.txt
@@ -23,6 +23,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * implement reporting
 * implement caching
 * implement authentication use JWT to authenticate
+* add auth to swagger
 * use hangfire
 * use IIS
 * use Jenkins/TeamCity

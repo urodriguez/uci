@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Mapping", "Infrastructure.Crosscutting.Mapping\Infrastructure.Crosscutting.Mapping.csproj", "{9E42E658-9490-47B4-BB3D-B31C281403F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Documentation.Swagger", "Infrastructure.Crosscutting.Documentation.Swagger\Infrastructure.Crosscutting.Documentation.Swagger.csproj", "{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿using System.Web.Http.Dependencies;
+﻿using System.Web.Http;
 using Application.Adapters;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
@@ -15,9 +15,9 @@ using Unity.Lifetime;
 
 namespace Infrastructure.Crosscutting.DependencyInjection
 {
-    public class DependencyResolverFactory
+    public class DependencyResolverConfigurator
     {
-        public static IDependencyResolver GetConfiguredDependencyResolver()
+        public static void Configure(HttpConfiguration config)
         {
             var container = new UnityContainer();
 
@@ -38,7 +38,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection
             container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
 
-            return new UnityDependencyResolver(container);
+            config.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
 }
