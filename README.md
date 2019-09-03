@@ -11,11 +11,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * remove LogMessage object in Log method for LogService, idem LogLevel -> DONE
 * formatter for generated sql queries to avoid copy paste query parameter -> DONE
 * use swagger -> DONE
+* gitignore logs -> DONE
 
-* gitignore logs.txt
-
-* implement await/async
 * apply internal on classes when is necessary
+* implement await/async
 * improve logs history with more files
 * try-catch wrapping in controllers
 * use correlation id on log
