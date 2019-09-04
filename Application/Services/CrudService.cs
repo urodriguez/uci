@@ -44,6 +44,8 @@ namespace Application.Services
 
         public void Update(Guid id, TDto dto)
         {
+            if (_repository.GetById(id) == null) throw new Exception("Element not found");
+
             var aggregate = _adapter.Adapt(dto);
             aggregate.Id = id;
             //_businessValidator.Validate(aggregate)
@@ -53,6 +55,9 @@ namespace Application.Services
         public void Delete(Guid id)
         {
             var aggregate = _repository.GetById(id);
+
+            if (aggregate == null) throw new Exception("Element not found");
+
             _repository.Delete(aggregate);
         }
     }

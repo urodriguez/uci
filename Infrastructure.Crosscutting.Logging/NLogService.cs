@@ -15,7 +15,8 @@ namespace Infrastructure.Crosscutting.Logging
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly QueryFormatter _queryFormatter;
-        private IList<LogMessage> _logMessagesQueued;
+        private readonly IList<LogMessage> _logMessagesQueued;
+        private readonly Guid _correlationId;
 
         public NLogService()
         {
@@ -37,8 +38,8 @@ namespace Infrastructure.Crosscutting.Logging
 
             _queryFormatter = new QueryFormatter();
             _logMessagesQueued = new List<LogMessage>();
+            _correlationId = Guid.NewGuid();
         }
-
 
         //Very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development
         public void QueueTraceMessage(string messageToLog, MessageType messageType = MessageType.Text)
@@ -76,18 +77,20 @@ namespace Infrastructure.Crosscutting.Logging
         {
             foreach (var logMessageQueued in _logMessagesQueued)
             {
+                var messageToLog = $"CorrelationId={_correlationId}{Environment.NewLine}{logMessageQueued.Message}";
+
                 switch (logMessageQueued.LogType)
                 {
                     case LogType.Trace:
-                        Logger.Trace(logMessageQueued.Message);
+                        Logger.Trace(messageToLog);
                         break;
 
                     case LogType.Info:
-                        Logger.Info(logMessageQueued.Message);
+                        Logger.Info(messageToLog);
                         break;
 
                     case LogType.Error:
-                        Logger.Error(logMessageQueued.Message);
+                        Logger.Error(messageToLog);
                         break;
                 }
             }

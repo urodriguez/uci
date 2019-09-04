@@ -89,6 +89,8 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (_crudService.GetById(id) == null) return NotFound();
+
                 _crudService.Update(id, dto);
 
                 return SendOk();
@@ -104,6 +106,8 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (_crudService.GetById(id) == null) return NotFound();
+
                 _crudService.Delete(id);
             }
             catch (Exception e)
