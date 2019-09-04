@@ -13,8 +13,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * use swagger -> DONE
 * gitignore logs -> DONE
 * apply internal on classes when is necessary -> DONE
+* improve logs history with more files -> DONE
 
-* improve logs history with more files
 * use correlation id on log
 
 * try-catch wrapping in controllers
@@ -32,6 +32,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * implement at least one soap service
 * implement import using Excel library
 * create application to show logs (maybe will be necessary to migrate to a database)
+* implment process to delete old logs (one mounth) folder (maybe directly in LogService)
+* unit test
 
 
 ## Angular architercure styleguide

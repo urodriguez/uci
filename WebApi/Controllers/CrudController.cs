@@ -33,7 +33,7 @@ namespace WebApi.Controllers
 
         protected IHttpActionResult SendInternalServerError(Exception e)
         {
-            _loggerService.QueueErrorMessage(e.Message);
+            _loggerService.QueueErrorMessage(e.ToString());
             _loggerService.FlushQueueMessages();
 
             return InternalServerError(e);

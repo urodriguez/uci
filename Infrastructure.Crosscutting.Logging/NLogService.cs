@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Compilation;
 using NLog;
 using NLog.Config;
+using NLog.LayoutRenderers;
 using NLog.Targets;
 
 namespace Infrastructure.Crosscutting.Logging
@@ -18,11 +22,14 @@ namespace Infrastructure.Crosscutting.Logging
             #region NLOG_CONFIG
             var config = new LoggingConfiguration();
 
-            // Targets where to log to: File and Console
-            var logfile = new FileTarget("logfile") { FileName = "Logs/file.txt" };
+            LayoutRenderer.Register("projectName", logEvent => BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First());
 
             // Rules for mapping loggers to targets           
-            config.AddRule(NLog.LogLevel.Trace, NLog.LogLevel.Fatal, logfile);
+            const string layout = "${longdate} | ${projectName}${newline}${message}";
+            var logsBaseDir = $"Logs/{DateTime.Now:MM-dd-yyyy}";
+            config.AddRuleForOneLevel(NLog.LogLevel.Trace, new FileTarget("logfile") { FileName = $"{logsBaseDir}/trace.txt", Layout = layout });
+            config.AddRuleForOneLevel(NLog.LogLevel.Info, new FileTarget("logfile")  { FileName = $"{logsBaseDir}/info.txt", Layout = layout });
+            config.AddRuleForOneLevel(NLog.LogLevel.Error, new FileTarget("logfile") { FileName = $"{logsBaseDir}/error.txt", Layout = layout });
 
             // Apply config           
             LogManager.Configuration = config;
