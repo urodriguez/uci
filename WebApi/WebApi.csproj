@@ -141,9 +141,9 @@
       <Project>{3A4E28A5-05CF-4ADF-90FF-24B6524B6928}</Project>
       <Name>Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.DependencyInjection\Infrastructure.Crosscutting.DependencyInjection.csproj">
+    <ProjectReference Include="..\Infrastructure.Crosscutting.DependencyInjection.Unity\Infrastructure.Crosscutting.DependencyInjection.Unity.csproj">
       <Project>{57F7110B-9C83-40AD-9B3E-04A659D188B7}</Project>
-      <Name>Infrastructure.Crosscutting.DependencyInjection</Name>
+      <Name>Infrastructure.Crosscutting.DependencyInjection.Unity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Crosscutting.Documentation.Swagger\Infrastructure.Crosscutting.Documentation.Swagger.csproj">
       <Project>{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}</Project>

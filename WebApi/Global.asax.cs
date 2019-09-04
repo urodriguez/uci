@@ -1,5 +1,5 @@
 ﻿using System.Web.Http;
-using Infrastructure.Crosscutting.DependencyInjection;
+using Infrastructure.Crosscutting.DependencyInjection.Unity;
 using Infrastructure.Crosscutting.Documentation.Swagger;
 
 namespace WebApi

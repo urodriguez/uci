@@ -10,10 +10,10 @@ using Infrastructure.Crosscutting.Mapping;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Unity;
-using Unity.WebApi;
 using Unity.Lifetime;
+using Unity.WebApi;
 
-namespace Infrastructure.Crosscutting.DependencyInjection
+namespace Infrastructure.Crosscutting.DependencyInjection.Unity
 {
     public class DependencyResolverConfigurator
     {

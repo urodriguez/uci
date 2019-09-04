@@ -7,8 +7,8 @@
     <ProjectGuid>{57F7110B-9C83-40AD-9B3E-04A659D188B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure.Crosscutting.DependencyInjection</RootNamespace>
-    <AssemblyName>Infrastructure.Crosscutting.DependencyInjection</AssemblyName>
+    <RootNamespace>Infrastructure.Crosscutting.DependencyInjection.Unity</RootNamespace>
+    <AssemblyName>Infrastructure.Crosscutting.DependencyInjection.Unity</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,6 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">

@@ -17,11 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Auditing", "Infrastructure.Crosscutting.Auditing\Infrastructure.Crosscutting.Auditing.csproj", "{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.DependencyInjection", "Infrastructure.Crosscutting.DependencyInjection\Infrastructure.Crosscutting.DependencyInjection.csproj", "{57F7110B-9C83-40AD-9B3E-04A659D188B7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Mapping", "Infrastructure.Crosscutting.Mapping\Infrastructure.Crosscutting.Mapping.csproj", "{9E42E658-9490-47B4-BB3D-B31C281403F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Documentation.Swagger", "Infrastructure.Crosscutting.Documentation.Swagger\Infrastructure.Crosscutting.Documentation.Swagger.csproj", "{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.DependencyInjection.Unity", "Infrastructure.Crosscutting.DependencyInjection.Unity\Infrastructure.Crosscutting.DependencyInjection.Unity.csproj", "{57F7110B-9C83-40AD-9B3E-04A659D188B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +57,6 @@ Global
 		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F7110B-9C83-40AD-9B3E-04A659D188B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
