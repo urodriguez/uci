@@ -9,7 +9,7 @@ namespace WebApi
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            DependencyResolverConfigurator.Configure(GlobalConfiguration.Configuration);
+            UnityConfigurator.Configure(GlobalConfiguration.Configuration);
             SwaggerConfigurator.Configure(GlobalConfiguration.Configuration);
         }
     }

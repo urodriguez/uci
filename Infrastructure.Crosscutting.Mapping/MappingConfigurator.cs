@@ -5,7 +5,7 @@ namespace Infrastructure.Crosscutting.Mapping
 {
     public class MapperFactory
     {
-        public static MapperConfiguration GetConfiguredMApper()
+        public static MapperConfiguration GetConfiguredMapper()
         {
             return new MapperConfiguration(cfg => {
                 cfg.AddProfile<ProductProfile>();

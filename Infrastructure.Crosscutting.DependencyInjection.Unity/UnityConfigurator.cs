@@ -15,7 +15,7 @@ using Unity.WebApi;
 
 namespace Infrastructure.Crosscutting.DependencyInjection.Unity
 {
-    public class DependencyResolverConfigurator
+    public class UnityConfigurator
     {
         public static void Configure(HttpConfiguration config)
         {
@@ -31,7 +31,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
 
             //Infrastructure.Crosscutting
             container.RegisterType<ILogService, NLogService>(new PerThreadLifetimeManager());
-            container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMApper().CreateMapper());
+            container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
 
             //Infrastructure.Persistence
             container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
