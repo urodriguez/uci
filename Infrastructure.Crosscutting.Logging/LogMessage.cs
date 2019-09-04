@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Crosscutting.Logging
 {
-    public class LogMessage
+    internal class LogMessage
     {
         public string Message { get; set; }
         public LogLevel LogLevel { get; set; }

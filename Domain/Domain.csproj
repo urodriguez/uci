@@ -40,7 +40,6 @@
     <Compile Include="Contracts\Repositories\IProductRepository.cs" />
     <Compile Include="Contracts\Repositories\IProductTypeRepository.cs" />
     <Compile Include="Contracts\Repositories\IRepository.cs" />
-    <Compile Include="Entities\EmailSetting.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -14,6 +14,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * gitignore logs -> DONE
 
 * apply internal on classes when is necessary
+
 * implement await/async
 * improve logs history with more files
 * try-catch wrapping in controllers
