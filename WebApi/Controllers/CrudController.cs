@@ -31,15 +31,11 @@ namespace WebApi.Controllers
             return Ok(data);
         }
 
-        protected IHttpActionResult SendInternalServerError()
-        {
-            _loggerService.FlushQueueMessages();
-            return InternalServerError();
-        }
-
         protected IHttpActionResult SendInternalServerError(Exception e)
         {
+            _loggerService.QueueErrorMessage(e.Message);
             _loggerService.FlushQueueMessages();
+
             return InternalServerError(e);
         }
 

@@ -28,7 +28,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var aggregates = sqlConnection.GetList<TAggregateRoot>().ToList();
 
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return aggregates;
             }
@@ -40,7 +40,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var aggregate = sqlConnection.Get<TAggregateRoot>(id);
 
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return aggregate;
             }
@@ -51,7 +51,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -62,7 +62,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Infrastructure.Persistence.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
 
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResultList;
             }
@@ -93,7 +93,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var dbResult = sqlConnection.Get<TAggregateRoot>(predicate);
 
-                _logService.QueueTraceMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResult;
             }

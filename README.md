@@ -12,13 +12,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * formatter for generated sql queries to avoid copy paste query parameter -> DONE
 * use swagger -> DONE
 * gitignore logs -> DONE
+* apply internal on classes when is necessary -> DONE
 
-* apply internal on classes when is necessary
-
-* implement await/async
 * improve logs history with more files
-* try-catch wrapping in controllers
 * use correlation id on log
+
+* try-catch wrapping in controllers
+* implement await/async
 * implement auditing
 * implement mailing
 * implement reporting

@@ -3,11 +3,11 @@
     internal class LogMessage
     {
         public string Message { get; set; }
-        public LogLevel LogLevel { get; set; }
-        public LogMessage(string message, LogLevel logLevel)
+        public LogType LogType { get; set; }
+        public LogMessage(string message, LogType logType)
         {
             Message = message;
-            LogLevel = logLevel;
+            LogType = logType;
         }
     }
 }

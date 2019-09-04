@@ -1,8 +1,9 @@
 ﻿namespace Infrastructure.Crosscutting.Logging
 {
-    internal enum LogLevel
+    internal enum LogType
     {
         Trace = 0,
-        Error = 1
+        Info = 1,
+        Error = 2
     }
 }

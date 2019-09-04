@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILogService.cs" />
-    <Compile Include="LogLevel.cs" />
+    <Compile Include="LogType.cs" />
     <Compile Include="LogMessage.cs" />
     <Compile Include="MessageType.cs" />
     <Compile Include="NLogService.cs" />
