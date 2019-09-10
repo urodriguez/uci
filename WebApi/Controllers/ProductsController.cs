@@ -18,18 +18,6 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("cheapest")]
-        public IHttpActionResult GetCheapest(decimal maxPrice)
-        {
-            try
-            {
-                var dtos = _productService.GetCheapest(maxPrice);
-
-                return SendOk(dtos);
-            }
-            catch (Exception e)
-            {
-                return SendInternalServerError(e);
-            }
-        }
+        public IHttpActionResult GetCheapest(decimal maxPrice) => Execute(() => _productService.GetCheapest(maxPrice));
     }
 }

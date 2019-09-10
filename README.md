@@ -15,8 +15,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * apply internal on classes when is necessary -> DONE
 * improve logs history with more files -> DONE
 * use correlation id on logs -> DONE
+* try-catch wrapping in controllers -> DONE
 
-* try-catch wrapping in controllers
 * implement await/async
 * implement auditing
 * implement mailing

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -24,14 +25,19 @@ namespace Application.Services
         public IEnumerable<TDto> GetAll()
         {
             var aggregates = _repository.GetAll();
+
             var dtos = _adapter.AdaptRange(aggregates);
+
             return dtos;
         }
 
         public TDto GetById(Guid id)
         {
             var aggregate = _repository.GetById(id);
-            return aggregate != null ? _adapter.Adapt(aggregate) : default(TDto);
+
+            if (aggregate == null) throw new ObjectNotFoundException();
+
+            return _adapter.Adapt(aggregate);
         }
 
         public Guid Create(TDto dto)
@@ -44,7 +50,7 @@ namespace Application.Services
 
         public void Update(Guid id, TDto dto)
         {
-            if (_repository.GetById(id) == null) throw new Exception("Element not found");
+            if (_repository.GetById(id) == null) throw new ObjectNotFoundException();
 
             var aggregate = _adapter.Adapt(dto);
             aggregate.Id = id;
@@ -56,7 +62,7 @@ namespace Application.Services
         {
             var aggregate = _repository.GetById(id);
 
-            if (aggregate == null) throw new Exception("Element not found");
+            if (aggregate == null) throw new ObjectNotFoundException();
 
             _repository.Delete(aggregate);
         }
