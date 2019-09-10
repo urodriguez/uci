@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Domain.Contracts.Aggregates;
 
 namespace Domain.Contracts.Repositories
@@ -11,5 +12,7 @@ namespace Domain.Contracts.Repositories
         void Update(TAggregateRoot dto);
         void Delete(TAggregateRoot aggregate);
         void Add(TAggregateRoot aggregate);
+
+        Task<IEnumerable<TAggregateRoot>> GetAllAsync();
     }
 }

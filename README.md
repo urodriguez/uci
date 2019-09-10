@@ -18,6 +18,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * try-catch wrapping in controllers -> DONE
 
 * implement await/async
+
 * implement auditing
 * implement mailing
 * implement reporting

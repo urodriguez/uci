@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
@@ -96,6 +97,18 @@ namespace Infrastructure.Persistence.Repositories
                 _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResult;
+            }
+        }
+
+        public async Task<IEnumerable<TAggregateRoot>> GetAllAsync()
+        {
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
+            {
+                var aggregates = (await sqlConnection.GetListAsync<TAggregateRoot>()).ToList();
+
+                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+
+                return aggregates;
             }
         }
     }

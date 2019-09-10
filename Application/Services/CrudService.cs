@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -68,6 +69,15 @@ namespace Application.Services
             if (aggregate == null) throw new ObjectNotFoundException();
 
             _repository.Delete(aggregate);
+        }
+
+        public async Task<IEnumerable<TDto>> GetAllAsync()
+        {
+            var aggregates = await _repository.GetAllAsync();
+
+            var dtos = _adapter.AdaptRange(aggregates);
+
+            return dtos;
         }
     }
 }
