@@ -26,14 +26,10 @@ namespace Application.Adapters
             return aggregates.Select(Adapt);
         }
 
-        public TAggregateRoot Adapt(TDto dto)
+        //Adapt existing element or create one if none one is provided
+        public TAggregateRoot Adapt(TDto dto, TAggregateRoot existingAggregate = default(TAggregateRoot))
         {
-            return _mapper.Map<TDto, TAggregateRoot>(dto);
-        }
-
-        public IEnumerable<TAggregateRoot> AdaptRange(IEnumerable<TDto> dtos)
-        {
-            return dtos.Select(Adapt);
+            return existingAggregate != null ? _mapper.Map<TDto, TAggregateRoot>(dto, existingAggregate) : _mapper.Map<TDto, TAggregateRoot>(dto);
         }
     }
 }

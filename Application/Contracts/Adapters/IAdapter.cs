@@ -8,7 +8,6 @@ namespace Application.Contracts.Adapters
     {
         TDto Adapt(TAggregateRoot aggregate);
         IEnumerable<TDto> AdaptRange(IEnumerable<TAggregateRoot> aggregates);
-        TAggregateRoot Adapt(TDto dto);
-        IEnumerable<TAggregateRoot> AdaptRange(IEnumerable<TDto> dtos);
+        TAggregateRoot Adapt(TDto dto, TAggregateRoot aggregate = default(TAggregateRoot));
     }
 }

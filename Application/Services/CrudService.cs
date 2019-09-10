@@ -50,10 +50,13 @@ namespace Application.Services
 
         public void Update(Guid id, TDto dto)
         {
-            if (_repository.GetById(id) == null) throw new ObjectNotFoundException();
+            var aggregate = _repository.GetById(id);
 
-            var aggregate = _adapter.Adapt(dto);
+            if (aggregate == null) throw new ObjectNotFoundException();
+
+            _adapter.Adapt(dto, aggregate);
             aggregate.Id = id;
+
             //_businessValidator.Validate(aggregate)
             _repository.Update(aggregate);
         }
