@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Infrastructure.Persistence
+namespace Infrastructure.Persistence.Dapper
 {
     public interface IDbConnectionFactory
     {

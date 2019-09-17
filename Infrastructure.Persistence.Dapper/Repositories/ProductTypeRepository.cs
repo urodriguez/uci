@@ -2,7 +2,7 @@
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Dapper.Repositories
 {
     public class ProductTypeRepository: Repository<ProductType>, IProductTypeRepository
     {

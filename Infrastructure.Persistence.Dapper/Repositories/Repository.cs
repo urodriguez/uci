@@ -8,7 +8,7 @@ using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;
 using MiniProfiler.Integrations;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Dapper.Repositories
 {
     public abstract class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Repositories
             _dbConnectionFactory = dbConnectionFactory;
             _logService = logService;
 
-            var x = typeof(Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
+            var x = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
 
         public IEnumerable<TAggregateRoot> GetAll()

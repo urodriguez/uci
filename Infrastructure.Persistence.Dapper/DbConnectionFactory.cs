@@ -2,7 +2,7 @@
 using System.Data;
 using MiniProfiler.Integrations;
 
-namespace Infrastructure.Persistence
+namespace Infrastructure.Persistence.Dapper
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {
