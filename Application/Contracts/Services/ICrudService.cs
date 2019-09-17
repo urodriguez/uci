@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Application.Dtos;
 
 namespace Application.Contracts.Services
@@ -12,7 +11,5 @@ namespace Application.Contracts.Services
         Guid Create(TDto dto);
         void Update(Guid id, TDto dto);
         void Delete(Guid id);
-
-        Task<IEnumerable<TDto>> GetAllAsync();
     }
 }

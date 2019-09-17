@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -16,8 +15,8 @@ namespace WebApi.Controllers
             _crudService = crudService;
         }
 
-        //[HttpGet]
-        //public IHttpActionResult GetAll() => Execute(() => _crudService.GetAll());
+        [HttpGet]
+        public IHttpActionResult GetAll() => Execute(() => _crudService.GetAll());
 
         [HttpGet]
         public IHttpActionResult Get([FromUri] Guid id) => Execute(() => _crudService.GetById(id));
@@ -44,8 +43,5 @@ namespace WebApi.Controllers
                 return true;
             });
         }
-
-        [HttpGet]
-        public async Task<IHttpActionResult> GetAllAsync() => await ExecuteAsync(async () => await _crudService.GetAllAsync());
     }
 }

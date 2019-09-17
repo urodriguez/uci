@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Infrastructure.Crosscutting.Logging;
@@ -22,23 +21,6 @@ namespace WebApi.Controllers
             try
             {
                 var serviceResult = service.Invoke();
-                return SendOk(serviceResult);
-            }
-            catch (ObjectNotFoundException onfe)
-            {
-                return SendNotFound();
-            }
-            catch (Exception e)
-            {
-                return SendInternalServerError(e);
-            }
-        }
-
-        protected async Task<IHttpActionResult> ExecuteAsync<TResult>(Func<Task<TResult>> service)
-        {
-            try
-            {
-                var serviceResult = await service.Invoke();
                 return SendOk(serviceResult);
             }
             catch (ObjectNotFoundException onfe)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Infrastructure.Crosscutting.Logging;

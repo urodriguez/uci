@@ -17,24 +17,24 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * use correlation id on logs -> DONE
 * try-catch wrapping in controllers -> DONE
 
-* implement await/async
+* use local IIS
 
+* use Jenkins/TeamCity
+* add auth to swagger
+* implement authentication use JWT to authenticate
 * implement auditing
 * implement mailing
 * implement reporting
 * implement caching
-* implement authentication use JWT to authenticate
-* add auth to swagger
 * use hangfire
-* use IIS
-* use Jenkins/TeamCity
 * implement integration events with NServiceBus
 * implement at least one soap service
 * implement import using Excel library
 * create application to show logs (maybe will be necessary to migrate to a database)
-* implment process to delete old logs (one mounth) folder (maybe directly in LogService)
+* implement process to delete old logs (one mounth) folder (maybe directly in LogService)
 * unit test
-
+* implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF
+* implement unityOfWork
 
 ## Angular architercure styleguide
 

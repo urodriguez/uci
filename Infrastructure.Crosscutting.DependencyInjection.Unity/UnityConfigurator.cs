@@ -7,7 +7,6 @@ using AutoMapper;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mapping;
-using Infrastructure.Persistence;
 using Infrastructure.Persistence.Dapper;
 using Infrastructure.Persistence.Dapper.Repositories;
 using Unity;
