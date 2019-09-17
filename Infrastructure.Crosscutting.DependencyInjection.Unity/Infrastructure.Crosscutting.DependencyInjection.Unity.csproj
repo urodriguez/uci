@@ -88,9 +88,9 @@
       <Project>{9E42E658-9490-47B4-BB3D-B31C281403F2}</Project>
       <Name>Infrastructure.Crosscutting.Mapping</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Persistence\Infrastructure.Persistence.csproj">
+    <ProjectReference Include="..\Infrastructure.Persistence.Dapper\Infrastructure.Persistence.Dapper.csproj">
       <Project>{18189842-FCB8-4B9C-94BA-C93C10836540}</Project>
-      <Name>Infrastructure.Persistence</Name>
+      <Name>Infrastructure.Persistence.Dapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
