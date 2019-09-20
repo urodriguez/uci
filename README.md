@@ -16,12 +16,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * improve logs history with more files -> DONE
 * use correlation id on logs -> DONE
 * try-catch wrapping in controllers -> DONE
+* use local IIS -> DONE
 
-* use local IIS
+* use Jenkins
 
-* use Jenkins/TeamCity
-* add auth to swagger
 * implement authentication use JWT to authenticate
+* add auth to swagger
 * implement auditing
 * implement mailing
 * implement reporting
@@ -35,6 +35,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * unit test
 * implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF
 * implement unityOfWork
+* use TeamCity
+* use Docker
+* use PusherServer to notify UI on server changes
+* deploy app to cloud 
 
 ## Angular architercure styleguide
 
