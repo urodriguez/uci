@@ -1,5 +1,7 @@
-# UciRod.Inventapp
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
+# UciRod.Inventapp servers
+http://localhost:8080 -> Dev
+http://localhost:8082 -> Jenkins
+http://localhost:8083 -> Test
 
 ## TODO list - backend
 * automapper -> DONE
