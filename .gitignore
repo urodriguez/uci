@@ -3,7 +3,7 @@
 
 # Build results
 bin
-Debug
+obj
 
 # Publish project
 publish/

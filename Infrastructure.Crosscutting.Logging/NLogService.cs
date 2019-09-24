@@ -82,15 +82,15 @@ namespace Infrastructure.Crosscutting.Logging
                 switch (logMessageQueued.LogType)
                 {
                     case LogType.Trace:
-                        Logger.Trace(messageToLog);
+                        Logger.Trace(messageToLog + Environment.NewLine);
                         break;
 
                     case LogType.Info:
-                        Logger.Info(messageToLog);
+                        Logger.Info(messageToLog + Environment.NewLine);
                         break;
 
                     case LogType.Error:
-                        Logger.Error(messageToLog);
+                        Logger.Error(messageToLog + Environment.NewLine);
                         break;
                 }
             }

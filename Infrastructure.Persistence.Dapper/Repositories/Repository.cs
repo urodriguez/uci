@@ -20,6 +20,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             _logService = logService;
 
             var x = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
+            _logService.QueueInfoMessage($"Repository created for {x} ORM");
         }
 
         public IEnumerable<TAggregateRoot> GetAll()
