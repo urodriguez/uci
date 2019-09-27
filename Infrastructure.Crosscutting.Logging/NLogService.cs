@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Compilation;
 using NLog;
 using NLog.Config;
@@ -73,28 +74,24 @@ namespace Infrastructure.Crosscutting.Logging
             }
         }
 
-        public void FlushQueueMessages()
+        public Task FlushQueueMessages()
         {
-            foreach (var logMessageQueued in _logMessagesQueued)
+            var task = new Task(() =>
             {
-                var messageToLog = $"CorrelationId={_correlationId}{Environment.NewLine}{logMessageQueued.Message}";
+                var traceMessages = string.Join(Environment.NewLine, _logMessagesQueued.Where(lmq => lmq.LogType == LogType.Trace).Select(lmq => $"CorrelationId={_correlationId}{Environment.NewLine}{lmq.Message}{Environment.NewLine}"));
+                var infoMessages = string.Join(Environment.NewLine, _logMessagesQueued.Where(lmq => lmq.LogType == LogType.Info).Select(lmq => $"CorrelationId={_correlationId}{Environment.NewLine}{lmq.Message}{Environment.NewLine}"));
+                var errorMessages = string.Join(Environment.NewLine, _logMessagesQueued.Where(lmq => lmq.LogType == LogType.Error).Select(lmq => $"CorrelationId={_correlationId}{Environment.NewLine}{lmq.Message}{Environment.NewLine}"));
 
-                switch (logMessageQueued.LogType)
-                {
-                    case LogType.Trace:
-                        Logger.Trace(messageToLog + Environment.NewLine);
-                        break;
+                if (!string.IsNullOrEmpty(traceMessages)) Logger.Trace(traceMessages);
+                if (!string.IsNullOrEmpty(infoMessages)) Logger.Info(infoMessages);
+                if (!string.IsNullOrEmpty(errorMessages)) Logger.Error(errorMessages);
 
-                    case LogType.Info:
-                        Logger.Info(messageToLog + Environment.NewLine);
-                        break;
+                _logMessagesQueued.Clear();
+            });
 
-                    case LogType.Error:
-                        Logger.Error(messageToLog + Environment.NewLine);
-                        break;
-                }
-            }
-            _logMessagesQueued.Clear();
+            task.Start();
+
+            return task;
         }
     }
 }
