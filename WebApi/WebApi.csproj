@@ -76,8 +76,8 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -116,8 +116,9 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CrudController.cs" />
-    <Compile Include="Controllers\InventappApiController.cs" />
+    <Compile Include="Controllers\InventAppApiController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Formatters\BrowserJsonFormatter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -159,6 +160,10 @@
     <ProjectReference Include="..\Infrastructure.Crosscutting.Logging\Infrastructure.Crosscutting.Logging.csproj">
       <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
       <Name>Infrastructure.Crosscutting.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting.Security.Authentication\Infrastructure.Crosscutting.Security.Authentication.csproj">
+      <Project>{FB15E926-5957-4085-BA54-004CCE0DA01C}</Project>
+      <Name>Infrastructure.Crosscutting.Security.Authentication</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

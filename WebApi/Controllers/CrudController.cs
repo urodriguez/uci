@@ -6,7 +6,7 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {
-    public class CrudController<TDto> : InventappApiController where TDto : IDto
+    public class CrudController<TDto> : InventAppApiController where TDto : IDto
     {
         private readonly ICrudService<TDto> _crudService;
 

@@ -19,10 +19,10 @@ http://localhost:8083 -> Test
 * use correlation id on logs -> DONE
 * try-catch wrapping in controllers -> DONE
 * use local IIS -> DONE
-
-* use Jenkins
+* use Jenkins -> DONE
 
 * implement authentication use JWT to authenticate
+
 * add auth to swagger
 * implement auditing
 * implement mailing

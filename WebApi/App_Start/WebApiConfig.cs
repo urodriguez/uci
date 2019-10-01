@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Infrastructure.Crosscutting.Security.Authentication;
 using Newtonsoft.Json.Serialization;
 using WebApi.Formatters;
 
@@ -17,6 +18,8 @@ namespace WebApi
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            config.MessageHandlers.Add(new TokenService());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mapping;
+using Infrastructure.Crosscutting.Security.Authentication;
 using Infrastructure.Persistence.Dapper;
 using Infrastructure.Persistence.Dapper.Repositories;
 using Unity;
@@ -24,6 +25,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             //Application.Services
             container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
+            container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
 
             //Application.Adapters
             container.RegisterType<IProductAdapter, ProductAdapter>(new PerThreadLifetimeManager());
@@ -32,6 +34,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             //Infrastructure.Crosscutting
             container.RegisterType<ILogService, NLogService>(new PerThreadLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
+            container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 
             //Infrastructure.Persistence
             container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());

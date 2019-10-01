@@ -6,12 +6,13 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class InventappApiController : ApiController
+    public class InventAppApiController : ApiController
     {
         protected readonly ILogService _loggerService;
 
-        public InventappApiController(ILogService loggerService)
+        public InventAppApiController(ILogService loggerService)
         {
             _loggerService = loggerService;
         }
