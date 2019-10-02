@@ -15,6 +15,8 @@ namespace Application.Services
 
         public string Login(UserLoginDto userLoginDto)
         {
+            if (userLoginDto == null) return null;
+
             if (userLoginDto.UserName == "admin" && userLoginDto.Password == "admin") return _tokenService.GenerateJwtToken(userLoginDto.UserName);
 
             return null;

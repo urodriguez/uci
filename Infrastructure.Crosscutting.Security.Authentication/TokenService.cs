@@ -49,9 +49,8 @@ namespace Infrastructure.Crosscutting.Security.Authentication
             string token;
 
             // determine whether a jwt exists or not
-            if (!TryRetrieveToken(request, out token))
+            if (!TryRetrieveToken(request, out token) || request.RequestUri.AbsoluteUri.Contains("swagger"))
             {
-                statusCode = HttpStatusCode.Unauthorized;
                 return base.SendAsync(request, cancellationToken);
             }
 
@@ -63,13 +62,14 @@ namespace Infrastructure.Crosscutting.Security.Authentication
 
                 SecurityToken securityToken;
                 var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                var validationParameters = new TokenValidationParameters()
+                var validationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = issuerToken,
-                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
                     LifetimeValidator = LifetimeValidator,
-                    IssuerSigningKey = securityKey
+                    IssuerSigningKey = securityKey,
+                    ValidateAudience = false
                 };
 
                 // Extract and assign Current Principal and user
@@ -78,11 +78,11 @@ namespace Infrastructure.Crosscutting.Security.Authentication
 
                 return base.SendAsync(request, cancellationToken);
             }
-            catch (SecurityTokenValidationException)
+            catch (SecurityTokenValidationException stve)
             {
                 statusCode = HttpStatusCode.Unauthorized;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 statusCode = HttpStatusCode.InternalServerError;
             }

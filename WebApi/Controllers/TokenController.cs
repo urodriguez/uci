@@ -17,11 +17,9 @@ namespace WebApi.Controllers
         [HttpPost]
         public IHttpActionResult Create([FromBody] UserLoginDto userLoginDto)
         {
-            if (userLoginDto == null) return BadRequest();
-
             var token = _userService.Login(userLoginDto);
 
-            return !string.IsNullOrEmpty(token) ? (IHttpActionResult) Ok(token) : Unauthorized();
+            return !string.IsNullOrEmpty(token) ? (IHttpActionResult)Ok(token) : Unauthorized();
         }
     }
 }

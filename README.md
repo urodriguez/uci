@@ -20,10 +20,9 @@ http://localhost:8083 -> Test
 * try-catch wrapping in controllers -> DONE
 * use local IIS -> DONE
 * use Jenkins -> DONE
+* implement authentication use JWT to authenticate -> DONE
+* add auth to swagger -> DONE
 
-* implement authentication use JWT to authenticate
-
-* add auth to swagger
 * implement auditing
 * implement mailing
 * implement reporting
