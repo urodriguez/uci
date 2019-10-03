@@ -92,7 +92,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         {
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                var dbResult = sqlConnection.Get<TAggregateRoot>(predicate);
+                var dbResult = sqlConnection.GetList<TAggregateRoot>(predicate).FirstOrDefault();
 
                 _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 

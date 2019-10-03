@@ -53,15 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\Adapter.cs" />
+    <Compile Include="Adapters\UserAdapter.cs" />
     <Compile Include="Adapters\ProductAdapter.cs" />
     <Compile Include="Adapters\ProductTypeAdapter.cs" />
     <Compile Include="Contracts\Adapters\IAdapter.cs" />
     <Compile Include="Contracts\Adapters\IProductAdapter.cs" />
     <Compile Include="Contracts\Adapters\IProductTypeAdapter.cs" />
+    <Compile Include="Contracts\Adapters\IUserAdapter.cs" />
     <Compile Include="Contracts\Services\IProductService.cs" />
     <Compile Include="Contracts\Services\IProductTypeService.cs" />
     <Compile Include="Contracts\Services\IUserService.cs" />
     <Compile Include="Dtos\IDto.cs" />
+    <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Dtos\UserLoginDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductTypeDto.cs" />

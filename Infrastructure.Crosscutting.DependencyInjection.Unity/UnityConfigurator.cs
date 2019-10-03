@@ -5,6 +5,8 @@ using Application.Contracts.Services;
 using Application.Services;
 using AutoMapper;
 using Domain.Contracts.Repositories;
+using Domain.Contracts.Services;
+using Domain.Services;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mapping;
 using Infrastructure.Crosscutting.Security.Authentication;
@@ -30,6 +32,10 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             //Application.Adapters
             container.RegisterType<IProductAdapter, ProductAdapter>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeAdapter, ProductTypeAdapter>(new PerThreadLifetimeManager());
+            container.RegisterType<IUserAdapter, UserAdapter>(new PerThreadLifetimeManager());
+
+            //Domain.Services
+            container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
 
             //Infrastructure.Crosscutting
             container.RegisterType<ILogService, NLogService>(new PerThreadLifetimeManager());
@@ -40,6 +46,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
             container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
+            container.RegisterType<IUserRepository, UserRepository>(new PerThreadLifetimeManager());
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

@@ -22,7 +22,7 @@ namespace WebApi.Controllers
             try
             {
                 var serviceResult = service.Invoke();
-                return SendOk(serviceResult);
+                return serviceResult is EmptyResult ? SendOk() : SendOk(serviceResult);
             }
             catch (ObjectNotFoundException onfe)
             {

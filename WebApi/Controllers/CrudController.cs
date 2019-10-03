@@ -30,7 +30,7 @@ namespace WebApi.Controllers
             return Execute(() =>
             {
                 _crudService.Update(id, dto);
-                return true;
+                return new EmptyResult();
             });
         }
 
@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             return Execute(() =>
             {
                 _crudService.Delete(id);
-                return true;
+                return new EmptyResult();
             });
         }
     }

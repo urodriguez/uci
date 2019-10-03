@@ -27,8 +27,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
             // create a claimsIdentity
             var claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Email, "user@domain.com"),
+                new Claim(ClaimTypes.Name, username)
             });
 
             // create token to the user
