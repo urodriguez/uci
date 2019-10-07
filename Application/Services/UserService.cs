@@ -16,7 +16,7 @@ namespace Application.Services
         private readonly TokenService _tokenService;
         private readonly IRoleService _roleService;
 
-        public UserService(IUserRepository userRepository, IUserAdapter adapter, TokenService tokenService, IRoleService roleService) : base(userRepository, adapter)
+        public UserService(IUserRepository userRepository, IUserAdapter adapter, IAuditService auditService, TokenService tokenService, IRoleService roleService) : base(userRepository, adapter, auditService)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;

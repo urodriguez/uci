@@ -5,11 +5,11 @@ using Application.Dtos;
 namespace WebApi.Controllers
 {
     [AllowAnonymous]
-    public class TokenController : ApiController
+    public class TokensController : ApiController
     {
         private readonly IUserService _userService;
 
-        public TokenController(IUserService userService)
+        public TokensController(IUserService userService)
         {
             _userService = userService;
         }

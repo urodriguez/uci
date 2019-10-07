@@ -53,6 +53,7 @@
     <Compile Include="Contracts\Repositories\IUserRepository.cs" />
     <Compile Include="Contracts\Services\IRoleService.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Enums\AuditAction.cs" />
     <Compile Include="Enums\UserRol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RoleService.cs" />

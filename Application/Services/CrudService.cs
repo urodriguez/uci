@@ -6,6 +6,7 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
+using Domain.Enums;
 
 namespace Application.Services
 {
@@ -13,13 +14,15 @@ namespace Application.Services
     {
         private readonly IRepository<TAggregateRoot> _repository;
         protected readonly IAdapter<TDto, TAggregateRoot> _adapter;
+        protected readonly IAuditService _auditService;
         //private readonly IBusinessValidator _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-        public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter)
+        public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter, IAuditService auditService)
         {
             _repository = repository;
             _adapter = adapter;
+            _auditService = auditService;
         }
 
         public IEnumerable<TDto> GetAll()
@@ -45,11 +48,16 @@ namespace Application.Services
             var aggregate = _adapter.Adapt(dto);
             //_businessValidator.Validate(aggregate)
             _repository.Add(aggregate);
+
+            _auditService.Audit(aggregate, AuditAction.Create);
+
             return aggregate.Id;
         }
 
         public void Update(Guid id, TDto dto)
         {
+            var oldAggregate = _repository.GetById(id);
+
             var aggregate = _repository.GetById(id);
 
             if (aggregate == null) throw new ObjectNotFoundException();
@@ -59,6 +67,8 @@ namespace Application.Services
 
             //_businessValidator.Validate(aggregate)
             _repository.Update(aggregate);
+
+            _auditService.Audit(aggregate, AuditAction.Update, oldAggregate);
         }
 
         public void Delete(Guid id)
@@ -68,6 +78,8 @@ namespace Application.Services
             if (aggregate == null) throw new ObjectNotFoundException();
 
             _repository.Delete(aggregate);
+
+            _auditService.Audit(aggregate, AuditAction.Delete);
         }
     }
 }

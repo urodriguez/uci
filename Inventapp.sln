@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Mailing", "Infrastructure.Crosscutting.Mailing\Infrastructure.Crosscutting.Mailing.csproj", "{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Auditing", "Infrastructure.Crosscutting.Auditing\Infrastructure.Crosscutting.Auditing.csproj", "{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Mapping", "Infrastructure.Crosscutting.Mapping\Infrastructure.Crosscutting.Mapping.csproj", "{9E42E658-9490-47B4-BB3D-B31C281403F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Documentation.Swagger", "Infrastructure.Crosscutting.Documentation.Swagger\Infrastructure.Crosscutting.Documentation.Swagger.csproj", "{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}"
@@ -24,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Persistence.Dapper", "Infrastructure.Persistence.Dapper\Infrastructure.Persistence.Dapper.csproj", "{18189842-FCB8-4B9C-94BA-C93C10836540}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Security.Authentication", "Infrastructure.Crosscutting.Security.Authentication\Infrastructure.Crosscutting.Security.Authentication.csproj", "{FB15E926-5957-4085-BA54-004CCE0DA01C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Audit", "WebApi.Audit\WebApi.Audit.csproj", "{42772F74-A8B0-44D6-8E80-C6B68E542DCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,12 +62,6 @@ Global
 		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}.Test|Any CPU.Build.0 = Test|Any CPU
-		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{CEB1526C-6129-47F3-A3A1-FDD6B1414EF2}.Test|Any CPU.Build.0 = Test|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E42E658-9490-47B4-BB3D-B31C281403F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -98,6 +92,12 @@ Global
 		{FB15E926-5957-4085-BA54-004CCE0DA01C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB15E926-5957-4085-BA54-004CCE0DA01C}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{FB15E926-5957-4085-BA54-004CCE0DA01C}.Test|Any CPU.Build.0 = Release|Any CPU
+		{42772F74-A8B0-44D6-8E80-C6B68E542DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42772F74-A8B0-44D6-8E80-C6B68E542DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42772F74-A8B0-44D6-8E80-C6B68E542DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42772F74-A8B0-44D6-8E80-C6B68E542DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42772F74-A8B0-44D6-8E80-C6B68E542DCC}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{42772F74-A8B0-44D6-8E80-C6B68E542DCC}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

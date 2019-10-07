@@ -25,6 +25,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             var container = new UnityContainer();
 
             //Application.Services
+            container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
             container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
             container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
