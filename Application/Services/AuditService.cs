@@ -6,6 +6,7 @@ using Domain.Contracts.Aggregates;
 using Domain.Enums;
 using Infrastructure.Crosscutting.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace Application.Services
@@ -27,7 +28,7 @@ namespace Application.Services
                 _logService.QueueInfoMessage($"AuditService.Audit - Serializing entity with id = {entity.Id} for audit action = {action}");
 
                 var entityJson = JsonConvert.SerializeObject(entity);
-                var oldEntityJson = oldEntity != null ? JsonConvert.SerializeObject(oldEntity) : new JsonObject().ToString();
+                var oldEntityJson = oldEntity != null ? JsonConvert.SerializeObject(oldEntity) : new JObject().ToString();
 
                 //sent data to WebApi.Audit
                 var client = new RestClient("https://localhost:44366/api");
@@ -36,8 +37,8 @@ namespace Application.Services
                 {
                     Action = action,
                     ApplicationCode = 0,
-                    Entity = entityJson,
                     EntityId = entity.Id,
+                    Entity = entityJson,
                     OldEntity = oldEntityJson,
                     User = Thread.CurrentPrincipal.Identity.Name
                 };
@@ -46,8 +47,8 @@ namespace Application.Services
                 request.AddJsonBody(audit);
 
                 _logService.QueueInfoMessage("AuditService.Audit - Send audit data to Audit Micro-service: START");
-                client.Post(request);
-                _logService.QueueInfoMessage("AuditService.Audit - Send audit data to Audit Micro-service: END");
+                var response = client.Post(request);
+                _logService.QueueInfoMessage(response.IsSuccessful ? "AuditService.Audit - Send audit data to Audit Micro-service: END - Status: OK" : $"AuditService.Audit - Send audit data to Audit Micro-service: END - Status: FAIL - Reason: {response.Content}");
             }
             catch (Exception e)
             {

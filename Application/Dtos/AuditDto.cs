@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace Application.Dtos
 {

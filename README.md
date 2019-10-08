@@ -3,6 +3,8 @@ http://localhost:8080 -> Dev
 http://localhost:8082 -> Jenkins
 http://localhost:8083 -> Test
 
+{username: "urodriguez-admin", password: "admin"}
+
 ## TODO list - backend
 * automapper -> DONE
 * move tables to own db -> DONE
