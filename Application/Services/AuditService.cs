@@ -25,7 +25,7 @@ namespace Application.Services
         {
             try
             {
-                _logService.QueueInfoMessage($"AuditService.Audit - Serializing entity with id = {entity.Id} for audit action = {action}");
+                _logService.LogInfoMessage($"AuditService.Audit - Serializing entity with id = {entity.Id} for audit action = {action}");
 
                 var entityJson = JsonConvert.SerializeObject(entity);
                 var oldEntityJson = oldEntity != null ? JsonConvert.SerializeObject(oldEntity) : new JObject().ToString();
@@ -46,14 +46,14 @@ namespace Application.Services
                 var request = new RestRequest("audits", Method.POST);
                 request.AddJsonBody(audit);
 
-                _logService.QueueInfoMessage("AuditService.Audit - Send audit data to Audit Micro-service: START");
+                _logService.LogInfoMessage("AuditService.Audit - Send audit data to Audit Micro-service: START");
                 var response = client.Post(request);
-                _logService.QueueInfoMessage(response.IsSuccessful ? "AuditService.Audit - Send audit data to Audit Micro-service: END - Status: OK" : $"AuditService.Audit - Send audit data to Audit Micro-service: END - Status: FAIL - Reason: {response.Content}");
+                _logService.LogInfoMessage(response.IsSuccessful ? "AuditService.Audit - Send audit data to Audit Micro-service: END - Status: OK" : $"AuditService.Audit - Send audit data to Audit Micro-service: END - Status: FAIL - Reason: {response.Content}");
             }
             catch (Exception e)
             {
-                _logService.QueueErrorMessage($"AuditService.Audit - An error has occurred serializing entity with id = {entity.Id} for audit action = {action}");
-                _logService.QueueErrorMessage($"AuditService.Audit - {e.Message}");
+                _logService.LogErrorMessage($"AuditService.Audit - An error has occurred serializing entity with id = {entity.Id} for audit action = {action}");
+                _logService.LogErrorMessage($"AuditService.Audit - {e.Message}");
             }
         }
     }

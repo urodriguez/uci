@@ -22,11 +22,11 @@ namespace WebApi.Controllers
             try
             {
                 var serviceResult = service.Invoke();
-                return serviceResult is EmptyResult ? SendOk() : SendOk(serviceResult);
+                return serviceResult is EmptyResult ? (IHttpActionResult) Ok() : Ok(serviceResult);
             }
             catch (ObjectNotFoundException onfe)
             {
-                return SendNotFound();
+                return NotFound();
             }
             catch (Exception e)
             {
@@ -34,29 +34,11 @@ namespace WebApi.Controllers
             }
         }
 
-        protected IHttpActionResult SendOk()
-        {
-            _loggerService.FlushQueueMessages();
-            return Ok();
-        }
-
-        protected IHttpActionResult SendOk<T>(T data)
-        {
-            _loggerService.FlushQueueMessages();
-            return Ok(data);
-        }
 
         protected IHttpActionResult SendInternalServerError(Exception e)
         {
-            _loggerService.QueueErrorMessage(e.ToString());
-            _loggerService.FlushQueueMessages();
+            _loggerService.LogErrorMessage(e.ToString());
             return InternalServerError(e);
-        }
-
-        protected IHttpActionResult SendNotFound()
-        {
-            _loggerService.FlushQueueMessages();
-            return NotFound();
         }
     }
 }

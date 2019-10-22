@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             _logService = logService;
 
             var x = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
-            _logService.QueueInfoMessage($"Repository created for {x} ORM");
+            _logService.LogInfoMessage($"Repository created for {x} ORM");
         }
 
         public IEnumerable<TAggregateRoot> GetAll()
@@ -29,7 +29,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var aggregates = sqlConnection.GetList<TAggregateRoot>().ToList();
 
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return aggregates;
             }
@@ -41,7 +41,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var aggregate = sqlConnection.Get<TAggregateRoot>(id);
 
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return aggregate;
             }
@@ -52,7 +52,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
 
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResultList;
             }
@@ -94,7 +94,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var dbResult = sqlConnection.GetList<TAggregateRoot>(predicate).FirstOrDefault();
 
-                _logService.QueueInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
+                _logService.LogInfoMessage(CustomDbProfiler.Current.GetCommands(), MessageType.Query);
 
                 return dbResult;
             }

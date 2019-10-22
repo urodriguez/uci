@@ -39,7 +39,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
 
             //Infrastructure.Crosscutting
-            container.RegisterType<ILogService, NLogService>(new PerThreadLifetimeManager());
+            container.RegisterType<ILogService, LogService>(new PerThreadLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
             container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 
