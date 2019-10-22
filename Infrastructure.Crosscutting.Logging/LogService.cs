@@ -28,10 +28,10 @@ namespace Infrastructure.Crosscutting.Logging
 
             var envUrl = new Dictionary<string, string>
             {
-                { "DEV", "https://localhost:44330/api" },
-                { "TEST", "https://localhost:44330/api" },
-                { "STAGE", "https://localhost:44330/api" },
-                { "PROD", "https://localhost:44330/api" }
+                { "DEV", "http://www.ucirod.test-logging.com:40000/api" },
+                { "TEST", "http://www.ucirod.test-logging.com:40000/api" },
+                { "STAGE", "http://www.ucirod.stage-logging.com/api" },
+                { "PROD", "http://www.ucirod.logging.com/api" }
             };
 
             _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
