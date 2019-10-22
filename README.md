@@ -1,6 +1,6 @@
 # UciRod.Inventapp servers
 http://localhost:8080 -> Dev
-http://localhost:8082 -> Jenkins
+http://localhost:8082 -> Jenkins (run java -jar C:\Program Files (x86)\Jenkins\jenkins.war --httpPort=8082)
 http://localhost:8083 -> Test
 
 {username: "urodriguez-admin", password: "admin"}
@@ -26,6 +26,7 @@ http://localhost:8083 -> Test
 * add auth to swagger -> DONE
 * move logging service to micro-service in net core -> DONE
 
+* use settings for Test ENV
 * implement auditing
 
 * implement mailing
