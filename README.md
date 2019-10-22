@@ -24,8 +24,10 @@ http://localhost:8083 -> Test
 * use Jenkins -> DONE
 * implement authentication use JWT to authenticate -> DONE
 * add auth to swagger -> DONE
+* move logging service to micro-service in net core -> DONE
 
 * implement auditing
+
 * implement mailing
 * implement reporting
 * implement caching
