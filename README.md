@@ -1,7 +1,7 @@
 # UciRod.Inventapp servers
 http://localhost:8080 -> Dev
 http://localhost:8082 -> Jenkins (run java -jar C:\Program Files (x86)\Jenkins\jenkins.war --httpPort=8082)
-http://localhost:8083 -> Test
+http://www.ucirod.test-inventapp.com:8083 -> Test (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
 
 {username: "urodriguez-admin", password: "admin"}
 
@@ -27,8 +27,11 @@ http://localhost:8083 -> Test
 * move logging service to micro-service in net core -> DONE
 
 * use settings for Test ENV
-* implement auditing
+    -> app settings
+    -> connection string
+        -> create new databases
 
+* implement auditing
 * implement mailing
 * implement reporting
 * implement caching
