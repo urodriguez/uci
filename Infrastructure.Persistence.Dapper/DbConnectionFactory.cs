@@ -12,9 +12,9 @@ namespace Infrastructure.Persistence.Dapper
             var envConnectionString = new Dictionary<string, string>
             {
                 { "DEV", "Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
-                { "TEST", "Server=localhost;Database=UciRod.Inventapp_Test;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
-                { "STAGE", "Server=localhost;Database=UciRod.Inventapp_Stage;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
-                { "PROD", "Server=localhost;Database=UciRod.Inventapp_Prod;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" }
+                { "TEST", "Server=localhost;Database=UciRod.Inventapp-Test;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
+                { "STAGE", "Server=localhost;Database=UciRod.Inventapp-Stage;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
+                { "PROD", "Server=localhost;Database=UciRod.Inventapp-Prod;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" }
             };
 
             var connectionString = envConnectionString[ConfigurationManager.AppSettings["Environment"]];

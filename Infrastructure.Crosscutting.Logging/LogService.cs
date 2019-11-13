@@ -28,9 +28,9 @@ namespace Infrastructure.Crosscutting.Logging
 
             var envUrl = new Dictionary<string, string>
             {
-                { "DEV", "http://www.ucirod.test-logging.com:40000/api" },
-                { "TEST", "http://www.ucirod.test-logging.com:40000/api" },
-                { "STAGE", "http://www.ucirod.stage-logging.com/api" },
+                { "DEV", "http://www.ucirod.logging-test.com:40000/api" },
+                { "TEST", "http://www.ucirod.logging-test.com:40000/api" },
+                { "STAGE", "http://www.ucirod.logging-stage.com/api" },
                 { "PROD", "http://www.ucirod.logging.com/api" }
             };
 
