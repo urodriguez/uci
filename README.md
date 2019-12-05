@@ -1,7 +1,7 @@
 # UciRod.Inventapp servers
 http://localhost:8080 -> Dev
 http://localhost:8082 -> Jenkins (run java -jar C:\Program Files (x86)\Jenkins\jenkins.war --httpPort=8082)
-http://www.ucirod.test-inventapp.com:8083 -> Test (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
+http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
 
 {username: "urodriguez-admin", password: "admin"}
 
@@ -25,11 +25,12 @@ http://www.ucirod.test-inventapp.com:8083 -> Test (IIS Local - overwritten in C:
 * implement authentication use JWT to authenticate -> DONE
 * add auth to swagger -> DONE
 * move logging service to micro-service in net core -> DONE
-
 * use settings for Test ENV
-    -> app settings
-    -> connection string
-        -> create new databases
+    -> app settings -> DONE
+    -> connection string -> DONE
+        -> create new databases -> DONE
+
+* integrate infrastructure in one web site
 
 * implement auditing
 * implement mailing
