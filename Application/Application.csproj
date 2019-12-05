@@ -67,17 +67,14 @@
     <Compile Include="Contracts\Adapters\IProductAdapter.cs" />
     <Compile Include="Contracts\Adapters\IProductTypeAdapter.cs" />
     <Compile Include="Contracts\Adapters\IUserAdapter.cs" />
-    <Compile Include="Contracts\Services\IAuditService.cs" />
     <Compile Include="Contracts\Services\IProductService.cs" />
     <Compile Include="Contracts\Services\IProductTypeService.cs" />
     <Compile Include="Contracts\Services\IUserService.cs" />
-    <Compile Include="Dtos\AuditDto.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Dtos\UserLoginDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductTypeDto.cs" />
-    <Compile Include="Services\AuditService.cs" />
     <Compile Include="Services\CrudService.cs" />
     <Compile Include="Contracts\Services\ICrudService.cs" />
     <Compile Include="Services\ProductService.cs" />
@@ -89,6 +86,10 @@
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting.Auditing\Infrastructure.Crosscutting.Auditing.csproj">
+      <Project>{C79E7897-B19B-43D3-B782-3D84247B401C}</Project>
+      <Name>Infrastructure.Crosscutting.Auditing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Crosscutting.Logging\Infrastructure.Crosscutting.Logging.csproj">
       <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Persistence.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Security.Authentication", "Infrastructure.Crosscutting.Security.Authentication\Infrastructure.Crosscutting.Security.Authentication.csproj", "{FB15E926-5957-4085-BA54-004CCE0DA01C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Auditing", "Infrastructure.Crosscutting.Auditing\Infrastructure.Crosscutting.Auditing.csproj", "{C79E7897-B19B-43D3-B782-3D84247B401C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,12 @@ Global
 		{FB15E926-5957-4085-BA54-004CCE0DA01C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB15E926-5957-4085-BA54-004CCE0DA01C}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{FB15E926-5957-4085-BA54-004CCE0DA01C}.Test|Any CPU.Build.0 = Release|Any CPU
+		{C79E7897-B19B-43D3-B782-3D84247B401C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79E7897-B19B-43D3-B782-3D84247B401C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79E7897-B19B-43D3-B782-3D84247B401C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79E7897-B19B-43D3-B782-3D84247B401C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C79E7897-B19B-43D3-B782-3D84247B401C}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{C79E7897-B19B-43D3-B782-3D84247B401C}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Domain.Services;
+using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mapping;
 using Infrastructure.Crosscutting.Security.Authentication;
@@ -25,7 +26,6 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             var container = new UnityContainer();
 
             //Application.Services
-            container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
             container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
             container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
@@ -39,6 +39,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
 
             //Infrastructure.Crosscutting
+            container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
             container.RegisterType<ILogService, LogService>(new PerThreadLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
             container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());

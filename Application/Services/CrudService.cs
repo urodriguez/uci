@@ -6,7 +6,7 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
-using Domain.Enums;
+using Infrastructure.Crosscutting.Auditing;
 
 namespace Application.Services
 {
@@ -18,7 +18,7 @@ namespace Application.Services
         //private readonly IBusinessValidator _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-        public CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter, IAuditService auditService)
+        protected CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter, IAuditService auditService)
         {
             _repository = repository;
             _adapter = adapter;

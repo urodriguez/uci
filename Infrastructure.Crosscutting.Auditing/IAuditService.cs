@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using Domain.Contracts.Aggregates;
-using Domain.Enums;
+﻿using Domain.Contracts.Aggregates;
 
-namespace Application.Contracts.Services
+namespace Infrastructure.Crosscutting.Auditing
 {
     public interface IAuditService
     {

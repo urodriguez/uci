@@ -6,6 +6,7 @@ using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
+using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Security.Authentication;
 
 namespace Application.Services

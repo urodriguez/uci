@@ -64,12 +64,20 @@ namespace Infrastructure.Crosscutting.Logging
         {
             var task = new Task(() =>
             {
-                var request = new RestRequest("logs", Method.POST);
+                try
+                {
+                    var request = new RestRequest("logs", Method.POST);
 
-                var log = new Log(_application, _projectName, _correlationId, messageType == MessageType.Text ? messageToLog : _queryFormatter.Format(messageToLog), logType);
-                request.AddJsonBody(log);
+                    var log = new Log(_application, _projectName, _correlationId, messageType == MessageType.Text ? messageToLog : _queryFormatter.Format(messageToLog), logType);
+                    request.AddJsonBody(log);
 
-                _restClient.Post(request);
+                    _restClient.Post(request);
+                }
+                catch (Exception e) 
+                {
+                    //TODO: log locally in somewhere when the connection with Log Micro-Service fails (example: local file, local db, iis)
+                    Console.WriteLine(e);
+                }
             });
 
             task.Start();
