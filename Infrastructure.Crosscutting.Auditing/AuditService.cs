@@ -49,6 +49,7 @@ namespace Infrastructure.Crosscutting.Auditing
                         Application = "InventApp",
                         Entity = entityJson,
                         OldEntity = oldEntityJson,
+                        EntityName = entity.GetType().Name,
                         User = Thread.CurrentPrincipal.Identity.Name
                     };
 
