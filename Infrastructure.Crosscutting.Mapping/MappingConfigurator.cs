@@ -9,6 +9,7 @@ namespace Infrastructure.Crosscutting.Mapping
         {
             return new MapperConfiguration(cfg => {
                 cfg.AddProfile<ProductProfile>();
+                cfg.AddProfile<UserProfile>();
             });
         }
     }

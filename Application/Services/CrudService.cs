@@ -45,8 +45,10 @@ namespace Application.Services
 
         public Guid Create(TDto dto)
         {
+            //_businessValidator.Validate(aggregate) -> validate data from UI or external service (example: product name, price positive, valid category)
+
             var aggregate = _adapter.Adapt(dto);
-            //_businessValidator.Validate(aggregate)
+            
             _repository.Add(aggregate);
 
             _auditService.Audit(aggregate, AuditAction.Create);

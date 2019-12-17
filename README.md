@@ -5,6 +5,12 @@ http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:
 
 {username: "urodriguez-admin", password: "admin"}
 
+{
+  "name": "local_name6",
+  "category": "C",
+  "price": 13
+}
+
 ## TODO list - backend
 * automapper -> DONE
 * move tables to own db -> DONE
