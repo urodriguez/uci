@@ -35,10 +35,12 @@ http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:
     -> app settings -> DONE
     -> connection string -> DONE
         -> create new databases -> DONE
+* implement basic auditing - DONE
 
 * integrate infrastructure in one web site
 
-* implement auditing
+* implement business validator on domain layer
+* implement complex auditing (objects with nested objects) 
 * implement mailing
 * implement reporting
 * implement caching
@@ -46,8 +48,8 @@ http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:
 * implement integration events with NServiceBus
 * implement at least one soap service
 * implement import using Excel library
-* create application to show logs (maybe will be necessary to migrate to a database)
-* implement process to delete old logs (one mounth) folder (maybe directly in LogService)
+* create application to show logs
+* implement process to delete old logs (one mounth) in database (maybe directly in LogService) - or process to migrate to a new table (example: Audit.ddmmyyyy)
 * unit test
 * implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF
 * implement unityOfWork
