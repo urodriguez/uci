@@ -21,10 +21,10 @@ namespace Infrastructure.Crosscutting.Auditing
 
             var envUrl = new Dictionary<string, string> //TODO: use correct urls
             {
-                { "DEV", "https://localhost:44387/api" },
-                { "TEST", "http://www.ucirod.infrastructure.auditing-test.com:40000/api" },
-                { "STAGE", "http://www.ucirod.infrastructure.auditing-test.com:40000/api" },
-                { "PROD", "http://www.ucirod.infrastructure.auditing-test.com:40000/api" }
+                { "DEV", "http://www.ucirod.infrastructure-test.com:40000/Auditing/api" },
+                { "TEST", "http://www.ucirod.infrastructure-test.com:40000/Auditing/api" },
+                { "STAGE", "http://www.ucirod.infrastructure-stage.com:40000/Auditing/api" },
+                { "PROD", "http://www.ucirod.infrastructure.com:40000/Auditing/api" }
             };
 
             _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
@@ -55,10 +55,10 @@ namespace Infrastructure.Crosscutting.Auditing
                     var request = new RestRequest("audits", Method.POST);
                     request.AddJsonBody(audit);
 
-                    //TODO: use log standard
                     _logService.LogInfoMessage("AuditService.Audit | Sending audit data to Audit Micro-service");
                     var response = _restClient.Post(request);
-                    _logService.LogInfoMessage(response.IsSuccessful ? "AuditService.Audit | Audit data sent to Audit Micro-service | Status=OK" : $"AuditService.Audit | Error sending audit data to Audit Micro-service | Status=FAIL - Reason={response.Content}");
+                    _logService.LogInfoMessage(response.IsSuccessful ?  "AuditService.Audit | Audit data sent to Audit Micro-service | Status=OK" 
+                                                                     : $"AuditService.Audit | Error sending audit data to Audit Micro-service | Status=FAIL - Reason={response.Content}");
                 }
                 catch (Exception e)
                 {

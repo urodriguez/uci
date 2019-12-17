@@ -1,7 +1,12 @@
-# UciRod.Inventapp servers
+# UciRod.Inventapp URL - ENV
 http://localhost:8080 -> Dev
-http://localhost:8082 -> Jenkins (run java -jar C:\Program Files (x86)\Jenkins\jenkins.war --httpPort=8082)
+http://localhost:8082 -> Jenkins (run by cmd: java -jar "C:\Program Files (x86)\Jenkins\jenkins.war" --httpPort=8082)
+
 http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
+
+# UciRod.Inventapp.WebApi URL - ENV
+http://www.ucirod.inventapp-test.com:8083/WebApi 
+
 
 {username: "urodriguez-admin", password: "admin"}
 
@@ -36,13 +41,14 @@ http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:
     -> connection string -> DONE
         -> create new databases -> DONE
 * implement basic auditing - DONE
-
 * integrate infrastructure in one web site
 
 * implement business validator on domain layer
+
 * implement complex auditing (objects with nested objects) 
 * implement mailing
 * implement reporting
+* implement retry queue system to avoid lost data sent to micro-services if connection fails
 * implement caching
 * use hangfire
 * implement integration events with NServiceBus
