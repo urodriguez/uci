@@ -4,7 +4,9 @@ using System.Data;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
+using Domain.Contracts;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Auditing;
 
@@ -15,14 +17,15 @@ namespace Application.Services
         private readonly IRepository<TAggregateRoot> _repository;
         protected readonly IAdapter<TDto, TAggregateRoot> _adapter;
         protected readonly IAuditService _auditService;
-        //private readonly IBusinessValidator _businessValidator;
+        private readonly IBusinessValidator<TAggregateRoot> _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-        protected CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter, IAuditService auditService)
+        protected CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter, IAuditService auditService, IBusinessValidator<TAggregateRoot> businessValidator)
         {
             _repository = repository;
             _adapter = adapter;
             _auditService = auditService;
+            _businessValidator = businessValidator;
         }
 
         public IEnumerable<TDto> GetAll()
@@ -45,10 +48,10 @@ namespace Application.Services
 
         public Guid Create(TDto dto)
         {
-            //_businessValidator.Validate(aggregate) -> validate data from UI or external service (example: product name, price positive, valid category)
-
             var aggregate = _adapter.Adapt(dto);
-            
+
+            _businessValidator.Validate(aggregate); //validate data from UI or external service(example: product name, price positive, valid category)
+
             _repository.Add(aggregate);
 
             _auditService.Audit(aggregate, AuditAction.Create);

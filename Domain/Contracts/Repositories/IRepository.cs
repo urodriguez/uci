@@ -11,5 +11,6 @@ namespace Domain.Contracts.Repositories
         void Update(TAggregateRoot dto);
         void Delete(TAggregateRoot aggregate);
         void Add(TAggregateRoot aggregate);
+        bool Contains(TAggregateRoot aggregate);
     }
 }

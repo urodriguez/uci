@@ -3,6 +3,7 @@ using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
+using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Auditing;
 
@@ -11,7 +12,18 @@ namespace Application.Services
     public class ProductService : CrudService<ProductDto, Product>, IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository, IProductAdapter adapter, IAuditService auditService) : base(productRepository, adapter, auditService)
+
+        public ProductService(
+            IProductRepository productRepository, 
+            IProductAdapter adapter, 
+            IAuditService auditService,
+            IProductBusinessValidator productBusinessValidator
+        ) : base(
+            productRepository, 
+            adapter, 
+            auditService, 
+            productBusinessValidator
+        )
         {
             _productRepository = productRepository;
         }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
@@ -74,6 +76,15 @@ namespace Infrastructure.Persistence.Dapper.Repositories
                 sqlConnection.Delete(aggregate);
                 _logService.LogInfoMessage($"Repository.Delete | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
             }
+        }
+
+        public bool Contains(TAggregateRoot aggregate)
+        {
+            var aggregateInDb = GetById(aggregate.Id);
+
+            _logService.LogInfoMessage($"Repository.Contains | Element in database obtained, checking if it is not null", MessageType.Query);
+
+            return aggregateInDb != null;
         }
 
         protected IEnumerable<TAggregateRoot> ExecuteGetList(IPredicate predicate)

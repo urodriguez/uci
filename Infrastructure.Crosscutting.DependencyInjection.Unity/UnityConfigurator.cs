@@ -4,6 +4,8 @@ using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Services;
 using AutoMapper;
+using Domain.BusinessValidators;
+using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Domain.Services;
@@ -25,30 +27,41 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
         {
             var container = new UnityContainer();
 
-            //Application.Services
+            #region APPLICATION
+            //Services
             container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
             container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
 
-            //Application.Adapters
+            //Adapters
             container.RegisterType<IProductAdapter, ProductAdapter>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeAdapter, ProductTypeAdapter>(new PerThreadLifetimeManager());
             container.RegisterType<IUserAdapter, UserAdapter>(new PerThreadLifetimeManager());
+            #endregion
 
-            //Domain.Services
+            #region DOMAIN
+            //BusinessValidators
+            container.RegisterType<IProductBusinessValidator, ProductBusinessValidator>(new PerThreadLifetimeManager());
+            container.RegisterType<IProductTypeBusinessValidator, ProductTypeBusinessValidator>(new PerThreadLifetimeManager());
+            container.RegisterType<IUserBusinessValidator, UserBusinessValidator>(new PerThreadLifetimeManager());
+
+            //Services
             container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
+            #endregion
 
-            //Infrastructure.Crosscutting
+            #region INFRASTRUCTURE
+            //Crosscutting
             container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
             container.RegisterType<ILogService, LogService>(new PerThreadLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
             container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 
-            //Infrastructure.Persistence
+            //Persistence
             container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
             container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
             container.RegisterType<IUserRepository, UserRepository>(new PerThreadLifetimeManager());
+            #endregion
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

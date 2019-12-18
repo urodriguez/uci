@@ -4,6 +4,7 @@ using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
+using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.Auditing;
@@ -17,7 +18,19 @@ namespace Application.Services
         private readonly TokenService _tokenService;
         private readonly IRoleService _roleService;
 
-        public UserService(IUserRepository userRepository, IUserAdapter adapter, IAuditService auditService, TokenService tokenService, IRoleService roleService) : base(userRepository, adapter, auditService)
+        public UserService(
+            IUserRepository userRepository, 
+            IUserAdapter adapter, 
+            IAuditService auditService, 
+            TokenService tokenService, 
+            IRoleService roleService, 
+            IUserBusinessValidator userBusinessValidator
+        ) : base(
+            userRepository, 
+            adapter, 
+            auditService, 
+            userBusinessValidator
+        )
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
