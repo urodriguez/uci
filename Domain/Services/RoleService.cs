@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 
@@ -17,7 +18,7 @@ namespace Domain.Services
         {
             var loggedUserName = Thread.CurrentPrincipal.Identity.Name;
 
-            var user = _userRepository.GetByName(loggedUserName);
+            var user = _userRepository.GetByField(x => x.Name, loggedUserName).Single();
 
             return user.IsAdmin();
         }

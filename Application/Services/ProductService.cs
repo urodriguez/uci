@@ -5,6 +5,7 @@ using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
+using Domain.Predicates;
 using Infrastructure.Crosscutting.Auditing;
 
 namespace Application.Services
@@ -30,7 +31,7 @@ namespace Application.Services
 
         public IEnumerable<ProductDto> GetCheapest(decimal maxPrice)
         {
-            var cheapestProducts = _productRepository.GetCheapest(maxPrice);
+            var cheapestProducts = _productRepository.Get(new CheapestIAPG(maxPrice));
             return _adapter.AdaptRange(cheapestProducts);
         }
     }

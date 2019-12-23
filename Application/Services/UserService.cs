@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using Application.Contracts.Adapters;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -62,7 +63,7 @@ namespace Application.Services
         {
             if (userLoginDto == null) return null;
 
-            var user = _userRepository.GetByName(userLoginDto.UserName);
+            var user = _userRepository.GetByField(x => x.Name, userLoginDto.UserName).Single();
 
             //TODO return custom for UI redirect
             if (user.IsLocked()) return null;

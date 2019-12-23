@@ -39,3 +39,7 @@ alter table dbo.[User]
 alter column FilterPrefencesId uniqueidentifier not null
 
 COMMIT TRANSACTION
+
+
+alter table product
+add Code varchar(8) not null

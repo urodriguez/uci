@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
+using System.Linq.Expressions;
 using DapperExtensions;
+using Domain;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
+using Domain.Enums;
+using Domain.Predicates;
 using Infrastructure.Crosscutting.Logging;
 using MiniProfiler.Integrations;
 
@@ -25,16 +27,80 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             _logService.LogInfoMessage($"Repository.Ctor | Repository created | ORM={x}");
         }
 
-        public IEnumerable<TAggregateRoot> GetAll()
+        /// <summary>
+        /// Get all elements in repository at least you pass a 'predicate' in order to filter some results
+        /// </summary>
+        /// <param name="inventAppPredicate">Predicate with filter specifications</param>
+        public IEnumerable<TAggregateRoot> Get(InventAppPredicate<TAggregateRoot> inventAppPredicate = null)
         {
+            IPredicate dapperPredicate = null;
+
+            if (inventAppPredicate != null)
+            {
+                dapperPredicate = Predicates.Field<TAggregateRoot>(inventAppPredicate.Field, (Operator)inventAppPredicate.Operator, inventAppPredicate.Value);
+            }
+
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                var aggregates = sqlConnection.GetList<TAggregateRoot>().ToList();
+                var dbResult = sqlConnection.GetList<TAggregateRoot>(dapperPredicate).ToList();
 
-                _logService.LogInfoMessage($"Repository.GetAll | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
 
-                return aggregates;
+                return dbResult;
             }
+        }
+
+        public IEnumerable<TAggregateRoot> Get(InventAppPredicateGroup<TAggregateRoot> inventAppPredicateGroup)
+        {
+            var predicates = inventAppPredicateGroup.Predicates.Select(
+                inventAppPredicate => Predicates.Field<TAggregateRoot>(inventAppPredicate.Field, (Operator)inventAppPredicate.Operator, inventAppPredicate.Value)
+            ).Cast<IPredicate>().ToList();
+
+            var dapperPredicateGroup = new PredicateGroup
+            {
+                Operator = (GroupOperator)inventAppPredicateGroup.OperatorGroup,
+                Predicates = predicates
+            };
+
+            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
+            {
+                var dbResult = sqlConnection.GetList<TAggregateRoot>(dapperPredicateGroup).ToList();
+
+                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+
+                return dbResult;
+            }
+        }
+
+        /// <summary>
+        /// Get all elements in repository whose fields and values match with fieldValues parameter
+        /// </summary>
+        /// <param name="fieldValues">Fields and values to find</param>
+        public IEnumerable<TAggregateRoot> GetByFields(IEnumerable<FieldValue<TAggregateRoot>> fieldValues)
+        {
+            var predicates = fieldValues.Select(
+                fieldValue => new InventAppPredicate<TAggregateRoot> {Field = fieldValue.Field, Operator = InventAppPredicateOperator.Eq, Value = fieldValue.Value}
+            ).ToList();
+
+            return Get(new InventAppPredicateGroup<TAggregateRoot>
+            {
+                OperatorGroup = InventAppPredicateOperatorGroup.Or,
+                Predicates = predicates
+            });
+        }
+
+        /// <summary>
+        /// Get all elements in repository whose fields and values match with fieldValues parameter
+        /// </summary>
+        /// <param name="fieldValues">Fields and values to find</param>
+        public IEnumerable<TAggregateRoot> GetByField(Expression<Func<TAggregateRoot, object>> field, object value)
+        {
+            return Get(new InventAppPredicate<TAggregateRoot>
+            {
+                Field = field,
+                Operator = InventAppPredicateOperator.Eq,
+                Value = value
+            });
         }
 
         public TAggregateRoot GetById(Guid id)
@@ -85,30 +151,6 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             _logService.LogInfoMessage($"Repository.Contains | Element in database obtained, checking if it is not null", MessageType.Query);
 
             return aggregateInDb != null;
-        }
-
-        protected IEnumerable<TAggregateRoot> ExecuteGetList(IPredicate predicate)
-        {
-            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
-            {
-                var dbResultList = sqlConnection.GetList<TAggregateRoot>(predicate).ToList();
-
-                _logService.LogInfoMessage($"Repository.ExecuteGetList | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
-
-                return dbResultList;
-            }
-        }
-
-        protected TAggregateRoot ExecuteGet(IPredicate predicate)
-        {
-            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
-            {
-                var dbResult = sqlConnection.GetList<TAggregateRoot>(predicate).FirstOrDefault();
-
-                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
-
-                return dbResult;
-            }
         }
     }
 }

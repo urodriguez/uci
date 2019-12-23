@@ -30,7 +30,7 @@ namespace Application.Services
 
         public IEnumerable<TDto> GetAll()
         {
-            var aggregates = _repository.GetAll();
+            var aggregates = _repository.Get();
 
             var dtos = _adapter.AdaptRange(aggregates);
 
@@ -50,7 +50,7 @@ namespace Application.Services
         {
             var aggregate = _adapter.Adapt(dto);
 
-            _businessValidator.Validate(aggregate); //validate data from UI or external service(example: product name, price positive, valid category)
+            _businessValidator.Validate(aggregate);
 
             _repository.Add(aggregate);
 

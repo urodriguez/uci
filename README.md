@@ -1,16 +1,25 @@
-# UciRod.Inventapp URL - ENV
-http://localhost:8080 -> Dev
+# UciRod - Continous Integration - Jenkins
 http://localhost:8082 -> Jenkins (run by cmd: java -jar "C:\Program Files (x86)\Jenkins\jenkins.war" --httpPort=8082)
 
-http://www.ucirod.inventapp-test.com:8083 -> Test (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
+# UciRod.Inventapp URL -> ENV
+http://localhost:8080 -> DEV
 
-# UciRod.Inventapp.WebApi URL - ENV
-http://www.ucirod.inventapp-test.com:8083/WebApi 
+http://www.ucirod.inventapp-test.com:8083 -> TEST (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
 
+# UciRod.Inventapp.WebApi URL -> ENV
+http://localhost:8080/WebApi -> DEV
+
+http://www.ucirod.inventapp-test.com:8083/WebApi -> TEST
+
+# UciRod.Inventapp.WebApi - Swagger - URL -> ENV
+http://localhost:8080/WebApi/Swagger -> DEV
+
+http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 
 {username: "urodriguez-admin", password: "admin"}
 
 {
+  "code": "P123",
   "name": "local_name6",
   "category": "C",
   "price": 13
@@ -42,8 +51,21 @@ http://www.ucirod.inventapp-test.com:8083/WebApi
         -> create new databases -> DONE
 * implement basic auditing - DONE
 * integrate infrastructure in one web site
+* implement business validator on domain layer -> DONE
 
-* implement business validator on domain layer
+* implement require attribute in order to validate require fields on domain
+
+
+* implement Util to automate class name and class method in log
+    {
+      var st = new StackTrace();
+      var sf = st.GetFrame(0);
+
+      var currentMethodName = sf.GetMethod();
+      var currentMethodName2 = MethodBase.GetCurrentMethod();
+    
+      _logService.LogInfoMessage($"{GetType().Name}.{currentMethodName} | Element in database obtained, checking if it is not null", MessageType.Query);
+    }
 
 * implement complex auditing (objects with nested objects) 
 * implement mailing
@@ -56,7 +78,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi
 * implement import using Excel library
 * create application to show logs
 * implement process to delete old logs (one mounth) in database (maybe directly in LogService) - or process to migrate to a new table (example: Audit.ddmmyyyy)
-* unit test
+* API test & unit test
 * implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF
 * implement unityOfWork
 * use TeamCity
