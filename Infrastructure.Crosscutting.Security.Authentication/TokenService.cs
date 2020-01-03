@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -37,7 +36,8 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                 subject: claimsIdentity,
                 notBefore: DateTime.UtcNow,
                 expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(expireTime)),
-                signingCredentials: signingCredentials);
+                signingCredentials: signingCredentials
+            );
 
             return tokenHandler.WriteToken(jwtSecurityToken);//returns tokens as string
         }

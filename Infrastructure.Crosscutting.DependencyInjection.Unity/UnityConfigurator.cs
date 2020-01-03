@@ -1,11 +1,11 @@
 ﻿using System.Web.Http;
-using Application.Adapters;
-using Application.Contracts.Adapters;
+using Application.BusinessValidators;
+using Application.Contracts.BusinessValidators;
+using Application.Contracts.Factories;
 using Application.Contracts.Services;
+using Application.Factories;
 using Application.Services;
 using AutoMapper;
-using Domain.BusinessValidators;
-using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Domain.Services;
@@ -34,9 +34,9 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
 
             //Adapters
-            container.RegisterType<IProductAdapter, ProductAdapter>(new PerThreadLifetimeManager());
-            container.RegisterType<IProductTypeAdapter, ProductTypeAdapter>(new PerThreadLifetimeManager());
-            container.RegisterType<IUserAdapter, UserAdapter>(new PerThreadLifetimeManager());
+            container.RegisterType<IProductFactory, ProductFactory>(new PerThreadLifetimeManager());
+            container.RegisterType<IProductTypeFactory, ProductTypeFactory>(new PerThreadLifetimeManager());
+            container.RegisterType<IUserFactory, UserFactory>(new PerThreadLifetimeManager());
             #endregion
 
             #region DOMAIN

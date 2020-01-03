@@ -1,14 +1,13 @@
-﻿using Application.Contracts.Adapters;
+﻿using Application.Contracts.Factories;
 using Application.Dtos;
 using AutoMapper;
 using Domain.Aggregates;
-using Domain.Entities;
 
-namespace Application.Adapters
+namespace Application.Factories
 {
-    public class ProductAdapter : Adapter<ProductDto, Product>, IProductAdapter
+    public class ProductFactory : Factory<ProductDto, Product>, IProductFactory
     {
-        public ProductAdapter(IMapper mapper) : base(mapper)
+        public ProductFactory(IMapper mapper) : base(mapper)
         {
         }
 

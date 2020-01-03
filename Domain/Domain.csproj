@@ -46,14 +46,8 @@
     <Compile Include="Aggregates\Product.cs" />
     <Compile Include="Aggregates\ProductType.cs" />
     <Compile Include="Aggregates\User.cs" />
-    <Compile Include="BusinessValidators\ProductTypeBusinessValidator.cs" />
-    <Compile Include="BusinessValidators\ProductBusinessValidator.cs" />
-    <Compile Include="BusinessValidators\UserBusinessValidator.cs" />
-    <Compile Include="Contracts\BusinessValidators\IBusinessValidator.cs" />
+    <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
-    <Compile Include="Contracts\BusinessValidators\IProductTypeBusinessValidator.cs" />
-    <Compile Include="Contracts\BusinessValidators\IProductBusinessValidator.cs" />
-    <Compile Include="Contracts\BusinessValidators\IUserBusinessValidator.cs" />
     <Compile Include="Contracts\Repositories\IProductRepository.cs" />
     <Compile Include="Contracts\Repositories\IProductTypeRepository.cs" />
     <Compile Include="Contracts\Repositories\IRepository.cs" />

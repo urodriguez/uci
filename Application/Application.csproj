@@ -59,14 +59,22 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\Adapter.cs" />
-    <Compile Include="Adapters\UserAdapter.cs" />
-    <Compile Include="Adapters\ProductAdapter.cs" />
-    <Compile Include="Adapters\ProductTypeAdapter.cs" />
-    <Compile Include="Contracts\Adapters\IAdapter.cs" />
-    <Compile Include="Contracts\Adapters\IProductAdapter.cs" />
-    <Compile Include="Contracts\Adapters\IProductTypeAdapter.cs" />
-    <Compile Include="Contracts\Adapters\IUserAdapter.cs" />
+    <Compile Include="Factories\Factory.cs" />
+    <Compile Include="Factories\UserFactory.cs" />
+    <Compile Include="Factories\ProductFactory.cs" />
+    <Compile Include="Factories\ProductTypeFactory.cs" />
+    <Compile Include="BusinessValidators\BusinessValidator.cs" />
+    <Compile Include="BusinessValidators\ProductBusinessValidator.cs" />
+    <Compile Include="BusinessValidators\ProductTypeBusinessValidator.cs" />
+    <Compile Include="BusinessValidators\UserBusinessValidator.cs" />
+    <Compile Include="Contracts\Factories\IFactory.cs" />
+    <Compile Include="Contracts\Factories\IProductFactory.cs" />
+    <Compile Include="Contracts\Factories\IProductTypeFactory.cs" />
+    <Compile Include="Contracts\Factories\IUserFactory.cs" />
+    <Compile Include="Contracts\BusinessValidators\IBusinessValidator.cs" />
+    <Compile Include="Contracts\BusinessValidators\IProductBusinessValidator.cs" />
+    <Compile Include="Contracts\BusinessValidators\IProductTypeBusinessValidator.cs" />
+    <Compile Include="Contracts\BusinessValidators\IUserBusinessValidator.cs" />
     <Compile Include="Contracts\Services\IProductService.cs" />
     <Compile Include="Contracts\Services\IProductTypeService.cs" />
     <Compile Include="Contracts\Services\IUserService.cs" />
@@ -103,6 +111,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

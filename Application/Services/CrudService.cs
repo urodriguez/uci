@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Application.Contracts.Adapters;
+using Application.Contracts.BusinessValidators;
+using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Domain.Contracts;
 using Domain.Contracts.Aggregates;
-using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Auditing;
 
@@ -15,15 +14,15 @@ namespace Application.Services
     public abstract class CrudService<TDto, TAggregateRoot> : ICrudService<TDto> where TAggregateRoot : IAggregateRoot where TDto : IDto
     {
         private readonly IRepository<TAggregateRoot> _repository;
-        protected readonly IAdapter<TDto, TAggregateRoot> _adapter;
+        protected readonly IFactory<TDto, TAggregateRoot> _factory;
         protected readonly IAuditService _auditService;
-        private readonly IBusinessValidator<TAggregateRoot> _businessValidator;
+        private readonly IBusinessValidator<TDto> _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-        protected CrudService(IRepository<TAggregateRoot> repository, IAdapter<TDto, TAggregateRoot> adapter, IAuditService auditService, IBusinessValidator<TAggregateRoot> businessValidator)
+        protected CrudService(IRepository<TAggregateRoot> repository, IFactory<TDto, TAggregateRoot> factory, IAuditService auditService, IBusinessValidator<TDto> businessValidator)
         {
             _repository = repository;
-            _adapter = adapter;
+            _factory = factory;
             _auditService = auditService;
             _businessValidator = businessValidator;
         }
@@ -32,7 +31,7 @@ namespace Application.Services
         {
             var aggregates = _repository.Get();
 
-            var dtos = _adapter.AdaptRange(aggregates);
+            var dtos = _factory.CreateFromRange(aggregates);
 
             return dtos;
         }
@@ -43,14 +42,14 @@ namespace Application.Services
 
             if (aggregate == null) throw new ObjectNotFoundException();
 
-            return _adapter.Adapt(aggregate);
+            return _factory.Create(aggregate);
         }
 
         public Guid Create(TDto dto)
         {
-            var aggregate = _adapter.Adapt(dto);
+            _businessValidator.Validate(dto);
 
-            _businessValidator.Validate(aggregate);
+            var aggregate = _factory.Create(dto);
 
             _repository.Add(aggregate);
 
@@ -61,19 +60,19 @@ namespace Application.Services
 
         public void Update(Guid id, TDto dto)
         {
+            _businessValidator.Validate(dto);
+
             var oldAggregate = _repository.GetById(id);
 
             var aggregate = _repository.GetById(id);
 
             if (aggregate == null) throw new ObjectNotFoundException();
 
-            _adapter.Adapt(dto, aggregate);
-            aggregate.Id = id;
+            var aggregateUpdated = _factory.CreateFromExisting(dto, aggregate);
+            
+            _repository.Update(aggregateUpdated);
 
-            //_businessValidator.Validate(aggregate)
-            _repository.Update(aggregate);
-
-            _auditService.Audit(aggregate, AuditAction.Update, oldAggregate);
+            _auditService.Audit(aggregateUpdated, AuditAction.Update, oldAggregate);
         }
 
         public void Delete(Guid id)

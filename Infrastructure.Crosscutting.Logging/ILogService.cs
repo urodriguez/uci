@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Infrastructure.Crosscutting.Logging
+﻿namespace Infrastructure.Crosscutting.Logging
 {
     public interface ILogService
     {

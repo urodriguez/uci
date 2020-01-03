@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Application.Contracts.Adapters;
+using Application.Contracts.BusinessValidators;
+using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
-using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Domain.Predicates;
 using Infrastructure.Crosscutting.Auditing;
@@ -16,12 +16,12 @@ namespace Application.Services
 
         public ProductService(
             IProductRepository productRepository, 
-            IProductAdapter adapter, 
+            IProductFactory factory, 
             IAuditService auditService,
             IProductBusinessValidator productBusinessValidator
         ) : base(
             productRepository, 
-            adapter, 
+            factory, 
             auditService, 
             productBusinessValidator
         )
@@ -32,7 +32,7 @@ namespace Application.Services
         public IEnumerable<ProductDto> GetCheapest(decimal maxPrice)
         {
             var cheapestProducts = _productRepository.Get(new CheapestIAPG(maxPrice));
-            return _adapter.AdaptRange(cheapestProducts);
+            return _factory.CreateFromRange(cheapestProducts);
         }
     }
 }

@@ -126,11 +126,9 @@ namespace Infrastructure.Persistence.Dapper.Repositories
 
         public void Add(TAggregateRoot aggregate)
         {
-            aggregate.Id = Guid.NewGuid();
-            
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
-                sqlConnection.Insert(aggregate);
+                sqlConnection.Insert(aggregate);//Insert aggregate in db and assign it an Id
                 _logService.LogInfoMessage($"Repository.Add | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
             }
         }

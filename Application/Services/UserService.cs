@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
-using Application.Contracts.Adapters;
+using Application.Contracts.BusinessValidators;
+using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
-using Domain.Contracts.BusinessValidators;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.Auditing;
@@ -21,14 +21,14 @@ namespace Application.Services
 
         public UserService(
             IUserRepository userRepository, 
-            IUserAdapter adapter, 
+            IUserFactory factory, 
             IAuditService auditService, 
             TokenService tokenService, 
             IRoleService roleService, 
             IUserBusinessValidator userBusinessValidator
         ) : base(
             userRepository, 
-            adapter, 
+            factory, 
             auditService, 
             userBusinessValidator
         )

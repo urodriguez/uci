@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using DapperExtensions;
-using Domain;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 using Infrastructure.Crosscutting.Logging;

@@ -19,8 +19,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 {username: "urodriguez-admin", password: "admin"}
 
 {
-  "code": "P123",
-  "name": "local_name6",
+  "code": "P00",
+  "name": "local_name00",
   "category": "C",
   "price": 13
 }
@@ -49,14 +49,14 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
     -> app settings -> DONE
     -> connection string -> DONE
         -> create new databases -> DONE
-* implement basic auditing - DONE
-* integrate infrastructure in one web site
-* implement business validator on domain layer -> DONE
+* implement basic auditing -> DONE
+* integrate infrastructure in one web site -> DONE
+* implement business validator for Create -> DONE
+* implement require attribute in order to validate require fields on domain -> DONE
 
-* implement require attribute in order to validate require fields on domain
+* implement business validator for Update
 
-
-* implement Util to automate class name and class method in log
+* implement Utils to automate class name and class method in log
     {
       var st = new StackTrace();
       var sf = st.GetFrame(0);
@@ -72,6 +72,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * implement reporting
 * implement retry queue system to avoid lost data sent to micro-services if connection fails
 * implement caching
+* implement refresh token
+* move auth service to infra solution
 * use hangfire
 * implement integration events with NServiceBus
 * implement at least one soap service
