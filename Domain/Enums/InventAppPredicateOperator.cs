@@ -7,6 +7,7 @@
         Ge = 2,
         Lt = 3,
         Le = 4,
-        Like = 5
+        Like = 5,
+        NotEq = 6
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Contracts.BusinessValidators;
+﻿using System;
+using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
@@ -14,7 +15,7 @@ namespace Application.BusinessValidators
             _productTypeRepository = productTypeRepository;
         }
 
-        protected override void ValidateFields(ProductTypeDto productDto)
+        protected override void ValidateFields(ProductTypeDto productDto, Guid?id)
         {
         }
     }

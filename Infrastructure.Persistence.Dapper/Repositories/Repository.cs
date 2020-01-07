@@ -53,7 +53,12 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         public IEnumerable<TAggregateRoot> Get(InventAppPredicateGroup<TAggregateRoot> inventAppPredicateGroup)
         {
             var predicates = inventAppPredicateGroup.Predicates.Select(
-                inventAppPredicate => Predicates.Field<TAggregateRoot>(inventAppPredicate.Field, (Operator)inventAppPredicate.Operator, inventAppPredicate.Value)
+                inventAppPredicate => Predicates.Field<TAggregateRoot>(
+                    inventAppPredicate.Field,
+                    inventAppPredicate.Operator == InventAppPredicateOperator.NotEq ? Operator.Eq : (Operator)inventAppPredicate.Operator, 
+                    inventAppPredicate.Value,
+                    inventAppPredicate.Operator == InventAppPredicateOperator.NotEq // InventAppPredicateOperator.NotEq == true => Operator.Eq (not) 
+                )
             ).Cast<IPredicate>().ToList();
 
             var dapperPredicateGroup = new PredicateGroup

@@ -16,7 +16,7 @@ namespace Application.BusinessValidators
             _userRepository = userRepository;
         }
 
-        protected override void ValidateFields(UserDto userDto)
+        protected override void ValidateFields(UserDto userDto, Guid? id)
         {
             if (_userRepository.GetByField(u => u.Name, userDto.Name).Any()) throw new Exception($"{AggregateRootName}: name={userDto.Name} already exits");
 

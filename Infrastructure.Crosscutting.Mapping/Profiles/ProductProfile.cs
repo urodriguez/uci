@@ -1,14 +1,14 @@
 ﻿using Application.Dtos;
-using AutoMapper;
 using Domain.Aggregates;
 
 namespace Infrastructure.Crosscutting.Mapping.Profiles
 {
-    public class ProductProfile : Profile
+    public class ProductProfile : AggregateProfile
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>().ForAllMembers(GetConfiguredOptions<ProductDto, Product>());
         }
     }
 }

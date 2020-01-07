@@ -17,13 +17,13 @@ namespace Application.BusinessValidators
             AggregateRootName = typeof(TAggregateRoot).Name;
         }
 
-        public void Validate(TDto dto)
+        public void Validate(TDto dto, Guid? id = null)
         {
             ValidateRequiredFields(dto);
-            ValidateFields(dto);
+            ValidateFields(dto, id);
         }
 
-        protected abstract void ValidateFields(TDto dto);
+        protected abstract void ValidateFields(TDto dto, Guid? id);
 
         protected void ValidateRequiredFields(TDto dto)
         {

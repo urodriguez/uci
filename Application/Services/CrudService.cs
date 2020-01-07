@@ -60,7 +60,7 @@ namespace Application.Services
 
         public void Update(Guid id, TDto dto)
         {
-            _businessValidator.Validate(dto);
+            _businessValidator.Validate(dto, id);
 
             var oldAggregate = _repository.GetById(id);
 
