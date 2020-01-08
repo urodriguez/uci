@@ -3,12 +3,11 @@ using Domain.Aggregates;
 
 namespace Infrastructure.Crosscutting.Mapping.Profiles
 {
-    public class ProductProfile : AggregateProfile
+    public class ProductProfile : AggregateProfile<ProductDto, Product>
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductDto>();
-            CreateMap<ProductDto, Product>().ForAllMembers(GetConfiguredOptions<ProductDto, Product>());
+            //Add more custom mappings
         }
     }
 }

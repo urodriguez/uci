@@ -5,9 +5,16 @@ using Domain.Contracts.Aggregates;
 
 namespace Infrastructure.Crosscutting.Mapping.Profiles
 {
-    public abstract class AggregateProfile : Profile
+    public abstract class AggregateProfile<TDto, TAggregateRoot> : Profile where TAggregateRoot : IAggregateRoot where TDto : IDto 
     {
-        protected static Action<IMemberConfigurationExpression<TDto, TAggregateRoot, object>> GetConfiguredOptions<TDto, TAggregateRoot>()  where TAggregateRoot : IAggregateRoot where TDto : IDto
+        protected AggregateProfile()
+        {
+            //Configure base mappings
+            CreateMap<TAggregateRoot, TDto>();
+            CreateMap<TDto, TAggregateRoot>().ForAllMembers(GetConfiguredOptions());
+        }
+
+        protected static Action<IMemberConfigurationExpression<TDto, TAggregateRoot, object>> GetConfiguredOptions()
         {
             return memberOptions =>
             {
