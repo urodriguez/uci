@@ -53,8 +53,9 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * integrate infrastructure in one web site -> DONE
 * implement business validator for Create -> DONE
 * implement require attribute in order to validate require fields on domain -> DONE
+* implement business validator for Update -> DONE
 
-* implement business validator for Update
+* implement factory for predicateGroup
 
 * implement Utils to automate class name and class method in log
     {

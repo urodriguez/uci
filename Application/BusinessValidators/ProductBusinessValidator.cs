@@ -19,7 +19,7 @@ namespace Application.BusinessValidators
             _productRepository = productRepository;
         }
 
-        protected override void ValidateFields(ProductDto productDto, Guid? id)
+        protected override void ValidateFields(ProductDto productDto, Guid id)
         {
             var predicateGroupForName = new InventAppPredicateGroup<Product>
             {
@@ -40,15 +40,13 @@ namespace Application.BusinessValidators
                 },
                 OperatorGroup = InventAppPredicateOperatorGroup.And
             };
-
             if (_productRepository.Get(predicateGroupForName).Any()) throw new Exception($"{AggregateRootName}: name={productDto.Name} already exits");
 
-            //if (_productRepository.GetByField(u => u.Name, productDto.Name).Any()) throw new Exception($"{AggregateRootName}: name={productDto.Name} already exits");
-
             //TODO: if (!_productCodesService.Exists(productDto.Code) throw new Exception($"Product code is invalid"); //product code needs to be validated on external service
+
             var predicateGroupForCode = new InventAppPredicateGroup<Product>
             {
-                Predicates = new List<InventAppPredicate<Product>>()
+                Predicates = new List<InventAppPredicate<Product>>
                 {
                     new InventAppPredicate<Product>
                     {

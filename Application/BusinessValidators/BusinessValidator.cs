@@ -17,13 +17,11 @@ namespace Application.BusinessValidators
             AggregateRootName = typeof(TAggregateRoot).Name;
         }
 
-        public void Validate(TDto dto, Guid? id = null)
+        public void Validate(TDto dto, Guid id = default(Guid)) //default(Guid) == Guid.Empty
         {
             ValidateRequiredFields(dto);
             ValidateFields(dto, id);
         }
-
-        protected abstract void ValidateFields(TDto dto, Guid? id);
 
         protected void ValidateRequiredFields(TDto dto)
         {
@@ -45,5 +43,7 @@ namespace Application.BusinessValidators
                 }
             }
         }
+
+        protected abstract void ValidateFields(TDto dto, Guid id);
     }
 }
