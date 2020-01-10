@@ -56,8 +56,9 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * implement business validator for Update -> DONE
 * integrate all predicates (basic + group) in one (Composite Pattern) for Repository.Get -> DONE
 
-* implement factory for predicateGroup
+* implement factory for all predicates (basic + group)
 
+* extend transformation process to dapper predicates to multiple leves
 * implement Utils to automate class name and class method in log
     {
       var st = new StackTrace();
@@ -68,7 +69,6 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
     
       _logService.LogInfoMessage($"{GetType().Name}.{currentMethodName} | Element in database obtained, checking if it is not null", MessageType.Query);
     }
-
 * implement complex auditing (objects with nested objects) 
 * implement mailing
 * implement reporting
