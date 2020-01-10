@@ -6,7 +6,18 @@ namespace Domain.Predicates
 {
     public class InventAppPredicateGroup<TAggregateRoot> : IInventAppPredicate<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
-        public IList<IInventAppPredicate<TAggregateRoot>> Predicates { get; set; }
-        public InventAppPredicateOperatorGroup Operator { get; set; }
+        public InventAppPredicateGroup(IList<IInventAppPredicate<TAggregateRoot>> predicates, InventAppPredicateOperatorGroup @operator)
+        {
+            Predicates = predicates;
+            Operator = @operator;
+        }
+
+        public IList<IInventAppPredicate<TAggregateRoot>> Predicates { get; }
+        public InventAppPredicateOperatorGroup Operator { get; }
+
+        public void Add(IInventAppPredicate<TAggregateRoot> inventAppPredicate)
+        {
+            Predicates.Add(inventAppPredicate);
+        }
     }
 }

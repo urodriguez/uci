@@ -61,7 +61,7 @@
     <Compile Include="Enums\UserRol.cs" />
     <Compile Include="FieldValue.cs" />
     <Compile Include="Predicates\IInventAppPredicate.cs" />
-    <Compile Include="Predicates\InventAppPredicate.cs" />
+    <Compile Include="Predicates\InventAppPredicateIndividual.cs" />
     <Compile Include="Predicates\InventAppPredicateGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RoleService.cs" />

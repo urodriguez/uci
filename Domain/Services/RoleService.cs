@@ -21,12 +21,7 @@ namespace Domain.Services
         {
             var loggedUserName = Thread.CurrentPrincipal.Identity.Name;
 
-            var byName = new InventAppPredicate<User>
-            {
-                Field = p => p.Name,
-                Operator = InventAppPredicateOperator.Eq,
-                Value = loggedUserName
-            };
+            var byName = new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, loggedUserName);
             var user = _userRepository.Get(byName).Single();
 
             return user.IsAdmin();

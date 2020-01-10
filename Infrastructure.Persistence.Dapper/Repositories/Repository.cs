@@ -45,13 +45,13 @@ namespace Infrastructure.Persistence.Dapper.Repositories
                         ((PredicateGroup) dapperPredicate).Predicates.Add(
                             inventAppPredicateChild is InventAppPredicateGroup<TAggregateRoot>
                                 ? CreateDapperPredicateGroup((InventAppPredicateGroup<TAggregateRoot>)inventAppPredicateChild)
-                                : CreateDapperPredicate((InventAppPredicate<TAggregateRoot>)inventAppPredicateChild)
+                                : CreateDapperPredicate((InventAppPredicateIndividual<TAggregateRoot>)inventAppPredicateChild)
                         );
                     }
                 }
                 else
                 {
-                    var inventAppPredicateBasic = (InventAppPredicate<TAggregateRoot>)inventAppPredicate;
+                    var inventAppPredicateBasic = (InventAppPredicateIndividual<TAggregateRoot>)inventAppPredicate;
                     dapperPredicate = Predicates.Field<TAggregateRoot>(inventAppPredicateBasic.Field, (Operator)inventAppPredicateBasic.Operator, inventAppPredicateBasic.Value);
                 }
             }
@@ -72,13 +72,13 @@ namespace Infrastructure.Persistence.Dapper.Repositories
 
             foreach (var predicate in inventAppPredicate.Predicates)
             {
-                CreateDapperPredicate((InventAppPredicate<TAggregateRoot>)predicate);
+                CreateDapperPredicate((InventAppPredicateIndividual<TAggregateRoot>)predicate);
             }
 
             return pg;
         }
 
-        private IPredicate CreateDapperPredicate(InventAppPredicate<TAggregateRoot> inventAppPredicate)
+        private IPredicate CreateDapperPredicate(InventAppPredicateIndividual<TAggregateRoot> inventAppPredicate)
         {
             return Predicates.Field<TAggregateRoot>(
                 inventAppPredicate.Field,

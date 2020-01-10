@@ -65,12 +65,7 @@ namespace Application.Services
         {
             if (userLoginDto == null) return null;
 
-            var byName = new InventAppPredicate<User>
-            {
-                Field = p => p.Name,
-                Operator = InventAppPredicateOperator.Eq,
-                Value = userLoginDto.UserName
-            };
+            var byName = new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, userLoginDto.UserName);
             var user = _userRepository.Get(byName).Single();
 
             //TODO return custom for UI redirect

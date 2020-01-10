@@ -21,48 +21,26 @@ namespace Application.BusinessValidators
 
         protected override void ValidateFields(UserDto userDto, Guid id)
         {
-            var byDistinctIdAndName = new InventAppPredicateGroup<User>
-            {
-                Predicates = new List<IInventAppPredicate<User>>
+            var byDistinctIdAndName = new InventAppPredicateGroup<User>(
+                new List<IInventAppPredicate<User>>
                 {
-                    new InventAppPredicate<User>
-                    {
-                        Field = u => u.Id,
-                        Operator = InventAppPredicateOperator.NotEq,
-                        Value = id
-                    },
-                    new InventAppPredicate<User>
-                    {
-                        Field = u => u.Name,
-                        Operator = InventAppPredicateOperator.Eq,
-                        Value = userDto.Name
-                    }
+                    new InventAppPredicateIndividual<User>(u => u.Id, InventAppPredicateOperator.NotEq, id),
+                    new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, userDto.Name)
                 },
-                Operator = InventAppPredicateOperatorGroup.And
-            };
+                InventAppPredicateOperatorGroup.And
+            );
             if (_userRepository.Get(byDistinctIdAndName).Any()) throw new Exception($"{AggregateRootName}: name={userDto.Name} already exits");
 
             if (!User.EmailIsValid(userDto.Email)) throw new Exception($"{AggregateRootName}: email={userDto.Email} has invalid email format");
 
-            var byDistinctIdAndEmail = new InventAppPredicateGroup<User>
-            {
-                Predicates = new List<IInventAppPredicate<User>>
+            var byDistinctIdAndEmail = new InventAppPredicateGroup<User>(
+                new List<IInventAppPredicate<User>>
                 {
-                    new InventAppPredicate<User>
-                    {
-                        Field = u => u.Id,
-                        Operator = InventAppPredicateOperator.NotEq,
-                        Value = id
-                    },
-                    new InventAppPredicate<User>
-                    {
-                        Field = u => u.Email,
-                        Operator = InventAppPredicateOperator.Eq,
-                        Value = userDto.Email
-                    }
+                    new InventAppPredicateIndividual<User>(u => u.Id, InventAppPredicateOperator.NotEq, id),
+                    new InventAppPredicateIndividual<User>(u => u.Email, InventAppPredicateOperator.Eq, userDto.Email)
                 },
-                Operator = InventAppPredicateOperatorGroup.And
-            };
+                InventAppPredicateOperatorGroup.And
+            );
             if (_userRepository.Get(byDistinctIdAndEmail).Any()) throw new Exception($"{AggregateRootName}: email={userDto.Email} already exits");
         }
     }

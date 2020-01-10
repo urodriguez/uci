@@ -32,12 +32,7 @@ namespace Application.Services
 
         public IEnumerable<ProductDto> GetCheapest(decimal maxPrice)
         {
-            var byCheapest = new InventAppPredicate<Product>
-            {
-                Field = p => p.Price,
-                Operator = InventAppPredicateOperator.Le,
-                Value = maxPrice
-            };
+            var byCheapest = new InventAppPredicateIndividual<Product>(p => p.Price, InventAppPredicateOperator.Le, maxPrice);
             var cheapestProducts = _productRepository.Get(byCheapest);
 
             return _factory.CreateFromRange(cheapestProducts);
