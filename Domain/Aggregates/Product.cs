@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Domain.Attributes;
+﻿using Domain.Attributes;
 using Domain.Contracts.Aggregates;
 using Domain.Entities;
 

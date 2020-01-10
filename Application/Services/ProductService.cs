@@ -5,6 +5,7 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
+using Domain.Enums;
 using Domain.Predicates;
 using Infrastructure.Crosscutting.Auditing;
 
@@ -31,7 +32,14 @@ namespace Application.Services
 
         public IEnumerable<ProductDto> GetCheapest(decimal maxPrice)
         {
-            var cheapestProducts = _productRepository.Get(new CheapestIAPG(maxPrice));
+            var byCheapest = new InventAppPredicate<Product>
+            {
+                Field = p => p.Price,
+                Operator = InventAppPredicateOperator.Le,
+                Value = maxPrice
+            };
+            var cheapestProducts = _productRepository.Get(byCheapest);
+
             return _factory.CreateFromRange(cheapestProducts);
         }
     }

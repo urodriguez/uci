@@ -1,7 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
+using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
+using Domain.Enums;
+using Domain.Predicates;
 
 namespace Domain.Services
 {
@@ -18,7 +21,13 @@ namespace Domain.Services
         {
             var loggedUserName = Thread.CurrentPrincipal.Identity.Name;
 
-            var user = _userRepository.GetByField(x => x.Name, loggedUserName).Single();
+            var byName = new InventAppPredicate<User>
+            {
+                Field = p => p.Name,
+                Operator = InventAppPredicateOperator.Eq,
+                Value = loggedUserName
+            };
+            var user = _userRepository.Get(byName).Single();
 
             return user.IsAdmin();
         }

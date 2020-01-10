@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using DapperExtensions;
-using Domain;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Repositories;
 using Domain.Enums;
@@ -31,13 +29,31 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         /// Get all elements in repository at least you pass a 'predicate' in order to filter some results
         /// </summary>
         /// <param name="inventAppPredicate">Predicate with filter specifications</param>
-        public IEnumerable<TAggregateRoot> Get(InventAppPredicate<TAggregateRoot> inventAppPredicate = null)
+        public IEnumerable<TAggregateRoot> Get(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null)
         {
             IPredicate dapperPredicate = null;
 
             if (inventAppPredicate != null)
             {
-                dapperPredicate = Predicates.Field<TAggregateRoot>(inventAppPredicate.Field, (Operator)inventAppPredicate.Operator, inventAppPredicate.Value);
+                if (inventAppPredicate is InventAppPredicateGroup<TAggregateRoot>)
+                {
+                    var inventAppPredicateGroup = (InventAppPredicateGroup<TAggregateRoot>)inventAppPredicate;
+                    dapperPredicate = new PredicateGroup { Operator = (GroupOperator)inventAppPredicateGroup.Operator, Predicates = new List<IPredicate>() };
+
+                    foreach (var inventAppPredicateChild in inventAppPredicateGroup.Predicates)
+                    {
+                        ((PredicateGroup) dapperPredicate).Predicates.Add(
+                            inventAppPredicateChild is InventAppPredicateGroup<TAggregateRoot>
+                                ? CreateDapperPredicateGroup((InventAppPredicateGroup<TAggregateRoot>)inventAppPredicateChild)
+                                : CreateDapperPredicate((InventAppPredicate<TAggregateRoot>)inventAppPredicateChild)
+                        );
+                    }
+                }
+                else
+                {
+                    var inventAppPredicateBasic = (InventAppPredicate<TAggregateRoot>)inventAppPredicate;
+                    dapperPredicate = Predicates.Field<TAggregateRoot>(inventAppPredicateBasic.Field, (Operator)inventAppPredicateBasic.Operator, inventAppPredicateBasic.Value);
+                }
             }
 
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
@@ -50,62 +66,26 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             }
         }
 
-        public IEnumerable<TAggregateRoot> Get(InventAppPredicateGroup<TAggregateRoot> inventAppPredicateGroup)
+        private IPredicate CreateDapperPredicateGroup(InventAppPredicateGroup<TAggregateRoot> inventAppPredicate)
         {
-            var predicates = inventAppPredicateGroup.Predicates.Select(
-                inventAppPredicate => Predicates.Field<TAggregateRoot>(
-                    inventAppPredicate.Field,
-                    inventAppPredicate.Operator == InventAppPredicateOperator.NotEq ? Operator.Eq : (Operator)inventAppPredicate.Operator, 
-                    inventAppPredicate.Value,
-                    inventAppPredicate.Operator == InventAppPredicateOperator.NotEq // InventAppPredicateOperator.NotEq == true => Operator.Eq (not) 
-                )
-            ).Cast<IPredicate>().ToList();
+            var pg = new PredicateGroup { Operator = (GroupOperator)inventAppPredicate.Operator, Predicates = new List<IPredicate>() };
 
-            var dapperPredicateGroup = new PredicateGroup
+            foreach (var predicate in inventAppPredicate.Predicates)
             {
-                Operator = (GroupOperator)inventAppPredicateGroup.OperatorGroup,
-                Predicates = predicates
-            };
-
-            using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
-            {
-                var dbResult = sqlConnection.GetList<TAggregateRoot>(dapperPredicateGroup).ToList();
-
-                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
-
-                return dbResult;
+                CreateDapperPredicate((InventAppPredicate<TAggregateRoot>)predicate);
             }
+
+            return pg;
         }
 
-        /// <summary>
-        /// Get all elements in repository whose fields and values match with fieldValues parameter
-        /// </summary>
-        /// <param name="fieldValues">Fields and values to find</param>
-        public IEnumerable<TAggregateRoot> GetByFields(IEnumerable<FieldValue<TAggregateRoot>> fieldValues)
+        private IPredicate CreateDapperPredicate(InventAppPredicate<TAggregateRoot> inventAppPredicate)
         {
-            var predicates = fieldValues.Select(
-                fieldValue => new InventAppPredicate<TAggregateRoot> {Field = fieldValue.Field, Operator = InventAppPredicateOperator.Eq, Value = fieldValue.Value}
-            ).ToList();
-
-            return Get(new InventAppPredicateGroup<TAggregateRoot>
-            {
-                OperatorGroup = InventAppPredicateOperatorGroup.Or,
-                Predicates = predicates
-            });
-        }
-
-        /// <summary>
-        /// Get all elements in repository whose fields and values match with fieldValues parameter
-        /// </summary>
-        /// <param name="fieldValues">Fields and values to find</param>
-        public IEnumerable<TAggregateRoot> GetByField(Expression<Func<TAggregateRoot, object>> field, object value)
-        {
-            return Get(new InventAppPredicate<TAggregateRoot>
-            {
-                Field = field,
-                Operator = InventAppPredicateOperator.Eq,
-                Value = value
-            });
+            return Predicates.Field<TAggregateRoot>(
+                inventAppPredicate.Field,
+                inventAppPredicate.Operator == InventAppPredicateOperator.NotEq ? Operator.Eq : (Operator) inventAppPredicate.Operator,
+                inventAppPredicate.Value,
+                inventAppPredicate.Operator == InventAppPredicateOperator.NotEq // InventAppPredicateOperator.NotEq == true => Operator.Eq (not)
+            );
         }
 
         public TAggregateRoot GetById(Guid id)

@@ -60,7 +60,7 @@
     <Compile Include="Enums\InventAppPredicateOperator.cs" />
     <Compile Include="Enums\UserRol.cs" />
     <Compile Include="FieldValue.cs" />
-    <Compile Include="Predicates\CheapestIAPG.cs" />
+    <Compile Include="Predicates\IInventAppPredicate.cs" />
     <Compile Include="Predicates\InventAppPredicate.cs" />
     <Compile Include="Predicates\InventAppPredicateGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

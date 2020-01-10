@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Application.Dtos
+﻿namespace Application.Dtos
 {
     public interface IDto
     {

@@ -15,7 +15,7 @@ namespace Application.BusinessValidators
             _productTypeRepository = productTypeRepository;
         }
 
-        protected override void ValidateFields(ProductTypeDto productDto, Guid?id)
+        protected override void ValidateFields(ProductTypeDto productDto, Guid id)
         {
         }
     }

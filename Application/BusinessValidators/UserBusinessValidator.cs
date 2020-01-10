@@ -21,9 +21,9 @@ namespace Application.BusinessValidators
 
         protected override void ValidateFields(UserDto userDto, Guid id)
         {
-            var predicateGroupForName = new InventAppPredicateGroup<User>
+            var byDistinctIdAndName = new InventAppPredicateGroup<User>
             {
-                Predicates = new List<InventAppPredicate<User>>
+                Predicates = new List<IInventAppPredicate<User>>
                 {
                     new InventAppPredicate<User>
                     {
@@ -38,15 +38,15 @@ namespace Application.BusinessValidators
                         Value = userDto.Name
                     }
                 },
-                OperatorGroup = InventAppPredicateOperatorGroup.And
+                Operator = InventAppPredicateOperatorGroup.And
             };
-            if (_userRepository.Get(predicateGroupForName).Any()) throw new Exception($"{AggregateRootName}: name={userDto.Name} already exits");
+            if (_userRepository.Get(byDistinctIdAndName).Any()) throw new Exception($"{AggregateRootName}: name={userDto.Name} already exits");
 
             if (!User.EmailIsValid(userDto.Email)) throw new Exception($"{AggregateRootName}: email={userDto.Email} has invalid email format");
 
-            var predicateGroupForEmail = new InventAppPredicateGroup<User>
+            var byDistinctIdAndEmail = new InventAppPredicateGroup<User>
             {
-                Predicates = new List<InventAppPredicate<User>>
+                Predicates = new List<IInventAppPredicate<User>>
                 {
                     new InventAppPredicate<User>
                     {
@@ -61,9 +61,9 @@ namespace Application.BusinessValidators
                         Value = userDto.Email
                     }
                 },
-                OperatorGroup = InventAppPredicateOperatorGroup.And
+                Operator = InventAppPredicateOperatorGroup.And
             };
-            if (_userRepository.Get(predicateGroupForEmail).Any()) throw new Exception($"{AggregateRootName}: email={userDto.Email} already exits");
+            if (_userRepository.Get(byDistinctIdAndEmail).Any()) throw new Exception($"{AggregateRootName}: email={userDto.Email} already exits");
         }
     }
 }

@@ -5,7 +5,7 @@ using Domain.Enums;
 
 namespace Domain.Predicates
 {
-    public class InventAppPredicate<TAggregateRoot> where TAggregateRoot : IAggregateRoot
+    public class InventAppPredicate<TAggregateRoot> : IInventAppPredicate<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
         public Expression<Func<TAggregateRoot, object>> Field { get; set; }
         public InventAppPredicateOperator Operator { get; set; }

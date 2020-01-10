@@ -8,6 +8,8 @@ using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
+using Domain.Enums;
+using Domain.Predicates;
 using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Security.Authentication;
 
@@ -63,7 +65,13 @@ namespace Application.Services
         {
             if (userLoginDto == null) return null;
 
-            var user = _userRepository.GetByField(x => x.Name, userLoginDto.UserName).Single();
+            var byName = new InventAppPredicate<User>
+            {
+                Field = p => p.Name,
+                Operator = InventAppPredicateOperator.Eq,
+                Value = userLoginDto.UserName
+            };
+            var user = _userRepository.Get(byName).Single();
 
             //TODO return custom for UI redirect
             if (user.IsLocked()) return null;

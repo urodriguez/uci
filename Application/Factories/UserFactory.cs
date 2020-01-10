@@ -1,5 +1,4 @@
-﻿using System;
-using Application.Contracts.Factories;
+﻿using Application.Contracts.Factories;
 using Application.Dtos;
 using AutoMapper;
 using Domain.Aggregates;

@@ -54,6 +54,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * implement business validator for Create -> DONE
 * implement require attribute in order to validate require fields on domain -> DONE
 * implement business validator for Update -> DONE
+* integrate all predicates (basic + group) in one (Composite Pattern) for Repository.Get -> DONE
 
 * implement factory for predicateGroup
 
