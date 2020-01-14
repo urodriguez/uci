@@ -70,11 +70,12 @@ namespace Application.Services
             var byName = _userPredicateFactory.CreateByName(userLoginDto.UserName);
             var user = _userRepository.Get(byName).Single();
 
-            //TODO return custom for UI redirect
             if (user.IsLocked()) return null;
 
             //TODO use encrypted password
             if (!user.PasswordIsValid(userLoginDto.Password)) return null;
+
+            if (!user.EmailConfirmed) return null;
 
             user.LastLoginTime = DateTime.UtcNow;
             _userRepository.Update(user);
