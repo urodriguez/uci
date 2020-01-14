@@ -56,8 +56,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * implement business validator for Update -> DONE
 * integrate all predicates (basic + group) in one (Composite Pattern) for Repository.Get -> DONE
 * implement factory for all predicates (basic + group) -> DONE
-
-* extend transformation process to dapper predicates to multiple levels
+* extend transformation process to dapper predicates to multiple levels -> DONE
 
 * implement Utils to automate class name and class method in log
     {
