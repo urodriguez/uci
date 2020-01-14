@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.Predicates;
 using Domain.Enums;
 
 namespace Domain.Predicates

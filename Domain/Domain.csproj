@@ -48,6 +48,9 @@
     <Compile Include="Aggregates\User.cs" />
     <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
+    <Compile Include="Contracts\Predicates\Factories\IPredicateFactory.cs" />
+    <Compile Include="Contracts\Predicates\Factories\IProductPredicateFactory.cs" />
+    <Compile Include="Contracts\Predicates\Factories\IUserPredicateFactory.cs" />
     <Compile Include="Contracts\Repositories\IProductRepository.cs" />
     <Compile Include="Contracts\Repositories\IProductTypeRepository.cs" />
     <Compile Include="Contracts\Repositories\IRepository.cs" />
@@ -60,7 +63,9 @@
     <Compile Include="Enums\InventAppPredicateOperator.cs" />
     <Compile Include="Enums\UserRol.cs" />
     <Compile Include="FieldValue.cs" />
-    <Compile Include="Predicates\IInventAppPredicate.cs" />
+    <Compile Include="Contracts\Predicates\IInventAppPredicate.cs" />
+    <Compile Include="Predicates\Factories\ProductPredicateFactory.cs" />
+    <Compile Include="Predicates\Factories\UserPredicateFactory.cs" />
     <Compile Include="Predicates\InventAppPredicateIndividual.cs" />
     <Compile Include="Predicates\InventAppPredicateGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

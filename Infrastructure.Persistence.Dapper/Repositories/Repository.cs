@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.Predicates;
 using Domain.Contracts.Repositories;
 using Domain.Enums;
 using Domain.Predicates;

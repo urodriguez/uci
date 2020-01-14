@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.Predicates;
 using Domain.Enums;
 
 namespace Domain.Predicates

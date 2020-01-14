@@ -1,6 +1,6 @@
 ﻿using Domain.Contracts.Aggregates;
 
-namespace Domain.Predicates
+namespace Domain.Contracts.Predicates
 {
     public interface IInventAppPredicate<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {

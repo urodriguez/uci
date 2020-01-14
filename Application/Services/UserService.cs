@@ -6,10 +6,9 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
+using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
-using Domain.Enums;
-using Domain.Predicates;
 using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Security.Authentication;
 
@@ -20,6 +19,7 @@ namespace Application.Services
         private readonly IUserRepository _userRepository;
         private readonly TokenService _tokenService;
         private readonly IRoleService _roleService;
+        private readonly IUserPredicateFactory _userPredicateFactory;
 
         public UserService(
             IUserRepository userRepository, 
@@ -27,7 +27,8 @@ namespace Application.Services
             IAuditService auditService, 
             TokenService tokenService, 
             IRoleService roleService, 
-            IUserBusinessValidator userBusinessValidator
+            IUserBusinessValidator userBusinessValidator, 
+            IUserPredicateFactory userPredicateFactory
         ) : base(
             userRepository, 
             factory, 
@@ -38,6 +39,7 @@ namespace Application.Services
             _userRepository = userRepository;
             _tokenService = tokenService;
             _roleService = roleService;
+            _userPredicateFactory = userPredicateFactory;
         }
 
         public new Guid Create(UserDto userDto)
@@ -65,7 +67,7 @@ namespace Application.Services
         {
             if (userLoginDto == null) return null;
 
-            var byName = new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, userLoginDto.UserName);
+            var byName = _userPredicateFactory.CreateByName(userLoginDto.UserName);
             var user = _userRepository.Get(byName).Single();
 
             //TODO return custom for UI redirect

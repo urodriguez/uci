@@ -1,27 +1,27 @@
 ﻿using System.Linq;
 using System.Threading;
-using Domain.Aggregates;
+using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
-using Domain.Enums;
-using Domain.Predicates;
 
 namespace Domain.Services
 {
     public class RoleService : IRoleService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserPredicateFactory _userPredicateFactory;
 
-        public RoleService(IUserRepository userRepository)
+        public RoleService(IUserRepository userRepository, IUserPredicateFactory userPredicateFactory)
         {
             _userRepository = userRepository;
+            _userPredicateFactory = userPredicateFactory;
         }
 
         public bool LoggedUserIsAdmin()
         {
-            var loggedUserName = Thread.CurrentPrincipal.Identity.Name;
+            var userNameFromLoggedUser = Thread.CurrentPrincipal.Identity.Name;
 
-            var byName = new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, loggedUserName);
+            var byName = _userPredicateFactory.CreateByName(userNameFromLoggedUser);
             var user = _userRepository.Get(byName).Single();
 
             return user.IsAdmin();

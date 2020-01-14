@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Contracts.Aggregates;
-using Domain.Predicates;
+using Domain.Contracts.Predicates;
 
 namespace Domain.Contracts.Repositories
 {

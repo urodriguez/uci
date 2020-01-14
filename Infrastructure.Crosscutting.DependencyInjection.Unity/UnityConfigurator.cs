@@ -6,8 +6,10 @@ using Application.Contracts.Services;
 using Application.Factories;
 using Application.Services;
 using AutoMapper;
+using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
+using Domain.Predicates.Factories;
 using Domain.Services;
 using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Logging;
@@ -44,6 +46,10 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             container.RegisterType<IProductBusinessValidator, ProductBusinessValidator>(new PerThreadLifetimeManager());
             container.RegisterType<IProductTypeBusinessValidator, ProductTypeBusinessValidator>(new PerThreadLifetimeManager());
             container.RegisterType<IUserBusinessValidator, UserBusinessValidator>(new PerThreadLifetimeManager());
+
+            //PredicateFactories
+            container.RegisterType<IProductPredicateFactory, ProductPredicateFactory>(new PerThreadLifetimeManager());
+            container.RegisterType<IUserPredicateFactory, UserPredicateFactory>(new PerThreadLifetimeManager());
 
             //Services
             container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
