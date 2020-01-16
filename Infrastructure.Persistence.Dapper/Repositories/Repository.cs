@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Crosscutting;
@@ -47,7 +48,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var dbResult = sqlConnection.GetList<TAggregateRoot>(dapperPredicate).ToList();
 
-                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
 
                 return dbResult;
             }
@@ -85,7 +86,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var aggregate = sqlConnection.Get<TAggregateRoot>(id);
 
-                _logService.LogInfoMessage($"Repository.GetById | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
 
                 return aggregate;
             }
@@ -96,7 +97,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
-                _logService.LogInfoMessage($"Repository.Update | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
             }
         }
 
@@ -105,7 +106,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);//Insert aggregate in db and assign it an Id
-                _logService.LogInfoMessage($"Repository.Add | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
             }
         }
 
@@ -114,7 +115,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
-                _logService.LogInfoMessage($"Repository.Delete | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
             }
         }
 
@@ -122,7 +123,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         {
             var aggregateInDb = GetById(aggregate.Id);
 
-            _logService.LogInfoMessage($"Repository.Contains | Element in database obtained, checking if it is not null");
+            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Element in database obtained, checking if it is not null");
 
             return aggregateInDb != null;
         }

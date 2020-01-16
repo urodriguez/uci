@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Domain.Contracts.Infrastructure.Crosscutting;
@@ -37,7 +38,7 @@ namespace WebApi.Controllers
 
         protected IHttpActionResult SendInternalServerError(Exception e)
         {
-            _loggerService.LogErrorMessage(e.ToString());
+            _loggerService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | exception={e}");
             return InternalServerError(e);
         }
     }

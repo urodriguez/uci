@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Contracts.Aggregates;
@@ -38,7 +39,7 @@ namespace Infrastructure.Crosscutting.Auditing
             {
                 try
                 {
-                    _logService.LogInfoMessage($"AuditService.Audit | Serializing entity | id={entity.Id} action={action}");
+                    _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Serializing entity | id={entity.Id} action={action}");
 
                     var entityJson = JsonConvert.SerializeObject(entity);
                     var oldEntityJson = oldEntity != null ? JsonConvert.SerializeObject(oldEntity) : null;
@@ -56,15 +57,15 @@ namespace Infrastructure.Crosscutting.Auditing
                     var request = new RestRequest("audits", Method.POST);
                     request.AddJsonBody(audit);
 
-                    _logService.LogInfoMessage("AuditService.Audit | Sending audit data to Audit Micro-service");
+                    _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending audit data to Audit Micro-service");
                     var response = _restClient.Post(request);
-                    _logService.LogInfoMessage(response.IsSuccessful ?  "AuditService.Audit | Audit data sent to Audit Micro-service | Status=OK" 
-                                                                     : $"AuditService.Audit | Error sending audit data to Audit Micro-service | Status=FAIL - Reason={response.Content}");
+                    _logService.LogInfoMessage(response.IsSuccessful ? $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Audit data sent to Audit Micro-service | Status=OK" 
+                                                                     : $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending audit data to Audit Micro-service | Status=FAIL - Reason={response.Content}");
                 }
                 catch (Exception e)
                 {
-                    _logService.LogErrorMessage($"AuditService.Audit | An error has occurred serializing | id={entity.Id} - action={action}");
-                    _logService.LogErrorMessage($"AuditService.Audit | errorMessage={e.Message}");
+                    _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | An error has occurred serializing | id={entity.Id} - action={action}");
+                    _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | errorMessage={e.Message}");
                 }
             });
 

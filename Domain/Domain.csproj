@@ -67,7 +67,6 @@
     <Compile Include="Enums\InventAppPredicateOperatorGroup.cs" />
     <Compile Include="Enums\InventAppPredicateOperator.cs" />
     <Compile Include="Enums\UserRol.cs" />
-    <Compile Include="FieldValue.cs" />
     <Compile Include="Contracts\Predicates\IInventAppPredicate.cs" />
     <Compile Include="Predicates\Factories\ProductPredicateFactory.cs" />
     <Compile Include="Predicates\Factories\UserPredicateFactory.cs" />

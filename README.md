@@ -57,33 +57,38 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * integrate all predicates (basic + group) in one (Composite Pattern) for Repository.Get -> DONE
 * implement factory for all predicates (basic + group) -> DONE
 * extend transformation process to dapper predicates to multiple levels -> DONE
+* move infrastructure interface to Domain Layer -> DONE
+* implement Utils to automate class name and class method in log -> DONE
 
-* implement Utils to automate class name and class method in log
-    {
-      var st = new StackTrace();
-      var sf = st.GetFrame(0);
-
-      var currentMethodName = sf.GetMethod();
-      var currentMethodName2 = MethodBase.GetCurrentMethod();
-    
-      _logService.LogInfoMessage($"{GetType().Name}.{currentMethodName} | Element in database obtained, checking if it is not null", MessageType.Query);
-    }
+* move auth service to infra solution
+* implement refresh token
 * implement complex auditing (objects with nested objects) 
+* implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire?
+* implement unityOfWork
+* API test & unit test
+* implement retry queue system to avoid lost data sent to micro-services if connection fails
+* expose swagger api url to external (no localhost) URL 
+* create all necessary elements to create registration
+  * CRUD panel type
+  * CRUD panel
+  * CRUD lab
+  * CRUD lab/panel
+  * CRUD site 
+    * site1 -> manually
+    * site2 -> excel (using Excel library)
+    * site3 -> rest GET
+    * site4 -> soap
+    * site5 -> rest POST (notification on new one + recurrent db updates)
+  * CRUD innovator
+  * CRUD customer
+  * CRUD test reason
+  * CRUD status
 * implement mailing
 * implement reporting
-* implement retry queue system to avoid lost data sent to micro-services if connection fails
 * implement caching
-* implement refresh token
-* move auth service to infra solution
-* use hangfire
 * implement integration events with NServiceBus
-* implement at least one soap service
-* implement import using Excel library
 * create application to show logs
-* implement process to delete old logs (one mounth) in database (maybe directly in LogService) - or process to migrate to a new table (example: Audit.ddmmyyyy)
-* API test & unit test
 * implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF
-* implement unityOfWork
 * use TeamCity
 * use Docker
 * use PusherServer to notify UI on server changes
