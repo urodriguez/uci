@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts.Aggregates;
+using Domain.Enums;
 
-namespace Infrastructure.Crosscutting.Auditing
+namespace Domain.Contracts.Infrastructure.Crosscutting
 {
     public interface IAuditService
     {

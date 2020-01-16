@@ -49,10 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuditAction.cs" />
     <Compile Include="AuditDto.cs" />
     <Compile Include="AuditService.cs" />
-    <Compile Include="IAuditService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,8 @@ using System.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Contracts.Aggregates;
-using Infrastructure.Crosscutting.Logging;
+using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Enums;
 using Newtonsoft.Json;
 using RestSharp;
 

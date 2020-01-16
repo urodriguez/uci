@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Predicates;
 
-namespace Domain.Contracts.Repositories
+namespace Domain.Contracts.Infrastructure.Persistence.Repositories
 {
     public interface IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {

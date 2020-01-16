@@ -2,7 +2,7 @@
 using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Aggregates;
-using Domain.Contracts.Repositories;
+using Domain.Contracts.Infrastructure.Persistence.Repositories;
 
 namespace Application.BusinessValidators
 {

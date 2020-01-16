@@ -4,14 +4,13 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Compilation;
+using Domain.Contracts.Infrastructure.Crosscutting;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Logging
 {
     public class LogService : ILogService
     {
-        private readonly QueryFormatter _queryFormatter;
-
         private readonly IRestClient _restClient;
 
         private readonly string _application;
@@ -20,8 +19,6 @@ namespace Infrastructure.Crosscutting.Logging
 
         public LogService()
         {
-            _queryFormatter = new QueryFormatter();
-
             _application = "InventApp";
             _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
 
@@ -42,24 +39,24 @@ namespace Infrastructure.Crosscutting.Logging
         }
 
         //Very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development
-        public void LogTraceMessage(string messageToLog, MessageType messageType = MessageType.Text)
+        public void LogTraceMessage(string messageToLog)
         {
-            LogMessage(messageToLog, LogType.Trace, messageType);
+            LogMessage(messageToLog, LogType.Trace);
         }
 
         //Information messages, which are normally enabled in production environment
-        public void LogInfoMessage(string messageToLog, MessageType messageType = MessageType.Text)
+        public void LogInfoMessage(string messageToLog)
         {
-            LogMessage(messageToLog, LogType.Info, messageType);
+            LogMessage(messageToLog, LogType.Info);
         }
 
         //Error messages - most of the time these are Exceptions
-        public void LogErrorMessage(string messageToLog, MessageType messageType = MessageType.Text)
+        public void LogErrorMessage(string messageToLog)
         {
-            LogMessage(messageToLog, LogType.Error, messageType);
+            LogMessage(messageToLog, LogType.Error);
         }
 
-        private void LogMessage(string messageToLog, LogType logType, MessageType messageType)
+        private void LogMessage(string messageToLog, LogType logType)
         {
             var task = new Task(() =>
             {
@@ -67,7 +64,7 @@ namespace Infrastructure.Crosscutting.Logging
                 {
                     var request = new RestRequest("logs", Method.POST);
 
-                    var log = new Log(_application, _projectName, _correlationId, messageType == MessageType.Text ? messageToLog : _queryFormatter.Format(messageToLog), logType);
+                    var log = new Log(_application, _projectName, _correlationId, messageToLog, logType);
                     request.AddJsonBody(log);
 
                     _restClient.Post(request);

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates;
-using Domain.Contracts.Repositories;
 using Domain.Enums;
 using Domain.Predicates;
-using Infrastructure.Crosscutting.Logging;
 using MiniProfiler.Integrations;
 
 namespace Infrastructure.Persistence.Dapper.Repositories
@@ -16,11 +16,13 @@ namespace Infrastructure.Persistence.Dapper.Repositories
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
         private readonly ILogService _logService;
+        private readonly QueryFiller _queryFiller;
 
         protected Repository(IDbConnectionFactory dbConnectionFactory, ILogService logService)
         {
             _dbConnectionFactory = dbConnectionFactory;
             _logService = logService;
+            _queryFiller = new QueryFiller();
 
             var x = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
             _logService.LogInfoMessage($"Repository.Ctor | Repository created | ORM={x}");
@@ -45,7 +47,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var dbResult = sqlConnection.GetList<TAggregateRoot>(dapperPredicate).ToList();
 
-                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+                _logService.LogInfoMessage($"Repository.ExecuteGet | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
 
                 return dbResult;
             }
@@ -83,7 +85,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             {
                 var aggregate = sqlConnection.Get<TAggregateRoot>(id);
 
-                _logService.LogInfoMessage($"Repository.GetById | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+                _logService.LogInfoMessage($"Repository.GetById | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
 
                 return aggregate;
             }
@@ -94,7 +96,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Update(aggregateRoot);
-                _logService.LogInfoMessage($"Repository.Update | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+                _logService.LogInfoMessage($"Repository.Update | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
             }
         }
 
@@ -103,7 +105,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Insert(aggregate);//Insert aggregate in db and assign it an Id
-                _logService.LogInfoMessage($"Repository.Add | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+                _logService.LogInfoMessage($"Repository.Add | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
             }
         }
 
@@ -112,7 +114,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             using (var sqlConnection = _dbConnectionFactory.GetSqlConnection())
             {
                 sqlConnection.Delete(aggregate);
-                _logService.LogInfoMessage($"Repository.Delete | commands={CustomDbProfiler.Current.GetCommands()}", MessageType.Query);
+                _logService.LogInfoMessage($"Repository.Delete | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
             }
         }
 
@@ -120,7 +122,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         {
             var aggregateInDb = GetById(aggregate.Id);
 
-            _logService.LogInfoMessage($"Repository.Contains | Element in database obtained, checking if it is not null", MessageType.Query);
+            _logService.LogInfoMessage($"Repository.Contains | Element in database obtained, checking if it is not null");
 
             return aggregateInDb != null;
         }

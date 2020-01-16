@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Domain.Contracts.Infrastructure.Crosscutting;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Crosscutting.Security.Authentication

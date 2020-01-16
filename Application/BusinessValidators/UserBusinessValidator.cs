@@ -3,8 +3,8 @@ using System.Linq;
 using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Aggregates;
+using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
-using Domain.Contracts.Repositories;
 
 namespace Application.BusinessValidators
 {

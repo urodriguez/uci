@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Crosscutting.Security.Authentication
+﻿namespace Domain.Contracts.Infrastructure.Crosscutting
 {
     public interface ITokenService
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
+using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
-using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 
 namespace Domain.Services

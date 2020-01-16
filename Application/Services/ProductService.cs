@@ -4,9 +4,9 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
+using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
-using Domain.Contracts.Repositories;
-using Infrastructure.Crosscutting.Auditing;
 
 namespace Application.Services
 {

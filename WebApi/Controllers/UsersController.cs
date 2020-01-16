@@ -2,7 +2,7 @@
 using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Infrastructure.Crosscutting.Logging;
+using Domain.Contracts.Infrastructure.Crosscutting;
 
 namespace WebApi.Controllers
 {

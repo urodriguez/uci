@@ -1,6 +1,6 @@
 ﻿using Domain.Aggregates;
 
-namespace Domain.Contracts.Repositories
+namespace Domain.Contracts.Infrastructure.Persistence.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {

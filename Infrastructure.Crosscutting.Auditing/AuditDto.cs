@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Crosscutting.Auditing
+﻿using Domain.Enums;
+
+namespace Infrastructure.Crosscutting.Auditing
 {
     public class AuditDto
     {
