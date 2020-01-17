@@ -63,8 +63,6 @@ namespace Application.Services
         {
             _businessValidator.Validate(dto, id);
 
-            var oldAggregate = _repository.GetById(id);
-
             var aggregate = _repository.GetById(id);
 
             if (aggregate == null) throw new ObjectNotFoundException();
@@ -73,7 +71,7 @@ namespace Application.Services
             
             _repository.Update(aggregateUpdated);
 
-            _auditService.Audit(aggregateUpdated, AuditAction.Update, oldAggregate);
+            _auditService.Audit(aggregateUpdated, AuditAction.Update);
         }
 
         public void Delete(Guid id)

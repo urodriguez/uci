@@ -60,12 +60,16 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * move infrastructure interface to Domain Layer -> DONE
 * implement Utils to automate class name and class method in log -> DONE
 
+* AuditService: move logic to process old entity (storing the current state)
+* TODO: test new audit at InventApp side
+
+* create index in db tables
 * move auth service to infra solution
 * implement refresh token
-* implement complex auditing (objects with nested objects) 
 * implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire?
 * implement unityOfWork
 * API test & unit test
+* implement complex auditing (objects with nested objects) 
 * implement retry queue system to avoid lost data sent to micro-services if connection fails
 * expose swagger api url to external (no localhost) URL 
 * create all necessary elements to create registration

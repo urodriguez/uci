@@ -5,6 +5,7 @@ namespace Infrastructure.Crosscutting.Auditing
     public class AuditDto
     {
         public string Application { get; set; }
+        public string Environment { get; set; }
         public string User { get; set; }
         public string Entity { get; set; }
         public string OldEntity { get; set; }

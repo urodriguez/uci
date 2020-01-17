@@ -33,7 +33,7 @@ namespace Infrastructure.Crosscutting.Auditing
         }
 
         //TODO: implement avoid lost audit if connection fails
-        public void Audit(IAggregateRoot entity, AuditAction action, IAggregateRoot oldEntity = null)
+        public void Audit(IAggregateRoot entity, AuditAction action)
         {
             var task = new Task(() =>
             {
@@ -42,16 +42,15 @@ namespace Infrastructure.Crosscutting.Auditing
                     _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Serializing entity | id={entity.Id} action={action}");
 
                     var entityJson = JsonConvert.SerializeObject(entity);
-                    var oldEntityJson = oldEntity != null ? JsonConvert.SerializeObject(oldEntity) : null;
 
                     var audit = new AuditDto
                     {
-                        Action = action,
                         Application = "InventApp",
+                        Environment = ConfigurationManager.AppSettings["Environment"],
+                        User = Thread.CurrentPrincipal.Identity.Name,
                         Entity = entityJson,
-                        OldEntity = oldEntityJson,
                         EntityName = entity.GetType().Name,
-                        User = Thread.CurrentPrincipal.Identity.Name
+                        Action = action
                     };
 
                     var request = new RestRequest("audits", Method.POST);
