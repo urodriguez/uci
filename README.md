@@ -59,19 +59,18 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * extend transformation process to dapper predicates to multiple levels -> DONE
 * move infrastructure interface to Domain Layer -> DONE
 * implement Utils to automate class name and class method in log -> DONE
+* Auditing: 'auditV2'move logic to process old entity (storing the current state) -> DONE
+* InventApp: adapt to 'auditV2' -> DONE
+* implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF -> REMOVED
 
-* AuditService: move logic to process old entity (storing the current state)
-* TODO: test new audit at InventApp side
-
-* create index in db tables
 * move auth service to infra solution
 * implement refresh token
-* implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire?
-* implement unityOfWork
+* Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire?
+* InventApp: implement unityOfWork
 * API test & unit test
-* implement complex auditing (objects with nested objects) 
-* implement retry queue system to avoid lost data sent to micro-services if connection fails
-* expose swagger api url to external (no localhost) URL 
+* Auditing: implement complex auditing (objects with nested objects) 
+* InventApp: implement retry queue system to avoid lost data sent to micro-services if connection fails
+* create index in db tables
 * create all necessary elements to create registration
   * CRUD panel type
   * CRUD panel
@@ -92,10 +91,10 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * implement caching
 * implement integration events with NServiceBus
 * create application to show logs
-* implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF
 * use TeamCity
 * use Docker
 * use PusherServer to notify UI on server changes
+* expose swagger api url to external (no localhost) URL 
 * deploy app to cloud 
 
 ## Angular architercure styleguide
