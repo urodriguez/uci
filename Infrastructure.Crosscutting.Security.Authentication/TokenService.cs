@@ -16,14 +16,6 @@ namespace Infrastructure.Crosscutting.Security.Authentication
     {
         public string GenerateJwtToken(string username)
         {
-            // appsetting for Token JWT
-            var secretKey = Token.Secret;
-            var expireTime = Token.Expire;
-            var issuerToken = Token.Issuer;
-
-            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(secretKey));
-            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-
             // create a claimsIdentity
             var claimsIdentity = new ClaimsIdentity(new[]
             {
@@ -32,15 +24,22 @@ namespace Infrastructure.Crosscutting.Security.Authentication
 
             // create token to the user
             var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-            var jwtSecurityToken = tokenHandler.CreateJwtSecurityToken(
-                issuer: issuerToken,
-                subject: claimsIdentity,
-                notBefore: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(expireTime)),
-                signingCredentials: signingCredentials
-            );
 
-            return tokenHandler.WriteToken(jwtSecurityToken);//returns tokens as string
+            // describe security token
+            var securityTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = Token.Issuer,
+                Subject = claimsIdentity,
+                NotBefore = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(Token.Expire)),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(Token.Secret)), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            // create JWT security token based on descriptor
+            var jwtSecurityToken = tokenHandler.CreateJwtSecurityToken(securityTokenDescriptor);
+
+            // return security token as string
+            return tokenHandler.WriteToken(jwtSecurityToken);
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -49,31 +48,27 @@ namespace Infrastructure.Crosscutting.Security.Authentication
             string token;
 
             // determine whether a jwt exists or not
-            if (!TryRetrieveToken(request, out token) || request.RequestUri.AbsoluteUri.Contains("swagger"))
+            if (!TryExtractToken(request, out token) || request.RequestUri.AbsoluteUri.Contains("swagger"))
             {
                 return base.SendAsync(request, cancellationToken);
             }
 
             try
             {
-                var secretKey = Token.Secret;
-                var issuerToken = Token.Issuer;
-                var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(secretKey));
-
-                SecurityToken securityToken;
                 var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+
                 var validationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = issuerToken,
+                    ValidIssuer = Token.Issuer,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     LifetimeValidator = LifetimeValidator,
-                    IssuerSigningKey = securityKey,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(Token.Secret)),
                     ValidateAudience = false
                 };
 
                 // Extract and assign Current Principal and user
-                Thread.CurrentPrincipal = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
+                Thread.CurrentPrincipal = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);
                 HttpContext.Current.User = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
 
                 return base.SendAsync(request, cancellationToken);
@@ -87,7 +82,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                 statusCode = HttpStatusCode.InternalServerError;
             }
 
-            return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });
+            return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode), cancellationToken);
         }
 
         private bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
@@ -97,7 +92,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
             return DateTime.UtcNow < expires;
         }
 
-        private static bool TryRetrieveToken(HttpRequestMessage request, out string token)
+        private static bool TryExtractToken(HttpRequestMessage request, out string token)
         {
             token = null;
             IEnumerable<string> authzHeaders;

@@ -22,7 +22,7 @@ namespace WebApi
             config.MessageHandlers.Add(new TokenService());
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "RESTfulApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
