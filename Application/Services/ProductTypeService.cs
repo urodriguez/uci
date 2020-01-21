@@ -14,12 +14,14 @@ namespace Application.Services
             IProductTypeRepository repository, 
             IProductTypeFactory factory, 
             IAuditService auditService,
-            IProductTypeBusinessValidator productTypeBusinessValidator
+            IProductTypeBusinessValidator productTypeBusinessValidator,
+            ITokenService tokenService
         ) : base(
             repository,
             factory, 
             auditService, 
-            productTypeBusinessValidator
+            productTypeBusinessValidator,
+            tokenService
         )
         {
         }

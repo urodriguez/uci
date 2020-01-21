@@ -33,7 +33,8 @@ namespace Application.Services
             userRepository, 
             factory, 
             auditService, 
-            userBusinessValidator
+            userBusinessValidator,
+            tokenService
         )
         {
             _userRepository = userRepository;
@@ -80,11 +81,13 @@ namespace Application.Services
             user.LastLoginTime = DateTime.UtcNow;
             _userRepository.Update(user);
             
-            return _tokenService.GenerateJwtToken(userLoginDto.UserName);
+            return _tokenService.Generate(userLoginDto.UserName);
         }
 
         public void ConfirmEmail(Guid id)
         {
+            CheckAuthorization();
+
             var user = _userRepository.GetById(id);
 
             if (user == null) throw new ObjectNotFoundException();

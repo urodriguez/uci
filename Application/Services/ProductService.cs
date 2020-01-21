@@ -20,12 +20,14 @@ namespace Application.Services
             IProductFactory factory, 
             IAuditService auditService,
             IProductBusinessValidator productBusinessValidator, 
-            IProductPredicateFactory productPredicateFactory
+            IProductPredicateFactory productPredicateFactory,
+            ITokenService tokenService
         ) : base(
             productRepository, 
             factory, 
             auditService, 
-            productBusinessValidator
+            productBusinessValidator,
+            tokenService
         )
         {
             _productRepository = productRepository;
@@ -34,6 +36,8 @@ namespace Application.Services
 
         public IEnumerable<ProductDto> GetCheapest(decimal maxPrice)
         {
+            CheckAuthorization();
+
             var byCheapest = _productPredicateFactory.CreateByCheapest(maxPrice);
             var cheapestProducts = _productRepository.Get(byCheapest);
 

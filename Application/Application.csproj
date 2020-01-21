@@ -83,6 +83,8 @@
     <Compile Include="Dtos\UserLoginDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductTypeDto.cs" />
+    <Compile Include="InventAppContext.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\CrudService.cs" />
     <Compile Include="Contracts\Services\ICrudService.cs" />
     <Compile Include="Services\ProductService.cs" />

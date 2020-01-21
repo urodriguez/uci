@@ -62,7 +62,11 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Auditing: 'auditV2'move logic to process old entity (storing the current state) -> DONE
 * InventApp: adapt to 'auditV2' -> DONE
 * implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF -> REMOVED
+* InventApp: preparate to new isolated token service -> DONE
 
+* InventApp: if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException(); <- move to CrudService?
+
+* InventApp: create Excute on ApplicationService and handle all exceptions there
 * move auth service to infra solution
 * implement refresh token
 * Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire?
@@ -93,7 +97,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * create application to show logs
 * use TeamCity
 * use Docker
-* use PusherServer to notify UI on server changes
+* use PusherServer/WebSockets to notify UI on server changes
 * expose swagger api url to external (no localhost) URL 
 * deploy app to cloud 
 

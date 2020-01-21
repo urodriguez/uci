@@ -4,7 +4,6 @@ using Application.Dtos;
 
 namespace WebApi.Controllers
 {
-    [AllowAnonymous]
     public class TokensController : ApiController
     {
         private readonly IUserService _userService;

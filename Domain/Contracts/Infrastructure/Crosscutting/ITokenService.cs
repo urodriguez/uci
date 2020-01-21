@@ -2,6 +2,7 @@
 {
     public interface ITokenService
     {
-        string GenerateJwtToken(string username);
+        string Generate(string username);
+        IToken Validate(string securityToken);
     }
 }

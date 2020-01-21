@@ -12,7 +12,7 @@ using Domain.Enums;
 
 namespace Application.Services
 {
-    public abstract class CrudService<TDto, TAggregateRoot> : ICrudService<TDto> where TAggregateRoot : IAggregateRoot where TDto : IDto
+    public abstract class CrudService<TDto, TAggregateRoot> : ApplicationService, ICrudService<TDto> where TAggregateRoot : IAggregateRoot where TDto : IDto
     {
         private readonly IRepository<TAggregateRoot> _repository;
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
@@ -20,7 +20,13 @@ namespace Application.Services
         private readonly IBusinessValidator<TDto> _businessValidator;
         //private readonly ILoggerService _loggerService;
 
-        protected CrudService(IRepository<TAggregateRoot> repository, IFactory<TDto, TAggregateRoot> factory, IAuditService auditService, IBusinessValidator<TDto> businessValidator)
+        protected CrudService(
+            IRepository<TAggregateRoot> repository, 
+            IFactory<TDto, TAggregateRoot> factory, 
+            IAuditService auditService, 
+            IBusinessValidator<TDto> businessValidator, 
+            ITokenService tokenService
+        ) : base (tokenService)
         {
             _repository = repository;
             _factory = factory;
@@ -30,6 +36,8 @@ namespace Application.Services
 
         public IEnumerable<TDto> GetAll()
         {
+            CheckAuthorization();
+
             var aggregates = _repository.Get();
 
             var dtos = _factory.CreateFromRange(aggregates);
@@ -39,6 +47,8 @@ namespace Application.Services
 
         public TDto GetById(Guid id)
         {
+            CheckAuthorization();
+
             var aggregate = _repository.GetById(id);
 
             if (aggregate == null) throw new ObjectNotFoundException();
@@ -48,6 +58,8 @@ namespace Application.Services
 
         public Guid Create(TDto dto)
         {
+            CheckAuthorization();
+
             _businessValidator.Validate(dto);
 
             var aggregate = _factory.Create(dto);
@@ -61,6 +73,8 @@ namespace Application.Services
 
         public void Update(Guid id, TDto dto)
         {
+            CheckAuthorization();
+
             _businessValidator.Validate(dto, id);
 
             var aggregate = _repository.GetById(id);
@@ -76,6 +90,8 @@ namespace Application.Services
 
         public void Delete(Guid id)
         {
+            CheckAuthorization();
+
             var aggregate = _repository.GetById(id);
 
             if (aggregate == null) throw new ObjectNotFoundException();
