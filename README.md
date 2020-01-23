@@ -63,8 +63,9 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: adapt to 'auditV2' -> DONE
 * implement await/async without Dapper (current using version is Dapper.Extensions and it is coupled with MiniProfiler.Integration that not support async) => use EF -> REMOVED
 * InventApp: preparate to new isolated token service -> DONE
+* InventApp: if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException(); <- move to CrudService? -> DONE
 
-* InventApp: if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException(); <- move to CrudService?
+* InventApp: test user readOnly
 
 * InventApp: create Excute on ApplicationService and handle all exceptions there
 * move auth service to infra solution

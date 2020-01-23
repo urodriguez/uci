@@ -30,7 +30,7 @@ namespace WebApi.Controllers
 
                 var serviceResult = service.Invoke();
 
-                return serviceResult is EmptyResult ? (IHttpActionResult) Ok() : Ok(serviceResult);
+                return Ok(serviceResult);
             }
             catch (SecurityTokenValidationException stve)
             {

@@ -2,6 +2,7 @@
 {
     public enum UserRol
     {
-        Admin = 0
+        Admin = 1,
+        ReadOnly = 2
     }
 }

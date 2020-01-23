@@ -11,6 +11,7 @@ using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.Security.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services
 {
@@ -18,7 +19,6 @@ namespace Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly TokenService _tokenService;
-        private readonly IRoleService _roleService;
         private readonly IUserPredicateFactory _userPredicateFactory;
 
         public UserService(
@@ -30,6 +30,7 @@ namespace Application.Services
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory
         ) : base(
+            roleService,
             userRepository, 
             factory, 
             auditService, 
@@ -39,62 +40,57 @@ namespace Application.Services
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
-            _roleService = roleService;
             _userPredicateFactory = userPredicateFactory;
         }
 
-        public new Guid Create(UserDto userDto)
+        public IApplicationResult Login(UserLoginDto userLoginDto)
         {
-            if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException();
+            return Execute(() =>
+            {
+                if (userLoginDto == null) return null;
 
-            return base.Create(userDto);
+                var byName = _userPredicateFactory.CreateByName(userLoginDto.UserName);
+                var user = _userRepository.Get(byName).Single();
+
+                if (user.IsLocked()) return null;
+
+                //TODO use encrypted password
+                if (!user.PasswordIsValid(userLoginDto.Password)) throw new SecurityTokenValidationException();
+
+                if (!user.EmailConfirmed) return null;
+
+                user.LastLoginTime = DateTime.UtcNow;
+                _userRepository.Update(user);
+
+                var token = _tokenService.Generate(userLoginDto.UserName);
+
+                return new ApplicationResult<string>
+                {
+                    Status = 1,
+                    Message = "Token generated",
+                    Data = token
+                };
+            }, false);
         }
 
-        public new void Update(Guid id, UserDto userDto)
+        public IApplicationResult ConfirmEmail(Guid id)
         {
-            if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException();
+            return Execute(() =>
+            {
+                var user = _userRepository.GetById(id);
 
-            base.Update(id, userDto);
-        }
+                if (user == null) throw new ObjectNotFoundException();
 
-        public new void Delete(Guid id)
-        {
-            if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException();
+                user.EmailConfirmed = true;
 
-            base.Delete(id);
-        }
+                _userRepository.Update(user);
 
-        public string Login(UserLoginDto userLoginDto)
-        {
-            if (userLoginDto == null) return null;
-
-            var byName = _userPredicateFactory.CreateByName(userLoginDto.UserName);
-            var user = _userRepository.Get(byName).Single();
-
-            if (user.IsLocked()) return null;
-
-            //TODO use encrypted password
-            if (!user.PasswordIsValid(userLoginDto.Password)) return null;
-
-            if (!user.EmailConfirmed) return null;
-
-            user.LastLoginTime = DateTime.UtcNow;
-            _userRepository.Update(user);
-            
-            return _tokenService.Generate(userLoginDto.UserName);
-        }
-
-        public void ConfirmEmail(Guid id)
-        {
-            CheckAuthorization();
-
-            var user = _userRepository.GetById(id);
-
-            if (user == null) throw new ObjectNotFoundException();
-
-            user.EmailConfirmed = true;
-
-            _userRepository.Update(user);
+                return new EmptyResult
+                {
+                    Status = 1,
+                    Message = "Email confirmed"
+                };
+            });
         }
     }
 }

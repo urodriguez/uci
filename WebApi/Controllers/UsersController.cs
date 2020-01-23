@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Http;
+using Application;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Infrastructure.Crosscutting;

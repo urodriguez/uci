@@ -25,23 +25,9 @@ namespace WebApi.Controllers
         public IHttpActionResult Create([FromBody] TDto dto) => Execute(() => _crudService.Create(dto));
 
         [HttpPut]
-        public IHttpActionResult Update([FromUri] Guid id, [FromBody] TDto dto)
-        {
-            return Execute(() =>
-            {
-                _crudService.Update(id, dto);
-                return new EmptyResult();
-            });
-        }
+        public IHttpActionResult Update([FromUri] Guid id, [FromBody] TDto dto) => Execute(() => _crudService.Update(id, dto));
 
         [HttpDelete]
-        public IHttpActionResult Delete([FromUri] Guid id)
-        {
-            return Execute(() =>
-            {
-                _crudService.Delete(id);
-                return new EmptyResult();
-            });
-        }
+        public IHttpActionResult Delete([FromUri] Guid id) => Execute(() => _crudService.Delete(id));
     }
 }
