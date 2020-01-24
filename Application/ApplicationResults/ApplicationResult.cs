@@ -1,8 +1,8 @@
-﻿namespace Application
+﻿namespace Application.ApplicationResults
 {
     public class ApplicationResult<TData> : IApplicationResult
     {
-        public int Status { get; set; }
+        public ApplicationStatus Status { get; set; }
         public string Message { get; set; }
         public TData Data { get; set; }
     }

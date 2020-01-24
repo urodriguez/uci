@@ -66,8 +66,9 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationResult.cs" />
-    <Compile Include="EmptyResult.cs" />
+    <Compile Include="ApplicationResults\ApplicationResult.cs" />
+    <Compile Include="ApplicationResults\EmptyResult.cs" />
+    <Compile Include="ApplicationStatus.cs" />
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\ProductFactory.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="Dtos\UserLoginDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductTypeDto.cs" />
-    <Compile Include="IApplicationResult.cs" />
+    <Compile Include="ApplicationResults\IApplicationResult.cs" />
     <Compile Include="InventAppContext.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\CrudService.cs" />

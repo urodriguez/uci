@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Application;
+using Application.ApplicationResults;
 using Domain.Contracts.Infrastructure.Crosscutting;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WebApi.Controllers
 {
@@ -22,31 +21,35 @@ namespace WebApi.Controllers
             _logService = logService;
         }
 
-        protected IHttpActionResult Execute<TResult>(Func<TResult> service)
+        protected IHttpActionResult Execute<TResult>(Func<TResult> service) where TResult : IApplicationResult
         {
-            try
-            {
-                InventAppContext.SecurityToken = ExtractToken(Request);
+            InventAppContext.SecurityToken = ExtractToken(Request);
 
-                var serviceResult = service.Invoke();
+            var serviceResult = service.Invoke();
 
-                return Ok(serviceResult);
-            }
-            catch (SecurityTokenValidationException stve)
+            switch (serviceResult.Status)
             {
-                return Unauthorized();
-            }
-            catch (UnauthorizedAccessException uae)
-            {
-                return Unauthorized();
-            }
-            catch (ObjectNotFoundException onfe)
-            {
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                return SendInternalServerError(e);
+                case ApplicationStatus.Ok:
+                    if (serviceResult is EmptyResult) return Content(HttpStatusCode.OK, serviceResult.Message);
+                    return Ok(new { serviceResult.Message, ((dynamic)serviceResult).Data });
+
+                case ApplicationStatus.BadRequest:
+                    return Content(HttpStatusCode.BadRequest, serviceResult.Message);
+
+                case ApplicationStatus.Unauthenticated:
+                    return Content(HttpStatusCode.Unauthorized, serviceResult.Message);
+
+                case ApplicationStatus.Unauthorized:
+                    return Content(HttpStatusCode.Forbidden, serviceResult.Message);
+
+                case ApplicationStatus.NotFound:
+                    return Content(HttpStatusCode.NotFound, serviceResult.Message);
+
+                case ApplicationStatus.UnsupportedMediaType:
+                    return Content(HttpStatusCode.UnsupportedMediaType, serviceResult.Message);
+
+                default:
+                    return Content(HttpStatusCode.InternalServerError, "Invalid internal ApplicationStatus");
             }
         }
 
@@ -57,12 +60,6 @@ namespace WebApi.Controllers
 
             var bearerToken = authzHeaders.ElementAt(0);
             return bearerToken.StartsWith("Bearer ") ? bearerToken.Substring(7) : bearerToken;
-        }
-
-        protected IHttpActionResult SendInternalServerError(Exception e)
-        {
-            _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | exception={e}");
-            return InternalServerError(e);
         }
     }
 }

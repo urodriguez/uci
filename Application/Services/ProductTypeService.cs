@@ -17,14 +17,16 @@ namespace Application.Services
             IProductTypeFactory factory, 
             IAuditService auditService,
             IProductTypeBusinessValidator productTypeBusinessValidator,
-            ITokenService tokenService
+            ITokenService tokenService,
+            ILogService logService
         ) : base(
             roleService,
             repository,
             factory, 
             auditService, 
             productTypeBusinessValidator,
-            tokenService
+            tokenService,
+            logService
         )
         {
         }

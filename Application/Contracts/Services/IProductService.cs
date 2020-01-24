@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.ApplicationResults;
+using Application.Dtos;
 
 namespace Application.Contracts.Services
 {

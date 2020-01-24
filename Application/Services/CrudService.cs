@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Application.ApplicationResults;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
@@ -20,7 +21,6 @@ namespace Application.Services
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
         protected readonly IAuditService _auditService;
         private readonly IBusinessValidator<TDto> _businessValidator;
-        //private readonly ILoggerService _loggerService;
 
         protected CrudService(
             IRoleService roleService,
@@ -28,8 +28,9 @@ namespace Application.Services
             IFactory<TDto, TAggregateRoot> factory, 
             IAuditService auditService, 
             IBusinessValidator<TDto> businessValidator, 
-            ITokenService tokenService
-        ) : base (tokenService)
+            ITokenService tokenService,
+            ILogService logService
+        ) : base (tokenService, logService)
         {
             _repository = repository;
             _factory = factory;
@@ -48,7 +49,7 @@ namespace Application.Services
 
                 return new ApplicationResult<IEnumerable<TDto>>
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = "Entries found",
                     Data = dtos
                 };
@@ -61,13 +62,13 @@ namespace Application.Services
             {
                 var aggregate = _repository.GetById(id);
 
-                if (aggregate == null) throw new ObjectNotFoundException();
+                if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
                 var dto = _factory.Create(aggregate);
 
                 return new ApplicationResult<TDto>
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = "Entry found",
                     Data = dto
                 };
@@ -78,7 +79,7 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException();
+                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
                 _businessValidator.Validate(dto);
 
@@ -90,8 +91,8 @@ namespace Application.Services
 
                 return new ApplicationResult<Guid>
                 {
-                    Status = 1,
-                    Message = "New entry has been created with it respective Id",
+                    Status = ApplicationStatus.Ok,
+                    Message = "Entry has been created",
                     Data = aggregate.Id
                 };
             });
@@ -101,13 +102,13 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException();
+                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
                 _businessValidator.Validate(dto, id);
 
                 var aggregate = _repository.GetById(id);
 
-                if (aggregate == null) throw new ObjectNotFoundException();
+                if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
                 var aggregateUpdated = _factory.CreateFromExisting(dto, aggregate);
 
@@ -117,7 +118,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = $"Entry with Id={aggregate.Id} has been updated"
                 };
             });
@@ -127,11 +128,11 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException();
+                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
                 var aggregate = _repository.GetById(id);
 
-                if (aggregate == null) throw new ObjectNotFoundException();
+                if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
                 _repository.Delete(aggregate);
 
@@ -139,7 +140,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = $"Entry with Id={aggregate.Id} has been deleted"
                 };
             });

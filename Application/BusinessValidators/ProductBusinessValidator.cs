@@ -29,7 +29,7 @@ namespace Application.BusinessValidators
             var byDistinctIdAndCode = _productPredicateFactory.CreateByDistinctIdAndCode(id, productDto.Code);
             if (_productRepository.Get(byDistinctIdAndCode).Any()) throw new Exception($"{AggregateRootName}: code={productDto.Code} already exits");
 
-            if (!Product.PriceIsEqualOrHigherThanZero(productDto.Price.Value)) throw new Exception($"{AggregateRootName}: price has to be equal or higher than zero");
+            Product.ValidatePrice(productDto.Price.Value);
         }
     }
 }

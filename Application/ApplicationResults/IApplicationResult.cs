@@ -1,8 +1,8 @@
-﻿namespace Application
+﻿namespace Application.ApplicationResults
 {
     public interface IApplicationResult
     {
-        int Status { get; set; }
+        ApplicationStatus Status { get; set; }
         string Message { get; set; }
     }
 }

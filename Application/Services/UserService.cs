@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Linq;
+using Application.ApplicationResults;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
@@ -10,6 +12,7 @@ using Domain.Contracts.Infrastructure.Crosscutting;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
+using Domain.Exceptions;
 using Infrastructure.Crosscutting.Security.Authentication;
 using Microsoft.IdentityModel.Tokens;
 
@@ -28,14 +31,16 @@ namespace Application.Services
             TokenService tokenService, 
             IRoleService roleService, 
             IUserBusinessValidator userBusinessValidator, 
-            IUserPredicateFactory userPredicateFactory
+            IUserPredicateFactory userPredicateFactory,
+            ILogService logService
         ) : base(
             roleService,
             userRepository, 
             factory, 
             auditService, 
             userBusinessValidator,
-            tokenService
+            tokenService,
+            logService
         )
         {
             _userRepository = userRepository;
@@ -47,17 +52,17 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (userLoginDto == null) return null;
+                if (userLoginDto == null) throw new InvalidDataException();
 
                 var byName = _userPredicateFactory.CreateByName(userLoginDto.UserName);
                 var user = _userRepository.Get(byName).Single();
 
-                if (user.IsLocked()) return null;
+                if (user.IsLocked()) throw new UserLockedException(user.Name);
 
                 //TODO use encrypted password
                 if (!user.PasswordIsValid(userLoginDto.Password)) throw new SecurityTokenValidationException();
 
-                if (!user.EmailConfirmed) return null;
+                if (!user.EmailConfirmed) throw new UserEmailNotConfirmedException(user.Name);
 
                 user.LastLoginTime = DateTime.UtcNow;
                 _userRepository.Update(user);
@@ -66,7 +71,7 @@ namespace Application.Services
 
                 return new ApplicationResult<string>
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = "Token generated",
                     Data = token
                 };
@@ -79,7 +84,7 @@ namespace Application.Services
             {
                 var user = _userRepository.GetById(id);
 
-                if (user == null) throw new ObjectNotFoundException();
+                if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
                 user.EmailConfirmed = true;
 
@@ -87,7 +92,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = "Email confirmed"
                 };
             });

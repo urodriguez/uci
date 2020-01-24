@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Application.ApplicationResults;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
@@ -23,14 +24,16 @@ namespace Application.Services
             IAuditService auditService,
             IProductBusinessValidator productBusinessValidator, 
             IProductPredicateFactory productPredicateFactory,
-            ITokenService tokenService
+            ITokenService tokenService,
+            ILogService logService
         ) : base(
             roleService,
             productRepository, 
             factory, 
             auditService, 
             productBusinessValidator,
-            tokenService
+            tokenService,
+            logService
         )
         {
             _productRepository = productRepository;
@@ -48,7 +51,7 @@ namespace Application.Services
 
                 return new ApplicationResult<IEnumerable<ProductDto>>
                 {
-                    Status = 1,
+                    Status = ApplicationStatus.Ok,
                     Message = "Cheapest products found",
                     Data = cheapestProductsDto
                 };
