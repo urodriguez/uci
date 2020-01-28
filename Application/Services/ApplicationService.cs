@@ -28,11 +28,13 @@ namespace Application.Services
 
                 var serviceResult = service.Invoke();
 
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Service Execution Succeed | message={serviceResult.Message}");
+
                 return serviceResult;
             }
             catch (SecurityTokenValidationException stve)
             {
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | SecurityTokenValidationException | e.Message={stve.Message} - e.StackTrace={stve}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | SecurityTokenValidationException | e.Message={stve.Message} - e.StackTrace={stve}");
 
                 return new EmptyResult
                 {
@@ -42,7 +44,7 @@ namespace Application.Services
             }
             catch (UnauthorizedAccessException uae)
             {
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | UnauthorizedAccessException | e.Message={uae.Message} - e.StackTrace={uae}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | UnauthorizedAccessException | e.Message={uae.Message} - e.StackTrace={uae}");
 
                 return new EmptyResult
                 {
@@ -52,7 +54,7 @@ namespace Application.Services
             }
             catch (ObjectNotFoundException onfe)
             {
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | ObjectNotFoundException | e.Message={onfe.Message} - e.StackTrace={onfe}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | ObjectNotFoundException | e.Message={onfe.Message} - e.StackTrace={onfe}");
 
                 return new EmptyResult
                 {
@@ -62,7 +64,7 @@ namespace Application.Services
             }
             catch (InvalidDataException ide)
             {
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InvalidDataException | e.Message={ide.Message} - e.StackTrace={ide}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InvalidDataException | e.Message={ide.Message} - e.StackTrace={ide}");
 
                 return new EmptyResult
                 {
@@ -72,7 +74,7 @@ namespace Application.Services
             }
             catch (BusinessRuleException bre)
             {
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | BusinessRuleException | e.Message={bre.Message} - e.StackTrace={bre}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | BusinessRuleException | e.Message={bre.Message} - e.StackTrace={bre}");
 
                 return new EmptyResult
                 {
@@ -82,7 +84,7 @@ namespace Application.Services
             }
             catch (Exception e)
             {
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Exception | e.Message={e.Message} - e.StackTrace={e}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Exception | e.Message={e.Message} - e.StackTrace={e}");
 
                 return new EmptyResult
                 {

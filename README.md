@@ -65,7 +65,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: preparate to new isolated token service -> DONE
 * InventApp: if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException(); <- move to CrudService? -> DONE
 * InventApp: test user readOnly -> DONE
-* InventApp: create Excute on ApplicationService and handle all exceptions there -> DONE
+* InventApp: create Execute on ApplicationService and handle all exceptions there -> DONE
 
 * move auth service to infra solution
 * implement refresh token

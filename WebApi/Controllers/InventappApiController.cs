@@ -31,7 +31,7 @@ namespace WebApi.Controllers
             {
                 case ApplicationStatus.Ok:
                     if (serviceResult is EmptyResult) return Content(HttpStatusCode.OK, serviceResult.Message);
-                    return Ok(new { serviceResult.Message, ((dynamic)serviceResult).Data });
+                    return Ok(((dynamic)serviceResult).Data);
 
                 case ApplicationStatus.BadRequest:
                     return Content(HttpStatusCode.BadRequest, serviceResult.Message);
