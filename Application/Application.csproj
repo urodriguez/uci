@@ -69,6 +69,8 @@
     <Compile Include="ApplicationResults\ApplicationResult.cs" />
     <Compile Include="ApplicationResults\EmptyResult.cs" />
     <Compile Include="ApplicationStatus.cs" />
+    <Compile Include="Exceptions\AuthenticationFailException.cs" />
+    <Compile Include="Exceptions\InternalServerException.cs" />
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\ProductFactory.cs" />

@@ -21,12 +21,14 @@ namespace Infrastructure.Crosscutting.Auditing
         {
             _logService = logService;
 
-            var envUrl = new Dictionary<string, string> //TODO: use correct urls
+            const string project = "auditing";
+
+            var envUrl = new Dictionary<string, string>
             {
-                { "DEV", "http://www.ucirod.infrastructure-test.com:40000/Auditing/api" },
-                { "TEST", "http://www.ucirod.infrastructure-test.com:40000/Auditing/api" },
-                { "STAGE", "http://www.ucirod.infrastructure-stage.com:40000/Auditing/api" },
-                { "PROD", "http://www.ucirod.infrastructure.com:40000/Auditing/api" }
+                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
+                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
+                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
+                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
             _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);

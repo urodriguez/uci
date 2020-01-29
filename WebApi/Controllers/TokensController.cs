@@ -15,19 +15,6 @@ namespace WebApi.Controllers
             _userService = userService;
         }
 
-        //[HttpPost]
-        //public IHttpActionResult Create([FromBody] UserLoginDto userLoginDto)
-        //{
-        //    var applicationResult = _userService.Login(userLoginDto);
-
-        //    if (applicationResult.Status == ApplicationStatus.Unauthenticated)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    return applicationResult.Status == ApplicationStatus.Unauthenticated ? Unauthorized() : (IHttpActionResult)Ok(applicationResult);
-        //}
-
         [HttpPost]
         public IHttpActionResult Create([FromBody] UserLoginDto userLoginDto) => Execute(() => _userService.Login(userLoginDto));
     }

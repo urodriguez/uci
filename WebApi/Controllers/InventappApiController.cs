@@ -48,6 +48,9 @@ namespace WebApi.Controllers
                 case ApplicationStatus.UnsupportedMediaType:
                     return Content(HttpStatusCode.UnsupportedMediaType, serviceResult.Message);
 
+                case ApplicationStatus.InternalServerError:
+                    return Content(HttpStatusCode.InternalServerError, serviceResult.Message);
+
                 default:
                     return Content(HttpStatusCode.InternalServerError, "Invalid internal ApplicationStatus");
             }

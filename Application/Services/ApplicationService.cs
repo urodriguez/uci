@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using Application.ApplicationResults;
+using Application.Exceptions;
 using Domain.Contracts.Infrastructure.Crosscutting;
 using Domain.Exceptions;
 using Microsoft.IdentityModel.Tokens;
@@ -32,9 +35,9 @@ namespace Application.Services
 
                 return serviceResult;
             }
-            catch (SecurityTokenValidationException stve)
+            catch (AuthenticationFailException afe)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | SecurityTokenValidationException | e.Message={stve.Message} - e.StackTrace={stve}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | AuthenticationFailException");
 
                 return new EmptyResult
                 {
@@ -82,6 +85,16 @@ namespace Application.Services
                     Message = bre.Message
                 };
             }
+            catch (InternalServerException ise)
+            {
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InternalServerException | e.Message={ise.Message} - e.StackTrace={ise}");
+
+                return new EmptyResult
+                {
+                    Status = ApplicationStatus.InternalServerError,
+                    Message = ise.Message
+                };
+            }
             catch (Exception e)
             {
                 _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Exception | e.Message={e.Message} - e.StackTrace={e}");
@@ -96,8 +109,13 @@ namespace Application.Services
 
         protected void CheckAuthentication()
         {
-            var validatedToken = _tokenService.Validate(InventAppContext.SecurityToken);
-            InventAppContext.UserName = validatedToken.Subject.Name;
+            var claims = _tokenService.Validate(InventAppContext.SecurityToken);
+            if (claims == null) throw new InternalServerException("SecurityToken could not be validated");
+
+            var claimName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (claimName == null) throw new InternalServerException("Missing claim type 'name'");
+
+            InventAppContext.UserName = claimName.Value;
         }
     }
 }

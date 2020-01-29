@@ -51,9 +51,8 @@
     <Compile Include="Contracts\Infrastructure\Crosscutting\IAuditService.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\IEmailService.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\ILogService.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\IToken.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\ISecurityToken.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\ITokenService.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\Token.cs" />
     <Compile Include="Contracts\Predicates\Factories\IPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IProductPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IUserPredicateFactory.cs" />

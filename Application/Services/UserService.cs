@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
+using Application.Exceptions;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Crosscutting;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
@@ -60,20 +63,28 @@ namespace Application.Services
                 if (user.IsLocked()) throw new UserLockedException(user.Name);
 
                 //TODO use encrypted password
-                if (!user.PasswordIsValid(userLoginDto.Password)) throw new SecurityTokenValidationException();
+                if (!user.PasswordIsValid(userLoginDto.Password)) throw new AuthenticationFailException();
 
                 if (!user.EmailConfirmed) throw new UserEmailNotConfirmedException(user.Name);
 
                 user.LastLoginTime = DateTime.UtcNow;
                 _userRepository.Update(user);
 
-                var token = _tokenService.Generate(userLoginDto.UserName);
+                var securityToken = _tokenService.Generate(
+                    new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, userLoginDto.UserName),
+                        new Claim(ClaimTypes.Email, user.Email)
+                    }
+                );
+
+                if (securityToken == null) throw new InternalServerException("SecurityToken could not be generated");
 
                 return new ApplicationResult<string>
                 {
                     Status = ApplicationStatus.Ok,
                     Message = "Token generated",
-                    Data = token
+                    Data = securityToken.Token
                 };
             }, false);
         }

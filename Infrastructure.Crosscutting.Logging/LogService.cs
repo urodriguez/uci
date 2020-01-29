@@ -22,12 +22,14 @@ namespace Infrastructure.Crosscutting.Logging
             _application = "InventApp";
             _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
 
+            const string project = "logging";
+
             var envUrl = new Dictionary<string, string>
             {
-                { "DEV", "http://www.ucirod.infrastructure-test.com:40000/Logging/api" },
-                { "TEST", "http://www.ucirod.infrastructure-test.com:40000/Logging/api" },
-                { "STAGE", "http://www.ucirod.infrastructure-stage.com:40000/Logging/api" },
-                { "PROD", "http://www.ucirod.infrastructure.com:40000/Logging/api" }
+                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
+                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
+                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
+                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
             _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);

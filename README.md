@@ -66,10 +66,20 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException(); <- move to CrudService? -> DONE
 * InventApp: test user readOnly -> DONE
 * InventApp: create Execute on ApplicationService and handle all exceptions there -> DONE
+* InventApp-Infrastructe: move auth service to Infrastructure solution -> DONE
+* Infrastructe.Authentication: deploy -> DONE
 
-* move auth service to infra solution
-* implement refresh token
-* Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire?
+* InventApp: avoid show internal message errors, only log them. Show reference Id
+* InventApp: register feature in UserService
+* Infrastructe: versioning all projects + InventApp: update URLs
+* Infrastructe.Authentication: implement refresh token
+* Infrastructe.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
+* Infrastructe: create application
+  * user register -> receive email
+  * user login
+  * user see list available infrastructure services
+  * user select infrastructure services
+  * user pay -> credit card transactions?
 * InventApp: implement unityOfWork
 * API test & unit test
 * Auditing: implement complex auditing (objects with nested objects) 
@@ -95,6 +105,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * implement caching
 * implement integration events with NServiceBus
 * create application to show logs
+* create script to configure sites on IIS
 * use TeamCity
 * use Docker
 * use PusherServer/WebSockets to notify UI on server changes

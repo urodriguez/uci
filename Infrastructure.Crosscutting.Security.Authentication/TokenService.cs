@@ -1,125 +1,151 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Claims;
-using System.Threading;
 using Domain.Contracts.Infrastructure.Crosscutting;
-using Microsoft.IdentityModel.Tokens;
+using RestSharp;
 
 namespace Infrastructure.Crosscutting.Security.Authentication
 {
     public class TokenService : DelegatingHandler, ITokenService
     {
-        public string Generate(string username)
+        private const string AccountId = "InventApp";
+        private const string AccountSecret = "1nfr4structur3_1nv3nt4pp";
+
+        private readonly ILogService _logService;
+        private readonly IRestClient _restClient;
+
+        public TokenService(ILogService logService)
         {
-            // create a claimsIdentity
-            var claimsIdentity = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, username)
-            });
+            _logService = logService;
 
-            // create token to the user
-            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            const string project = "authentication";
 
-            // describe security token
-            var securityTokenDescriptor = new SecurityTokenDescriptor
+            var envUrl = new Dictionary<string, string>
             {
-                Issuer = Token.Issuer,
-                Subject = claimsIdentity,
-                NotBefore = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(Token.Expire)),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(Token.Secret)), SecurityAlgorithms.HmacSha256Signature)
+                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
+                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
+                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
+                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
-            // create JWT security token based on descriptor
-            var jwtSecurityToken = tokenHandler.CreateJwtSecurityToken(securityTokenDescriptor);
-
-            // return security token as string
-            return tokenHandler.WriteToken(jwtSecurityToken);
+            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
         }
 
-        public IToken Validate(string securityToken)
+        public ISecurityToken Generate(IReadOnlyCollection<Claim> claims)
         {
-            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-
-            var validationParameters = new TokenValidationParameters
+            try
             {
-                ValidIssuer = Token.Issuer,
-                ValidateIssuerSigningKey = true,
-                ValidateLifetime = true,
-                LifetimeValidator = LifetimeValidator,
-                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(Token.Secret)),
-                ValidateAudience = false
-            };
+                var request = new RestRequest("tokens", Method.POST);
+                request.AddJsonBody(new
+                {
+                    Account = new { Id = AccountId, Secret = AccountSecret },
+                    claims
+                });
 
-            // Extract and assign to Current Principal Thread
-            Thread.CurrentPrincipal = tokenHandler.ValidateToken(securityToken, validationParameters, out var validatedToken);
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
-            return new Domain.Contracts.Infrastructure.Crosscutting.Token
+                var response = _restClient.Post<SecurityToken>(request);
+
+                if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
+                {
+                    _logService.LogErrorMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Unable to connect to Token Micro-service | Status=NOT_FOUND"
+                    );
+
+                    return null;
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _logService.LogErrorMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Claims data to Token Micro-service | Status=UNAUTHORIZED"
+                    );
+
+                    return null;
+                }
+
+                if (!response.IsSuccessful)
+                {
+                    _logService.LogErrorMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Claims data to Token Micro-service | Status=FAIL - Reason={response.Content}"
+                    );
+
+                    return null;
+                }
+
+                _logService.LogInfoMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Account-Claims data sent to Token Micro-service | Status=OK"
+                );
+
+                return response.Data;
+            }
+            catch (Exception e)
             {
-                Issuer = Token.Issuer,
-                Subject = Thread.CurrentPrincipal.Identity
-            };
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
+
+                return null;
+            }
         }
 
-        //protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        //{
-        //    HttpStatusCode statusCode;
-        //    string token;
-
-        //    // determine whether a jwt exists or not
-        //    if (!TryExtractToken(request, out token) || request.RequestUri.AbsoluteUri.Contains("swagger"))
-        //    {
-        //        return base.SendAsync(request, cancellationToken);
-        //    }
-
-        //    try
-        //    {
-        //        var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-
-        //        var validationParameters = new TokenValidationParameters
-        //        {
-        //            ValidIssuer = Token.Issuer,
-        //            ValidateIssuerSigningKey = true,
-        //            ValidateLifetime = true,
-        //            LifetimeValidator = LifetimeValidator,
-        //            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(Token.Secret)),
-        //            ValidateAudience = false
-        //        };
-
-        //        // Extract and assign Current Principal and user
-        //        Thread.CurrentPrincipal = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);
-        //        HttpContext.Current.User = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
-
-        //        return base.SendAsync(request, cancellationToken);
-        //    }
-        //    catch (SecurityTokenValidationException stve)
-        //    {
-        //        statusCode = HttpStatusCode.Unauthorized;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        statusCode = HttpStatusCode.InternalServerError;
-        //    }
-
-        //    return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode), cancellationToken);
-        //}
-        private bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+        public IEnumerable<Claim> Validate(string securityToken)
         {
-            if (expires == null) return false;
+            try
+            {
+                var request = new RestRequest("tokens/validate", Method.POST);
+                request.AddJsonBody(new
+                {
+                    Account = new { Id = AccountId, Secret = AccountSecret },
+                    Token = securityToken
+                });
 
-            return DateTime.UtcNow < expires;
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
+
+                var response = _restClient.Post<TokenValidateDto>(request);
+
+                if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
+                {
+                    _logService.LogErrorMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Unable to connect to Token Micro-service | Status=NOT_FOUND"
+                    );
+
+                    return null;
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _logService.LogErrorMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Token data to Token Micro-service | Status=UNAUTHORIZED"
+                    );
+
+                    return null;
+                }
+
+                if (!response.IsSuccessful)
+                {
+                    _logService.LogErrorMessage(
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Token data to Token Micro-service | Status=FAIL - Reason={response.Content}"
+                    );
+
+                    return null;
+                }
+
+                _logService.LogInfoMessage(
+                    $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Account-Token data sent to Token Micro-service | Status=OK"
+                );
+
+                return response.Data.Claims.Select(d => new Claim(d.Type, d.Value));
+            }
+            catch (Exception e)
+            {
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
+
+                return null;
+            }
         }
-
-
-        //private static bool TryExtractToken(HttpRequestMessage request, out string token)
-        //{
-        //    token = null;
-        //    IEnumerable<string> authzHeaders;
-        //    if (!request.Headers.TryGetValues("Authorization", out authzHeaders) || authzHeaders.Count() > 1) return false;
-
-        //    var bearerToken = authzHeaders.ElementAt(0);
-        //    token = bearerToken.StartsWith("Bearer ") ? bearerToken.Substring(7) : bearerToken;
-        //    return true;
-        //}
     }
 }

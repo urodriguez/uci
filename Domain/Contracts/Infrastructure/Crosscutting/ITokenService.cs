@@ -1,8 +1,11 @@
-﻿namespace Domain.Contracts.Infrastructure.Crosscutting
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+
+namespace Domain.Contracts.Infrastructure.Crosscutting
 {
     public interface ITokenService
     {
-        string Generate(string username);
-        IToken Validate(string securityToken);
+        ISecurityToken Generate(IReadOnlyCollection<Claim> claims);
+        IEnumerable<Claim> Validate(string securityToken);
     }
 }
