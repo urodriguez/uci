@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Claims;
 using Domain.Contracts.Infrastructure.Crosscutting;
-using RestSharp;
+using Infrastructure.Crosscutting.Shared.RestClient;
 
 namespace Infrastructure.Crosscutting.Security.Authentication
 {
@@ -17,7 +17,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
         private const string AccountSecret = "1nfr4structur3_1nv3nt4pp";
 
         private readonly ILogService _logService;
-        private readonly IRestClient _restClient;
+        private readonly IInventAppRestClient _restClient;
 
         public TokenService(ILogService logService)
         {
@@ -33,19 +33,23 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                 { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
-            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new InventAppRestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
         }
 
         public ISecurityToken Generate(IReadOnlyCollection<Claim> claims)
         {
             try
             {
-                var request = new RestRequest("tokens", Method.POST);
-                request.AddJsonBody(new
+                var request = new InventAppRestRequest
                 {
-                    Account = new { Id = AccountId, Secret = AccountSecret },
-                    claims
-                });
+                    Resource = "tokens",
+                    Method = InventAppRestMethod.POST,
+                    JsonBody = new
+                    {
+                        Account = new { Id = AccountId, Secret = AccountSecret },
+                        claims
+                    }
+                };
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
@@ -69,7 +73,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                     return null;
                 }
 
-                if (!response.IsSuccessful)
+                if (!response.IsSuccessful())
                 {
                     _logService.LogErrorMessage(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Claims data to Token Micro-service | Status=FAIL - Reason={response.Content}"
@@ -96,12 +100,16 @@ namespace Infrastructure.Crosscutting.Security.Authentication
         {
             try
             {
-                var request = new RestRequest("tokens/validate", Method.POST);
-                request.AddJsonBody(new
+                var request = new InventAppRestRequest
                 {
-                    Account = new { Id = AccountId, Secret = AccountSecret },
-                    Token = securityToken
-                });
+                    Resource = "tokens/validate",
+                    Method = InventAppRestMethod.POST,
+                    JsonBody = new
+                    {
+                        Account = new { Id = AccountId, Secret = AccountSecret },
+                        Token = securityToken
+                    }
+                };
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
 
@@ -125,7 +133,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                     return null;
                 }
 
-                if (!response.IsSuccessful)
+                if (!response.IsSuccessful())
                 {
                     _logService.LogErrorMessage(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Token data to Token Micro-service | Status=FAIL - Reason={response.Content}"

@@ -68,6 +68,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: create Execute on ApplicationService and handle all exceptions there -> DONE
 * InventApp-Infrastructe: move auth service to Infrastructure solution -> DONE
 * Infrastructe.Authentication: deploy -> DONE
+* InventApp: centralize RestSharp into SharedProject -> DONE
 
 * InventApp: avoid show internal message errors, only log them. Show reference Id
 * InventApp: register feature in UserService

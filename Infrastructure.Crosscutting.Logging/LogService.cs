@@ -5,13 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Compilation;
 using Domain.Contracts.Infrastructure.Crosscutting;
-using RestSharp;
+using Infrastructure.Crosscutting.Shared.RestClient;
 
 namespace Infrastructure.Crosscutting.Logging
 {
     public class LogService : ILogService
     {
-        private readonly IRestClient _restClient;
+        private readonly IInventAppRestClient _restClient;
 
         private readonly string _application;
         private readonly string _projectName;
@@ -32,9 +32,13 @@ namespace Infrastructure.Crosscutting.Logging
                 { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
-            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new InventAppRestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
 
-            var request = new RestRequest("correlations", Method.POST);
+            var request = new InventAppRestRequest
+            {
+                Resource = "correlations",
+                Method = InventAppRestMethod.POST
+            };
             var correlationResponse = _restClient.Post<Correlation>(request);
 
             _correlationId = correlationResponse.Data.Id;
@@ -64,10 +68,12 @@ namespace Infrastructure.Crosscutting.Logging
             {
                 try
                 {
-                    var request = new RestRequest("logs", Method.POST);
-
-                    var log = new Log(_application, _projectName, _correlationId, messageToLog, logType);
-                    request.AddJsonBody(log);
+                    var request = new InventAppRestRequest
+                    {
+                        Resource = "logs",
+                        Method = InventAppRestMethod.POST,
+                        JsonBody = new Log(_application, _projectName, _correlationId, messageToLog, logType)
+                    };
 
                     _restClient.Post(request);
                 }

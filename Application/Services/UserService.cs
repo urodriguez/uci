@@ -17,7 +17,6 @@ using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Domain.Exceptions;
 using Infrastructure.Crosscutting.Security.Authentication;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services
 {

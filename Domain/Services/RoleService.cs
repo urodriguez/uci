@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Data;
+using System.Linq;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
@@ -17,12 +17,12 @@ namespace Domain.Services
             _userPredicateFactory = userPredicateFactory;
         }
 
-        public bool LoggedUserIsAdmin()
+        public bool IsAdmin(string userName)
         {
-            var userNameFromLoggedUser = Thread.CurrentPrincipal.Identity.Name;
+            var byName = _userPredicateFactory.CreateByName(userName);
+            var user = _userRepository.Get(byName).FirstOrDefault();
 
-            var byName = _userPredicateFactory.CreateByName(userNameFromLoggedUser);
-            var user = _userRepository.Get(byName).Single();
+            if (user == null) throw new ObjectNotFoundException($"UserName={userName} not exists in database");
 
             return user.IsAdmin();
         }

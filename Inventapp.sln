@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Auditing", "Infrastructure.Crosscutting.Auditing\Infrastructure.Crosscutting.Auditing.csproj", "{C79E7897-B19B-43D3-B782-3D84247B401C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Crosscutting.Shared.RestClient", "Infrastructure.Crosscutting.Shared.RestClient\Infrastructure.Crosscutting.Shared.RestClient.csproj", "{4E8E7173-52BA-46C1-A915-D4924A142AE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,12 @@ Global
 		{C79E7897-B19B-43D3-B782-3D84247B401C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C79E7897-B19B-43D3-B782-3D84247B401C}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{C79E7897-B19B-43D3-B782-3D84247B401C}.Test|Any CPU.Build.0 = Release|Any CPU
+		{4E8E7173-52BA-46C1-A915-D4924A142AE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E8E7173-52BA-46C1-A915-D4924A142AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E8E7173-52BA-46C1-A915-D4924A142AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E8E7173-52BA-46C1-A915-D4924A142AE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E8E7173-52BA-46C1-A915-D4924A142AE1}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{4E8E7173-52BA-46C1-A915-D4924A142AE1}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

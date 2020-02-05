@@ -34,9 +34,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -62,9 +59,15 @@
       <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
       <Name>Infrastructure.Crosscutting.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting.Shared.RestClient\Infrastructure.Crosscutting.Shared.RestClient.csproj">
+      <Project>{4E8E7173-52BA-46C1-A915-D4924A142AE1}</Project>
+      <Name>Infrastructure.Crosscutting.Shared.RestClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

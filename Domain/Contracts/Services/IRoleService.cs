@@ -2,6 +2,6 @@
 {
     public interface IRoleService
     {
-        bool LoggedUserIsAdmin();
+        bool IsAdmin(string userName);
     }
 }

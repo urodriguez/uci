@@ -79,7 +79,7 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
                 _businessValidator.Validate(dto);
 
@@ -87,7 +87,7 @@ namespace Application.Services
 
                 _repository.Add(aggregate);
 
-                _auditService.Audit(aggregate, AuditAction.Create);
+                _auditService.Audit(aggregate, AuditAction.Create, InventAppContext.UserName);
 
                 return new ApplicationResult<Guid>
                 {
@@ -102,7 +102,7 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
                 _businessValidator.Validate(dto, id);
 
@@ -114,7 +114,7 @@ namespace Application.Services
 
                 _repository.Update(aggregateUpdated);
 
-                _auditService.Audit(aggregateUpdated, AuditAction.Update);
+                _auditService.Audit(aggregateUpdated, AuditAction.Update, InventAppContext.UserName);
 
                 return new EmptyResult
                 {
@@ -128,7 +128,7 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
                 var aggregate = _repository.GetById(id);
 
@@ -136,7 +136,7 @@ namespace Application.Services
 
                 _repository.Delete(aggregate);
 
-                _auditService.Audit(aggregate, AuditAction.Delete);
+                _auditService.Audit(aggregate, AuditAction.Delete, InventAppContext.UserName);
 
                 return new EmptyResult
                 {

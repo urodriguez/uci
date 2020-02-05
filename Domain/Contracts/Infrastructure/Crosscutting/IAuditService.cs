@@ -5,6 +5,6 @@ namespace Domain.Contracts.Infrastructure.Crosscutting
 {
     public interface IAuditService
     {
-        void Audit(IAggregateRoot entity, AuditAction action);
+        void Audit(IAggregateRoot entity, AuditAction action, string userName);
     }
 }
