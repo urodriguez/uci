@@ -69,11 +69,11 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp-Infrastructe: move auth service to Infrastructure solution -> DONE
 * Infrastructe.Authentication: deploy -> DONE
 * InventApp: centralize RestSharp into SharedProject -> DONE
+* Infrastructe.Mailing: implement -> DONE
 
+* InventApp: register feature in UserService with validation code
 * InventApp: avoid show internal message errors, only log them. Show reference Id
-* InventApp: register feature in UserService
 * Infrastructe: versioning all projects + InventApp: update URLs
-* Infrastructe.Authentication: implement refresh token
 * Infrastructe.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
 * Infrastructe: create application
   * user register -> receive email
@@ -81,6 +81,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
   * user see list available infrastructure services
   * user select infrastructure services
   * user pay -> credit card transactions?
+* Infrastructe.Authentication: implement refresh token
 * InventApp: implement unityOfWork
 * API test & unit test
 * Auditing: implement complex auditing (objects with nested objects) 
@@ -101,7 +102,6 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
   * CRUD customer
   * CRUD test reason
   * CRUD status
-* implement mailing
 * implement reporting
 * implement caching
 * implement integration events with NServiceBus
