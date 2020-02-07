@@ -7,6 +7,8 @@ using Application.Factories;
 using Application.Services;
 using AutoMapper;
 using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
+using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
@@ -14,6 +16,7 @@ using Domain.Predicates.Factories;
 using Domain.Services;
 using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.Mailing;
 using Infrastructure.Crosscutting.Mapping;
 using Infrastructure.Crosscutting.Security.Authentication;
 using Infrastructure.Persistence.Dapper;
@@ -59,6 +62,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             #region INFRASTRUCTURE
             //Crosscutting
             container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
+            container.RegisterType<IEmailService, EmailService>(new PerThreadLifetimeManager());
             container.RegisterType<ILogService, LogService>(new PerThreadLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
             container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());

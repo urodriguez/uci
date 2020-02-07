@@ -51,10 +51,14 @@
     <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\IAuditService.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\IEmailService.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\IEmail.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\IEmailService.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\IHost.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\ILogService.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\ISecurityToken.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\ITokenService.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Authentication\ISecurityToken.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\ISender.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\ISmtpServerConfiguration.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Authentication\ITokenService.cs" />
     <Compile Include="Contracts\Predicates\Factories\IPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IProductPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IUserPredicateFactory.cs" />
@@ -81,9 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RoleService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\Repositories\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

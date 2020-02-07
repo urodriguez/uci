@@ -12,10 +12,12 @@ using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Domain.Exceptions;
+using Infrastructure.Crosscutting.Mailing;
 using Infrastructure.Crosscutting.Security.Authentication;
 
 namespace Application.Services
@@ -25,6 +27,7 @@ namespace Application.Services
         private readonly IUserRepository _userRepository;
         private readonly TokenService _tokenService;
         private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly IEmailService _emailService;
 
         public UserService(
             IUserRepository userRepository, 
@@ -34,7 +37,8 @@ namespace Application.Services
             IRoleService roleService, 
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory,
-            ILogService logService
+            ILogService logService, 
+            IEmailService emailService
         ) : base(
             roleService,
             userRepository, 
@@ -48,6 +52,7 @@ namespace Application.Services
             _userRepository = userRepository;
             _tokenService = tokenService;
             _userPredicateFactory = userPredicateFactory;
+            _emailService = emailService;
         }
 
         public IApplicationResult Login(UserLoginDto userLoginDto)
@@ -86,6 +91,39 @@ namespace Application.Services
                     Data = securityToken.Token
                 };
             }, false);
+        }
+
+        public new IApplicationResult Create(UserDto userDto)
+        {
+            var applicationResult = base.Create(userDto);
+
+            if (applicationResult.IsSuccessful())
+            {
+                _emailService.Send(new Email
+                {
+                    UseCustomSmtpServer = true,
+                    SmtpServerConfiguration = new SmtpServerConfiguration
+                    {
+                        Sender = new Sender
+                        {
+                            Name = "InventApp",
+                            Email = "ucirod.infrastructure@gmail.com",
+                            Password = "uc1r0d.1nfr4structur3"
+                        },
+                        Host = new Host
+                        {
+                            Name = "smtp.gmail.com",
+                            Port = 465,
+                            UseSsl = true
+                        }
+                    },
+                    To = userDto.Email,
+                    Subject = "User Created",
+                    Body = $"Your user '{userDto.Name}' has been created. <br> Follow this link to confirm you email: www.confirm-email.com"
+                });
+            }
+
+            return applicationResult;
         }
 
         public IApplicationResult ConfirmEmail(Guid id)

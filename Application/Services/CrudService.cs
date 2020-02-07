@@ -8,6 +8,7 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Services;
 using Domain.Enums;

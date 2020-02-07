@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Claims;
 using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Shared.RestClient;
 
 namespace Infrastructure.Crosscutting.Security.Authentication

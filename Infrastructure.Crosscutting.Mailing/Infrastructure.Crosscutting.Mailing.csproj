@@ -41,10 +41,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Email.cs" />
+    <Compile Include="EmailService.cs" />
+    <Compile Include="Host.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sender.cs" />
+    <Compile Include="SmtpServerConfiguration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting.Shared.RestClient\Infrastructure.Crosscutting.Shared.RestClient.csproj">
+      <Project>{4E8E7173-52BA-46C1-A915-D4924A142AE1}</Project>
+      <Name>Infrastructure.Crosscutting.Shared.RestClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,5 +4,6 @@
     {
         ApplicationStatus Status { get; set; }
         string Message { get; set; }
+        bool IsSuccessful();
     }
 }

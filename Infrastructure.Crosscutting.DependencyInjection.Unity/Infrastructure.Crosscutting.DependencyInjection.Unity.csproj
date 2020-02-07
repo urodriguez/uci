@@ -99,6 +99,10 @@
       <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
       <Name>Infrastructure.Crosscutting.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting.Mailing\Infrastructure.Crosscutting.Mailing.csproj">
+      <Project>{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}</Project>
+      <Name>Infrastructure.Crosscutting.Mailing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Crosscutting.Mapping\Infrastructure.Crosscutting.Mapping.csproj">
       <Project>{9E42E658-9490-47B4-BB3D-B31C281403F2}</Project>
       <Name>Infrastructure.Crosscutting.Mapping</Name>

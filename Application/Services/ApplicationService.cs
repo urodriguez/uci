@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Exceptions;
 using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Exceptions;
 using Microsoft.IdentityModel.Tokens;
 

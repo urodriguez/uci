@@ -71,7 +71,9 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: centralize RestSharp into SharedProject -> DONE
 * Infrastructe.Mailing: implement -> DONE
 
-* InventApp: register feature in UserService with validation code
+* InventApp: create user sending confirm email
+
+* InventApp: diff between invalid token or expired token exception
 * InventApp: avoid show internal message errors, only log them. Show reference Id
 * Infrastructe: versioning all projects + InventApp: update URLs
 * Infrastructe.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
