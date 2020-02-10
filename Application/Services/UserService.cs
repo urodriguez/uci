@@ -100,6 +100,11 @@ namespace Application.Services
 
             if (applicationResult.IsSuccessful())
             {
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
+                var templatePath = assetsPath + "\\user_email_create.html";
+                var template = File.ReadAllText(templatePath);
+
                 _emailService.Send(new Email
                 {
                     UseCustomSmtpServer = true,
@@ -120,7 +125,7 @@ namespace Application.Services
                     },
                     To = userDto.Email,
                     Subject = "User Created",
-                    Body = $"Your user '{userDto.Name}' has been created. <br> Follow this link to confirm you email: www.confirm-email.com"
+                    Body = template
                 });
             }
 
