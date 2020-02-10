@@ -6,10 +6,9 @@ using System.Reflection;
 using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Exceptions;
-using Domain.Contracts.Infrastructure.Crosscutting;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Exceptions;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services
 {

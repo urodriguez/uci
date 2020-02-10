@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FB15E926-5957-4085-BA54-004CCE0DA01C}</ProjectGuid>
+    <ProjectGuid>{FE0E59F4-4656-40C8-AFDA-FD903D9EFB95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure.Crosscutting.Security.Authentication</RootNamespace>
-    <AssemblyName>Infrastructure.Crosscutting.Security.Authentication</AssemblyName>
+    <RootNamespace>Infrastructure.Crosscutting</RootNamespace>
+    <AssemblyName>Infrastructure.Crosscutting</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,6 +34,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.10.1\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -46,25 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClaimDto.cs" />
-    <Compile Include="SecurityToken.cs" />
-    <Compile Include="TokenService.cs" />
+    <Compile Include="Auditing\Audit.cs" />
+    <Compile Include="Auditing\AuditService.cs" />
+    <Compile Include="Authentication\Claim.cs" />
+    <Compile Include="Authentication\SecurityToken.cs" />
+    <Compile Include="Authentication\TokenService.cs" />
+    <Compile Include="Authentication\TokenValidate.cs" />
+    <Compile Include="Logging\Correlation.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\LogService.cs" />
+    <Compile Include="Logging\LogType.cs" />
+    <Compile Include="Mailing\Email.cs" />
+    <Compile Include="Mailing\EmailService.cs" />
+    <Compile Include="Mailing\Host.cs" />
+    <Compile Include="Mailing\Sender.cs" />
+    <Compile Include="Mailing\SmtpServerConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TokenValidateDto.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Shared.RestClient\Infrastructure.Crosscutting.Shared.RestClient.csproj">
-      <Project>{4E8E7173-52BA-46C1-A915-D4924A142AE1}</Project>
-      <Name>Infrastructure.Crosscutting.Shared.RestClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

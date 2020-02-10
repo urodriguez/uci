@@ -1,4 +1,4 @@
-﻿namespace Domain.Enums
+﻿namespace Domain.Contracts.Infrastructure.Crosscutting.Auditing
 {
     public enum AuditAction
     {

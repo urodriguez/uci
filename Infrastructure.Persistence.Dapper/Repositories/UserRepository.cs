@@ -1,5 +1,5 @@
 ﻿using Domain.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 
 namespace Infrastructure.Persistence.Dapper.Repositories

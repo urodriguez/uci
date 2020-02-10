@@ -171,14 +171,6 @@
       <Project>{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}</Project>
       <Name>Infrastructure.Crosscutting.Documentation.Swagger</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Logging\Infrastructure.Crosscutting.Logging.csproj">
-      <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
-      <Name>Infrastructure.Crosscutting.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Security.Authentication\Infrastructure.Crosscutting.Security.Authentication.csproj">
-      <Project>{FB15E926-5957-4085-BA54-004CCE0DA01C}</Project>
-      <Name>Infrastructure.Crosscutting.Security.Authentication</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

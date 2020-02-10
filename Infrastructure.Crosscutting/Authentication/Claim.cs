@@ -1,6 +1,6 @@
-﻿namespace Infrastructure.Crosscutting.Security.Authentication
+﻿namespace Infrastructure.Crosscutting.Authentication
 {
-    public class ClaimDto
+    public class Claim
     {
         public string Type { get; set; }
         public string Value { get; set; }

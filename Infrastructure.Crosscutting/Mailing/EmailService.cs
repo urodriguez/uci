@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
 using System.Threading.Tasks;
-using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Shared.RestClient;
+using RestSharp;
 
 namespace Infrastructure.Crosscutting.Mailing
 {
     public class EmailService : IEmailService
     {
         private readonly ILogService _logService;
-        private readonly IInventAppRestClient _restClient;
+        private readonly IRestClient _restClient;
 
         public EmailService(ILogService logService)
         {
@@ -28,7 +28,7 @@ namespace Infrastructure.Crosscutting.Mailing
                 { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
-            _restClient = new InventAppRestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
         }
 
         public void Send(IEmail email)
@@ -39,19 +39,19 @@ namespace Infrastructure.Crosscutting.Mailing
             {
                 try
                 {
-                    var request = new InventAppRestRequest
+                    var request = new RestRequest
                     {
                         Resource = "emails",
-                        Method = InventAppRestMethod.POST,
-                        JsonBody = email
+                        Method = Method.POST
                     };
+                    request.AddJsonBody(email);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending email data to Email Micro-service");
 
                     var response = _restClient.Post(request);
 
                     _logService.LogInfoMessage(
-                        response.IsSuccessful()
+                        response.IsSuccessful
                             ? $"{GetType().Name}.{methodName} | Email data sent to Email Micro-service | Status=OK"
                             : $"{GetType().Name}.{methodName} | Error sending email data to Email Micro-service | Status=FAIL - Reason={response.Content}"
                     );

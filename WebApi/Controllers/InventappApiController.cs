@@ -7,7 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Application;
 using Application.ApplicationResults;
-using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {

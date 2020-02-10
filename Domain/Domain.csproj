@@ -50,11 +50,13 @@
     <Compile Include="Aggregates\User.cs" />
     <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\IAuditService.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Auditing\AuditAction.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Auditing\IAuditable.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Auditing\IAuditService.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\IEmail.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\IEmailService.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\IHost.cs" />
-    <Compile Include="Contracts\Infrastructure\Crosscutting\ILogService.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\Logging\ILogService.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Authentication\ISecurityToken.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\ISender.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Mailing\ISmtpServerConfiguration.cs" />
@@ -70,7 +72,6 @@
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\SearchPreferences.cs" />
-    <Compile Include="Enums\AuditAction.cs" />
     <Compile Include="Enums\InventAppPredicateOperatorGroup.cs" />
     <Compile Include="Enums\InventAppPredicateOperator.cs" />
     <Compile Include="Enums\UserRol.cs" />

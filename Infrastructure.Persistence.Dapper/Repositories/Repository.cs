@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates;
 using Domain.Enums;

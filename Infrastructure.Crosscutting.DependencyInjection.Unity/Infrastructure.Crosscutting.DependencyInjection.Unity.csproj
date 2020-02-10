@@ -91,25 +91,13 @@
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Auditing\Infrastructure.Crosscutting.Auditing.csproj">
-      <Project>{C79E7897-B19B-43D3-B782-3D84247B401C}</Project>
-      <Name>Infrastructure.Crosscutting.Auditing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Logging\Infrastructure.Crosscutting.Logging.csproj">
-      <Project>{2CE96471-091D-4462-B660-69992253B826}</Project>
-      <Name>Infrastructure.Crosscutting.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Mailing\Infrastructure.Crosscutting.Mailing.csproj">
-      <Project>{62DB3FDC-21A1-41DB-96E0-B98D75AE94B5}</Project>
-      <Name>Infrastructure.Crosscutting.Mailing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Crosscutting.Mapping\Infrastructure.Crosscutting.Mapping.csproj">
       <Project>{9E42E658-9490-47B4-BB3D-B31C281403F2}</Project>
       <Name>Infrastructure.Crosscutting.Mapping</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting.Security.Authentication\Infrastructure.Crosscutting.Security.Authentication.csproj">
-      <Project>{FB15E926-5957-4085-BA54-004CCE0DA01C}</Project>
-      <Name>Infrastructure.Crosscutting.Security.Authentication</Name>
+    <ProjectReference Include="..\Infrastructure.Crosscutting\Infrastructure.Crosscutting.csproj">
+      <Project>{FE0E59F4-4656-40C8-AFDA-FD903D9EFB95}</Project>
+      <Name>Infrastructure.Crosscutting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Persistence.Dapper\Infrastructure.Persistence.Dapper.csproj">
       <Project>{18189842-FCB8-4B9C-94BA-C93C10836540}</Project>

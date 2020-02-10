@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using Application.ApplicationResults;
 using Application.Contracts.BusinessValidators;
@@ -7,11 +8,13 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Services;
-using Domain.Enums;
+using Infrastructure.Crosscutting.Auditing;
+using Newtonsoft.Json;
 
 namespace Application.Services
 {
@@ -88,7 +91,15 @@ namespace Application.Services
 
                 _repository.Add(aggregate);
 
-                _auditService.Audit(aggregate, AuditAction.Create, InventAppContext.UserName);
+                _auditService.Audit(new Audit
+                {
+                    Application = "InventApp",
+                    Environment = ConfigurationManager.AppSettings["Environment"],
+                    User = InventAppContext.UserName,
+                    Entity = JsonConvert.SerializeObject(aggregate),
+                    EntityName = aggregate.GetType().Name,
+                    Action = AuditAction.Create
+                });
 
                 return new ApplicationResult<Guid>
                 {
@@ -115,7 +126,15 @@ namespace Application.Services
 
                 _repository.Update(aggregateUpdated);
 
-                _auditService.Audit(aggregateUpdated, AuditAction.Update, InventAppContext.UserName);
+                _auditService.Audit(new Audit
+                {
+                    Application = "InventApp",
+                    Environment = ConfigurationManager.AppSettings["Environment"],
+                    User = InventAppContext.UserName,
+                    Entity = JsonConvert.SerializeObject(aggregateUpdated),
+                    EntityName = aggregate.GetType().Name,
+                    Action = AuditAction.Update
+                });
 
                 return new EmptyResult
                 {
@@ -137,7 +156,15 @@ namespace Application.Services
 
                 _repository.Delete(aggregate);
 
-                _auditService.Audit(aggregate, AuditAction.Delete, InventAppContext.UserName);
+                _auditService.Audit(new Audit
+                {
+                    Application = "InventApp",
+                    Environment = ConfigurationManager.AppSettings["Environment"],
+                    User = InventAppContext.UserName,
+                    Entity = JsonConvert.SerializeObject(aggregate),
+                    EntityName = aggregate.GetType().Name,
+                    Action = AuditAction.Delete
+                });
 
                 return new EmptyResult
                 {

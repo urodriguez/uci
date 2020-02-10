@@ -4,14 +4,14 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Compilation;
-using Domain.Contracts.Infrastructure.Crosscutting;
-using Infrastructure.Crosscutting.Shared.RestClient;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
+using RestSharp;
 
 namespace Infrastructure.Crosscutting.Logging
 {
     public class LogService : ILogService
     {
-        private readonly IInventAppRestClient _restClient;
+        private readonly IRestClient _restClient;
 
         private readonly string _application;
         private readonly string _projectName;
@@ -32,12 +32,12 @@ namespace Infrastructure.Crosscutting.Logging
                 { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
-            _restClient = new InventAppRestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
 
-            var request = new InventAppRestRequest
+            var request = new RestRequest
             {
                 Resource = "correlations",
-                Method = InventAppRestMethod.POST
+                Method = Method.POST
             };
             var correlationResponse = _restClient.Post<Correlation>(request);
 
@@ -68,12 +68,12 @@ namespace Infrastructure.Crosscutting.Logging
             {
                 try
                 {
-                    var request = new InventAppRestRequest
+                    var request = new RestRequest
                     {
                         Resource = "logs",
-                        Method = InventAppRestMethod.POST,
-                        JsonBody = new Log(_application, _projectName, _correlationId, messageToLog, logType)
+                        Method = Method.POST
                     };
+                    request.AddJsonBody(new Log(_application, _projectName, _correlationId, messageToLog, logType));
 
                     _restClient.Post(request);
                 }

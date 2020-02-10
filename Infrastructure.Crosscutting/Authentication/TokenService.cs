@@ -5,12 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Security.Claims;
-using Domain.Contracts.Infrastructure.Crosscutting;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
-using Infrastructure.Crosscutting.Shared.RestClient;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
+using RestSharp;
 
-namespace Infrastructure.Crosscutting.Security.Authentication
+namespace Infrastructure.Crosscutting.Authentication
 {
     public class TokenService : DelegatingHandler, ITokenService
     {
@@ -18,7 +17,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
         private const string AccountSecret = "1nfr4structur3_1nv3nt4pp";
 
         private readonly ILogService _logService;
-        private readonly IInventAppRestClient _restClient;
+        private readonly IRestClient _restClient;
 
         public TokenService(ILogService logService)
         {
@@ -34,23 +33,23 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                 { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
             };
 
-            _restClient = new InventAppRestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
         }
 
-        public ISecurityToken Generate(IReadOnlyCollection<Claim> claims)
+        public ISecurityToken Generate(IReadOnlyCollection<System.Security.Claims.Claim> claims)
         {
             try
             {
-                var request = new InventAppRestRequest
+                var request = new RestRequest
                 {
                     Resource = "tokens",
-                    Method = InventAppRestMethod.POST,
-                    JsonBody = new
-                    {
-                        Account = new { Id = AccountId, Secret = AccountSecret },
-                        claims
-                    }
+                    Method = Method.POST
                 };
+                request.AddJsonBody(new
+                {
+                    Account = new { Id = AccountId, Secret = AccountSecret },
+                    claims
+                });
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
@@ -74,7 +73,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                     return null;
                 }
 
-                if (!response.IsSuccessful())
+                if (!response.IsSuccessful)
                 {
                     _logService.LogErrorMessage(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Claims data to Token Micro-service | Status=FAIL - Reason={response.Content}"
@@ -97,24 +96,24 @@ namespace Infrastructure.Crosscutting.Security.Authentication
             }
         }
 
-        public IEnumerable<Claim> Validate(string securityToken)
+        public IEnumerable<System.Security.Claims.Claim> Validate(string securityToken)
         {
             try
             {
-                var request = new InventAppRestRequest
+                var request = new RestRequest
                 {
                     Resource = "tokens/validate",
-                    Method = InventAppRestMethod.POST,
-                    JsonBody = new
-                    {
-                        Account = new { Id = AccountId, Secret = AccountSecret },
-                        Token = securityToken
-                    }
+                    Method = Method.POST
                 };
+                request.AddJsonBody(new
+                {
+                    Account = new { Id = AccountId, Secret = AccountSecret },
+                    Token = securityToken
+                });
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
 
-                var response = _restClient.Post<TokenValidateDto>(request);
+                var response = _restClient.Post<TokenValidate>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
@@ -134,7 +133,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                     return null;
                 }
 
-                if (!response.IsSuccessful())
+                if (!response.IsSuccessful)
                 {
                     _logService.LogErrorMessage(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Token data to Token Micro-service | Status=FAIL - Reason={response.Content}"
@@ -147,7 +146,7 @@ namespace Infrastructure.Crosscutting.Security.Authentication
                     $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Account-Token data sent to Token Micro-service | Status=OK"
                 );
 
-                return response.Data.Claims.Select(d => new Claim(d.Type, d.Value));
+                return response.Data.Claims.Select(c => new System.Security.Claims.Claim(c.Type, c.Value));
             }
             catch (Exception e)
             {

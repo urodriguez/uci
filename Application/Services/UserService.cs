@@ -11,14 +11,15 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting;
+using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
+using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Domain.Exceptions;
+using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Security.Authentication;
 
 namespace Application.Services
 {
@@ -75,10 +76,10 @@ namespace Application.Services
                 _userRepository.Update(user);
 
                 var securityToken = _tokenService.Generate(
-                    new List<Claim>
+                    new List<System.Security.Claims.Claim>
                     {
-                        new Claim(ClaimTypes.Name, userLoginDto.UserName),
-                        new Claim(ClaimTypes.Email, user.Email)
+                        new System.Security.Claims.Claim(ClaimTypes.Name, userLoginDto.UserName),
+                        new System.Security.Claims.Claim(ClaimTypes.Email, user.Email)
                     }
                 );
 

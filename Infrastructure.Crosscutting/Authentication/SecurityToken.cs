@@ -1,8 +1,7 @@
 ﻿using System;
-using Domain.Contracts.Infrastructure.Crosscutting;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 
-namespace Infrastructure.Crosscutting.Security.Authentication
+namespace Infrastructure.Crosscutting.Authentication
 {
     public class SecurityToken : ISecurityToken
     {

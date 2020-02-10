@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Crosscutting.Logging
 {
-    internal enum LogType
+    public enum LogType
     {
         Trace = 0,
         Info = 1,
