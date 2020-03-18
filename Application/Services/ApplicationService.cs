@@ -41,7 +41,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.Unauthenticated,
+                    Status = ApplicationResultStatus.Unauthenticated,
                     Message = "Authentication fails. Check credentials"
                 };
             }
@@ -51,7 +51,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.Unauthorized,
+                    Status = ApplicationResultStatus.Unauthorized,
                     Message = uae.Message
                 };
             }
@@ -61,7 +61,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.NotFound,
+                    Status = ApplicationResultStatus.NotFound,
                     Message = onfe.Message
                 };
             }
@@ -71,7 +71,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.BadRequest,
+                    Status = ApplicationResultStatus.BadRequest,
                     Message = "Missing data to process the request"
                 };
             }
@@ -81,7 +81,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.BadRequest,
+                    Status = ApplicationResultStatus.BadRequest,
                     Message = bre.Message
                 };
             }
@@ -91,7 +91,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.InternalServerError,
+                    Status = ApplicationResultStatus.InternalServerError,
                     Message = ise.Message
                 };
             }
@@ -101,7 +101,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.InternalServerError,
+                    Status = ApplicationResultStatus.InternalServerError,
                     Message = e.Message
                 };
             }

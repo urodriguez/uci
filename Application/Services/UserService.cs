@@ -87,7 +87,7 @@ namespace Application.Services
 
                 return new ApplicationResult<string>
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = "Token generated",
                     Data = securityToken.Token
                 };
@@ -102,8 +102,14 @@ namespace Application.Services
             {
                 var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
-                var templatePath = assetsPath + "\\user_email_create.html";
+                var templatePath = assetsPath + "\\templates\\user_created_email.html";
                 var template = File.ReadAllText(templatePath);
+                var userId = ((ApplicationResult<Guid>) applicationResult).Data;
+                var templateReplaced = template.Replace("{{confirmEmailUrl}}", $"{InventAppContext.WebApiUrl()}/users/{userId}/confirmEmail")
+                                               .Replace("{{FirstName}}", userDto.FirstName)
+                                               .Replace("{{LastName}}", userDto.LastName)
+                                               .Replace("{{UserName}}", userDto.Name)
+                                               .Replace("{{Role}}", userDto.RoleId.ToString());
 
                 _emailService.Send(new Email
                 {
@@ -125,7 +131,7 @@ namespace Application.Services
                     },
                     To = userDto.Email,
                     Subject = "User Created",
-                    Body = template
+                    Body = templateReplaced
                 });
             }
 
@@ -144,12 +150,20 @@ namespace Application.Services
 
                 _userRepository.Update(user);
 
-                return new EmptyResult
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
+                var templatePath = assetsPath + "\\templates\\user_confirmed.html";
+                var template = File.ReadAllText(templatePath);
+                var templateReplaced = template.Replace("{{UserName}}", user.Name)
+                                               .Replace("{{InventAppClientUrl}}", InventAppContext.ClientUrl());
+
+                return new ApplicationResult<string>
                 {
-                    Status = ApplicationStatus.Ok,
-                    Message = "Email confirmed"
+                    Status = ApplicationResultStatus.Ok,
+                    Message = "Email has been confirmed",
+                    Data = templateReplaced
                 };
-            });
+            }, false);
         }
     }
 }

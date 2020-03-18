@@ -53,7 +53,7 @@ namespace Application.Services
 
                 return new ApplicationResult<IEnumerable<ProductDto>>
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = "Cheapest products found",
                     Data = cheapestProductsDto
                 };

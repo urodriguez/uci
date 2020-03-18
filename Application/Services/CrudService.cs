@@ -53,7 +53,7 @@ namespace Application.Services
 
                 return new ApplicationResult<IEnumerable<TDto>>
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = "Entries found",
                     Data = dtos
                 };
@@ -72,7 +72,7 @@ namespace Application.Services
 
                 return new ApplicationResult<TDto>
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = "Entry found",
                     Data = dto
                 };
@@ -103,7 +103,7 @@ namespace Application.Services
 
                 return new ApplicationResult<Guid>
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = "Entry has been created",
                     Data = aggregate.Id
                 };
@@ -138,7 +138,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = $"Entry with Id={aggregate.Id} has been updated"
                 };
             });
@@ -168,7 +168,7 @@ namespace Application.Services
 
                 return new EmptyResult
                 {
-                    Status = ApplicationStatus.Ok,
+                    Status = ApplicationResultStatus.Ok,
                     Message = $"Entry with Id={aggregate.Id} has been deleted"
                 };
             });

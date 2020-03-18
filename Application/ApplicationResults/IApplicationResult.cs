@@ -2,7 +2,7 @@
 {
     public interface IApplicationResult
     {
-        ApplicationStatus Status { get; set; }
+        ApplicationResultStatus Status { get; set; }
         string Message { get; set; }
         bool IsSuccessful();
     }

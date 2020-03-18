@@ -1,6 +1,6 @@
 ﻿namespace Application
 {
-    public enum ApplicationStatus
+    public enum ApplicationResultStatus
     {
         Ok,
         BadRequest,

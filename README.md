@@ -70,8 +70,9 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Infrastructe.Authentication: deploy -> DONE
 * InventApp: centralize RestSharp into SharedProject -> DONE
 * Infrastructe.Mailing: implement -> DONE
+* InventApp: create user sending confirm email -> DONE
 
-* InventApp: create user sending confirm email
+* InventApp: autogenerate password and allow user to change after first login
 
 * InventApp: diff between invalid token or expired token exception
 * InventApp: avoid show internal message errors, only log them. Show reference Id

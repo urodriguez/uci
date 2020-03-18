@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Http;
-using Application.ApplicationResults;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {
+    [RoutePrefix("api/users")]
     public class UsersController : CrudController<UserDto>
     {
         private readonly IUserService _userService;
@@ -16,14 +16,8 @@ namespace WebApi.Controllers
             _userService = userService;
         }
 
-        [HttpPatch]
-        public IHttpActionResult ConfirmEmail([FromUri] Guid id)
-        {
-            return Execute(() =>
-            {
-                _userService.ConfirmEmail(id);
-                return new EmptyResult();
-            });
-        }
+        [HttpGet]
+        [Route("{id:Guid}/confirmEmail")]
+        public IHttpActionResult ConfirmEmail([FromUri] Guid id) => Execute(() => _userService.ConfirmEmail(id), MediaType.TextHtml);
     }
 }

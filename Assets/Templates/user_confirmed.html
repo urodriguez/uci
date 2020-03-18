@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+  <h2 style="text-align: center;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSt-LECzLtJb9HbPWCBSJyb-HZc-I-ateXMZyTgOBi-nNqd4WSG" alt="" width="226" height="225" /></h2>
+  <h2 style="text-align: center; color: #008000">Hi '{{UserName}}'! Your email has been confirmed!</h2>
+  <p style="text-align: center; font-size: 1.5em;">Please wait, you are being redirected to <strong>InventApp</strong> login page ...</p>
+  <div id="myProgress" style="text-align: center; background-color: #ededed; margin-left: 64px; margin-right: 64px" >
+    <div id="myBar" 
+         style="width: 1%; 
+                height: 30px; 
+                background-color: green; 
+                text-align: center; 
+                line-height: 30px; 
+                color: white;">
+         10%
+    </div>
+  </div>
+
+  <script>
+    var i = 0;
+    function move() {
+      if (i == 0) {
+        i = 1;
+        var elem = document.getElementById("myBar");
+        var width = 10;
+        var id = setInterval(frame, 25);
+        function frame() {
+          if (width >= 100) {
+            clearInterval(id);
+            i = 0;
+          } else {
+            width++;
+            elem.style.width = width + "%";
+            elem.innerHTML = width + "%";
+          }
+        }
+      }
+    }
+
+    move()
+
+    setTimeout(() => {
+      window.location.href = "{{InventAppClientUrl}}";
+    }, 3000)
+  </script> 
+</body>
+</html>
