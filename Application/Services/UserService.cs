@@ -11,6 +11,7 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
@@ -39,7 +40,8 @@ namespace Application.Services
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory,
             ILogService logService, 
-            IEmailService emailService
+            IEmailService emailService,
+            IAppSettingsService appSettingsService
         ) : base(
             roleService,
             userRepository, 
@@ -47,7 +49,8 @@ namespace Application.Services
             auditService, 
             userBusinessValidator,
             tokenService,
-            logService
+            logService,
+            appSettingsService
         )
         {
             _userRepository = userRepository;
@@ -105,7 +108,7 @@ namespace Application.Services
                 var templatePath = assetsPath + "\\templates\\user_created_email.html";
                 var template = File.ReadAllText(templatePath);
                 var userId = ((ApplicationResult<Guid>) applicationResult).Data;
-                var templateReplaced = template.Replace("{{confirmEmailUrl}}", $"{InventAppContext.WebApiUrl()}/users/{userId}/confirmEmail")
+                var templateReplaced = template.Replace("{{confirmEmailUrl}}", $"{_appSettingsService.WebApiUrl}/users/{userId}/confirmEmail")
                                                .Replace("{{FirstName}}", userDto.FirstName)
                                                .Replace("{{LastName}}", userDto.LastName)
                                                .Replace("{{UserName}}", userDto.Name)
@@ -155,7 +158,7 @@ namespace Application.Services
                 var templatePath = assetsPath + "\\templates\\user_confirmed.html";
                 var template = File.ReadAllText(templatePath);
                 var templateReplaced = template.Replace("{{UserName}}", user.Name)
-                                               .Replace("{{InventAppClientUrl}}", InventAppContext.ClientUrl());
+                                               .Replace("{{InventAppClientUrl}}", _appSettingsService.ClientUrl);
 
                 return new ApplicationResult<string>
                 {

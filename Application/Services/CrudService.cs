@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using Application.ApplicationResults;
 using Application.Contracts.BusinessValidators;
@@ -8,6 +7,7 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
@@ -25,6 +25,7 @@ namespace Application.Services
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
         protected readonly IAuditService _auditService;
         private readonly IBusinessValidator<TDto> _businessValidator;
+        protected readonly IAppSettingsService _appSettingsService;
 
         protected CrudService(
             IRoleService roleService,
@@ -33,7 +34,8 @@ namespace Application.Services
             IAuditService auditService, 
             IBusinessValidator<TDto> businessValidator, 
             ITokenService tokenService,
-            ILogService logService
+            ILogService logService,
+            IAppSettingsService appSettingsService
         ) : base (tokenService, logService)
         {
             _repository = repository;
@@ -41,6 +43,7 @@ namespace Application.Services
             _auditService = auditService;
             _businessValidator = businessValidator;
             _roleService = roleService;
+            _appSettingsService = appSettingsService;
         }
 
         public IApplicationResult GetAll()
@@ -94,7 +97,7 @@ namespace Application.Services
                 _auditService.Audit(new Audit
                 {
                     Application = "InventApp",
-                    Environment = ConfigurationManager.AppSettings["Environment"],
+                    Environment = _appSettingsService.Environment.Name,
                     User = InventAppContext.UserName,
                     Entity = JsonConvert.SerializeObject(aggregate),
                     EntityName = aggregate.GetType().Name,
@@ -129,7 +132,7 @@ namespace Application.Services
                 _auditService.Audit(new Audit
                 {
                     Application = "InventApp",
-                    Environment = ConfigurationManager.AppSettings["Environment"],
+                    Environment = _appSettingsService.Environment.Name,
                     User = InventAppContext.UserName,
                     Entity = JsonConvert.SerializeObject(aggregateUpdated),
                     EntityName = aggregate.GetType().Name,
@@ -159,7 +162,7 @@ namespace Application.Services
                 _auditService.Audit(new Audit
                 {
                     Application = "InventApp",
-                    Environment = ConfigurationManager.AppSettings["Environment"],
+                    Environment = _appSettingsService.Environment.Name,
                     User = InventAppContext.UserName,
                     Entity = JsonConvert.SerializeObject(aggregate),
                     EntityName = aggregate.GetType().Name,

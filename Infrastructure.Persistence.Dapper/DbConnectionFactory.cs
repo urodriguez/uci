@@ -1,26 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+﻿using System.Data;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using MiniProfiler.Integrations;
 
 namespace Infrastructure.Persistence.Dapper
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {
+        private readonly IAppSettingsService _appSettingsService;
+
+        public DbConnectionFactory(IAppSettingsService appSettingsService)
+        {
+            _appSettingsService = appSettingsService;
+        }
+
         public IDbConnection GetSqlConnection()
         {
-            var envConnectionString = new Dictionary<string, string>
-            {
-                { "DEV", "Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
-                { "TEST", "Server=localhost;Database=UciRod.Inventapp-Test;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
-                { "STAGE", "Server=localhost;Database=UciRod.Inventapp-Stage;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" },
-                { "PROD", "Server=localhost;Database=UciRod.Inventapp-Prod;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True" }
-            };
-
-            var connectionString = envConnectionString[ConfigurationManager.AppSettings["Environment"]];
-
             CustomDbProfiler.Current.ProfilerContext.Reset();
-            return ProfiledDbConnectionFactory.New(new SqlServerDbConnectionFactory(connectionString), CustomDbProfiler.Current);
+            return ProfiledDbConnectionFactory.New(new SqlServerDbConnectionFactory(_appSettingsService.ConnectionString), CustomDbProfiler.Current);
         }
     }
 }

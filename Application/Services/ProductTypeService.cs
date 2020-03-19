@@ -3,6 +3,7 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
@@ -20,7 +21,8 @@ namespace Application.Services
             IAuditService auditService,
             IProductTypeBusinessValidator productTypeBusinessValidator,
             ITokenService tokenService,
-            ILogService logService
+            ILogService logService,
+            IAppSettingsService appSettingsService
         ) : base(
             roleService,
             repository,
@@ -28,7 +30,8 @@ namespace Application.Services
             auditService, 
             productTypeBusinessValidator,
             tokenService,
-            logService
+            logService,
+            appSettingsService
         )
         {
         }

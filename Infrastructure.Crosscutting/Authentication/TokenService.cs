@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using RestSharp;
@@ -19,21 +19,10 @@ namespace Infrastructure.Crosscutting.Authentication
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
 
-        public TokenService(ILogService logService)
+        public TokenService(ILogService logService, IAppSettingsService appSettingsService)
         {
             _logService = logService;
-
-            const string project = "authentication";
-
-            var envUrl = new Dictionary<string, string>
-            {
-                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
-                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
-            };
-
-            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(appSettingsService.AuthenticationUrl);
         }
 
         public ISecurityToken Generate(IReadOnlyCollection<System.Security.Claims.Claim> claims)

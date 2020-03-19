@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings\AppSettingsService.cs" />
+    <Compile Include="AppSettings\InventAppEnvironment.cs" />
     <Compile Include="Auditing\Audit.cs" />
     <Compile Include="Auditing\AuditService.cs" />
     <Compile Include="Authentication\Claim.cs" />

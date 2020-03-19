@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Reflection;
 using System.Threading.Tasks;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using RestSharp;
@@ -14,21 +13,10 @@ namespace Infrastructure.Crosscutting.Auditing
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
 
-        public AuditService(ILogService logService)
+        public AuditService(ILogService logService, IAppSettingsService appSettingsService)
         {
             _logService = logService;
-
-            const string project = "auditing";
-
-            var envUrl = new Dictionary<string, string>
-            {
-                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
-                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
-            };
-
-            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(appSettingsService.AuditingUrl);
         }
 
         //TODO: implement avoid lost audit if connection fails

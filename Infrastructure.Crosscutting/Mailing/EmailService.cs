@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Reflection;
 using System.Threading.Tasks;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
 using RestSharp;
@@ -14,21 +13,10 @@ namespace Infrastructure.Crosscutting.Mailing
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
 
-        public EmailService(ILogService logService)
+        public EmailService(ILogService logService, IAppSettingsService appSettingsService)
         {
             _logService = logService;
-
-            const string project = "mailing";
-
-            var envUrl = new Dictionary<string, string>
-            {
-                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
-                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
-            };
-
-            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(appSettingsService.MailingUrl);
         }
 
         public void Send(IEmail email)

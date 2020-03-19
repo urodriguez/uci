@@ -50,6 +50,8 @@
     <Compile Include="Aggregates\User.cs" />
     <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\AppSettings\IAppSettingsService.cs" />
+    <Compile Include="Contracts\Infrastructure\Crosscutting\AppSettings\IInventAppEnvironment.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Auditing\AuditAction.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Auditing\IAuditable.cs" />
     <Compile Include="Contracts\Infrastructure\Crosscutting\Auditing\IAuditService.cs" />

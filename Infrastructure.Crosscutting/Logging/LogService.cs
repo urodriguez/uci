@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Compilation;
+using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
@@ -17,22 +16,12 @@ namespace Infrastructure.Crosscutting.Logging
         private readonly string _projectName;
         private readonly Guid _correlationId;
 
-        public LogService()
+        public LogService(IAppSettingsService appSettingsService)
         {
             _application = "InventApp";
             _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
 
-            const string project = "logging";
-
-            var envUrl = new Dictionary<string, string>
-            {
-                { "DEV",   $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "TEST",  $"http://www.ucirod.infrastructure-test.com:40000/{project}/api" },
-                { "STAGE", $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api" },
-                { "PROD",  $"http://www.ucirod.infrastructure.com:40000/{project}/api" }
-            };
-
-            _restClient = new RestClient(envUrl[ConfigurationManager.AppSettings["Environment"]]);
+            _restClient = new RestClient(appSettingsService.LoggingUrl);
 
             var request = new RestRequest
             {
