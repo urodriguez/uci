@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Domain.Attributes;
 using Domain.Contracts.Aggregates;
 using Domain.Entities;
@@ -42,6 +43,8 @@ namespace Domain.Aggregates
 
         public bool Activated { get; set; }
 
+        public bool IsUsingCustomPassword { get; set; }
+
         public bool IsLocked() => AccessFailedCount == 3;
 
         public bool PasswordIsValid(string password) => Password == password;
@@ -59,6 +62,22 @@ namespace Domain.Aggregates
             {
                 return false;
             }
+        }
+
+        public void GenerateDefaultPassword()
+        {
+            IsUsingCustomPassword = false;
+
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            const int passwordLength = 10;
+            Password = new string(Enumerable.Repeat(chars, passwordLength).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public bool PasswordSatisfyComplexity(string password)
+        {
+            return password.Length == 10; //TODO: improve complexity
         }
     }
 }

@@ -72,8 +72,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Infrastructe.Mailing: implement -> DONE
 * InventApp: create user sending confirm email -> DONE
 * InventApp: create injectable ApplicationSettingsService at crosscutting layer and replace all ConfigurationManager.AppSettings["Environment"] -> DONE
-
-* InventApp: autogenerate password and allow user to change after first login
+* InventApp: autogenerate password and allow user to change it after first login -> DONE
 
 * InventApp: diff between invalid token or expired token exception
 * InventApp: avoid show internal message errors, only log them. Show reference Id

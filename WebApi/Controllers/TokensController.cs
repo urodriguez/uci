@@ -15,6 +15,6 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Create([FromBody] UserLoginDto userLoginDto) => Execute(() => _userService.Login(userLoginDto));
+        public IHttpActionResult Create([FromBody] CredentialsDto credentialsDto) => Execute(() => _userService.Login(credentialsDto));
     }
 }

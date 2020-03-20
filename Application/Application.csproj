@@ -67,6 +67,9 @@
     <Compile Include="ApplicationResults\ApplicationResult.cs" />
     <Compile Include="ApplicationResults\EmptyResult.cs" />
     <Compile Include="ApplicationResultStatus.cs" />
+    <Compile Include="Dtos\LoginDto.cs" />
+    <Compile Include="Dtos\LoginStatus.cs" />
+    <Compile Include="Dtos\PasswordDto.cs" />
     <Compile Include="Exceptions\AuthenticationFailException.cs" />
     <Compile Include="Exceptions\InternalServerException.cs" />
     <Compile Include="Factories\Factory.cs" />
@@ -90,7 +93,7 @@
     <Compile Include="Contracts\Services\IUserService.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\UserDto.cs" />
-    <Compile Include="Dtos\UserLoginDto.cs" />
+    <Compile Include="Dtos\CredentialsDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductTypeDto.cs" />
     <Compile Include="ApplicationResults\IApplicationResult.cs" />
