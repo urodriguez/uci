@@ -7,13 +7,12 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Services;
+using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Authentication;
+using Infrastructure.Crosscutting.Logging;
 using Newtonsoft.Json;
 
 namespace Application.Services
@@ -25,7 +24,6 @@ namespace Application.Services
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
         protected readonly IAuditService _auditService;
         private readonly IBusinessValidator<TDto> _businessValidator;
-        protected readonly IAppSettingsService _appSettingsService;
 
         protected CrudService(
             IRoleService roleService,
@@ -36,14 +34,13 @@ namespace Application.Services
             ITokenService tokenService,
             ILogService logService,
             IAppSettingsService appSettingsService
-        ) : base (tokenService, logService)
+        ) : base (tokenService, logService, appSettingsService)
         {
             _repository = repository;
             _factory = factory;
             _auditService = auditService;
             _businessValidator = businessValidator;
             _roleService = roleService;
-            _appSettingsService = appSettingsService;
         }
 
         public IApplicationResult GetAll()

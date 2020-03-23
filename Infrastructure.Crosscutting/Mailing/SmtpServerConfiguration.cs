@@ -1,10 +1,8 @@
-﻿using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
-
-namespace Infrastructure.Crosscutting.Mailing
+﻿namespace Infrastructure.Crosscutting.Mailing
 {
-    public class SmtpServerConfiguration : ISmtpServerConfiguration
+    public class SmtpServerConfiguration
     {
-        public ISender Sender { get; set; }
-        public IHost Host { get; set; }
+        public Sender Sender { get; set; }
+        public Host Host { get; set; }
     }
 }

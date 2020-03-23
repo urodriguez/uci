@@ -174,6 +174,10 @@
       <Project>{885F1FEA-39E4-4794-BB58-9DE2A69DC2BD}</Project>
       <Name>Infrastructure.Crosscutting.Documentation.Swagger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Crosscutting\Infrastructure.Crosscutting.csproj">
+      <Project>{FE0E59F4-4656-40C8-AFDA-FD903D9EFB95}</Project>
+      <Name>Infrastructure.Crosscutting</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

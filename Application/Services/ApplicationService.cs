@@ -6,9 +6,10 @@ using System.Reflection;
 using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Exceptions;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Exceptions;
+using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Authentication;
+using Infrastructure.Crosscutting.Logging;
 
 namespace Application.Services
 {
@@ -16,11 +17,13 @@ namespace Application.Services
     {
         protected readonly ITokenService _tokenService;
         protected readonly ILogService _logService;
+        protected readonly IAppSettingsService _appSettingsService;
 
-        protected ApplicationService(ITokenService tokenService, ILogService logService)
+        protected ApplicationService(ITokenService tokenService, ILogService logService, IAppSettingsService appSettingsService)
         {
             _tokenService = tokenService;
             _logService = logService;
+            _appSettingsService = appSettingsService;
         }
 
         protected IApplicationResult Execute<TResult>(Func<TResult> service, bool requiresAuthentication = true) where TResult : IApplicationResult
@@ -109,7 +112,11 @@ namespace Application.Services
 
         protected void CheckAuthentication()
         {
-            var tokenValidation = _tokenService.Validate(InventAppContext.SecurityToken);
+            var tokenValidation = _tokenService.Validate(new TokenValidateRequest
+            {
+                Account = _appSettingsService.InfrastructureAccount,
+                SecurityToken = InventAppContext.SecurityToken
+            });
 
             if (tokenValidation.TokenIsInvalid()) throw new AuthenticationFailException("SecurityToken is invalid");
             if (tokenValidation.TokenIsExpired()) throw new AuthenticationFailException("SecurityToken is expired");

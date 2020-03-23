@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
-using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
+using Infrastructure.Crosscutting.AppSettings;
+using Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Mailing
@@ -19,7 +18,7 @@ namespace Infrastructure.Crosscutting.Mailing
             _restClient = new RestClient(appSettingsService.MailingUrl);
         }
 
-        public void Send(IEmail email)
+        public void Send(Email email)
         {
             var methodName = MethodBase.GetCurrentMethod().Name;//Get method name outside task context
 

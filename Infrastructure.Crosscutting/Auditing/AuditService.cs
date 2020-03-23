@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.AppSettings;
+using Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Auditing
@@ -20,7 +19,7 @@ namespace Infrastructure.Crosscutting.Auditing
         }
 
         //TODO: implement avoid lost audit if connection fails
-        public void Audit(IAuditable auditable)
+        public void Audit(Audit audit)
         {
             var methodName = MethodBase.GetCurrentMethod().Name;//Get method name outside task context
 
@@ -33,7 +32,7 @@ namespace Infrastructure.Crosscutting.Auditing
                         Resource = "audits",
                         Method = Method.POST,
                     };
-                    request.AddJsonBody(auditable);
+                    request.AddJsonBody(audit);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending audit data to Audit Micro-service");
 
@@ -47,7 +46,7 @@ namespace Infrastructure.Crosscutting.Auditing
                 }
                 catch (Exception e)
                 {
-                    _logService.LogErrorMessage($"{GetType().Name}.{methodName} | An error has occurred serializing | id={auditable.EntityName} - action={auditable.Action}");
+                    _logService.LogErrorMessage($"{GetType().Name}.{methodName} | An error has occurred serializing | id={audit.EntityName} - action={audit.Action}");
                     _logService.LogErrorMessage($"{GetType().Name}.{methodName} | errorMessage={e.Message}");
                 }
             });

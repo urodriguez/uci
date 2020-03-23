@@ -49,23 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auditing\AuditAction.cs" />
+    <Compile Include="Auditing\IAuditService.cs" />
+    <Compile Include="Authentication\TokenValidateRequest.cs" />
+    <Compile Include="InfrastructureAccount.cs" />
     <Compile Include="AppSettings\AppSettingsService.cs" />
+    <Compile Include="AppSettings\IAppSettingsService.cs" />
     <Compile Include="AppSettings\InventAppEnvironment.cs" />
     <Compile Include="Auditing\Audit.cs" />
     <Compile Include="Auditing\AuditService.cs" />
     <Compile Include="Authentication\Claim.cs" />
     <Compile Include="Authentication\ITokenService.cs" />
     <Compile Include="Authentication\SecurityToken.cs" />
+    <Compile Include="Authentication\TokenGenerateRequest.cs" />
     <Compile Include="Authentication\TokenService.cs" />
     <Compile Include="Authentication\TokenStatus.cs" />
     <Compile Include="Authentication\TokenValidation.cs" />
     <Compile Include="Logging\Correlation.cs" />
+    <Compile Include="Logging\ILogService.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogService.cs" />
     <Compile Include="Logging\LogType.cs" />
     <Compile Include="Mailing\Email.cs" />
     <Compile Include="Mailing\EmailService.cs" />
     <Compile Include="Mailing\Host.cs" />
+    <Compile Include="Mailing\IEmailService.cs" />
     <Compile Include="Mailing\Sender.cs" />
     <Compile Include="Mailing\SmtpServerConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,4 @@
-﻿namespace Domain.Contracts.Infrastructure.Crosscutting.Logging
+﻿namespace Infrastructure.Crosscutting.Logging
 {
     public interface ILogService
     {

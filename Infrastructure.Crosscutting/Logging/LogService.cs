@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Compilation;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.AppSettings;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Logging

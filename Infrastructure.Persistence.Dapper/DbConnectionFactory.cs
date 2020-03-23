@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
+using Infrastructure.Crosscutting.AppSettings;
 using MiniProfiler.Integrations;
 
 namespace Infrastructure.Persistence.Dapper

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Reflection;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 
 namespace Infrastructure.Crosscutting.AppSettings
 {
@@ -77,10 +76,28 @@ namespace Infrastructure.Crosscutting.AppSettings
             }
         }
 
-        public IInventAppEnvironment Environment => new InventAppEnvironment
+        public int DefaultTokenExpiresTime
+        {
+            get
+            {
+                switch (Environment.Name)
+                {
+                    case "DEV":   return 120;
+                    case "TEST":  return 30;
+                    case "STAGE": return 30;
+                    case "PROD":  return 30;
+
+                    default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
+                }
+            }
+        }
+
+        public InventAppEnvironment Environment => new InventAppEnvironment
         {
             Name = ConfigurationManager.AppSettings["Environment"]
         };
+
+        public InfrastructureAccount InfrastructureAccount => new InfrastructureAccount { Id = "InventApp", SecretKey = "1nfr4structur3_1nv3nt4pp" };
 
         public string LoggingUrl
         {

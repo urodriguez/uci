@@ -1,8 +1,6 @@
-﻿using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
-
-namespace Infrastructure.Crosscutting.Mailing
+﻿namespace Infrastructure.Crosscutting.Mailing
 {
-    public class Host : IHost
+    public class Host
     {
         public string Name { get; set; }
         public int Port { get; set; }

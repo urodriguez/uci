@@ -11,14 +11,13 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
-using Domain.Contracts.Infrastructure.Crosscutting.Mailing;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
+using Infrastructure.Crosscutting.AppSettings;
+using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Authentication;
+using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
 using Claim = Infrastructure.Crosscutting.Authentication.Claim;
 
@@ -102,13 +101,16 @@ namespace Application.Services
                 user.LastLoginTime = DateTime.UtcNow;
                 _userRepository.Update(user);
 
-                var securityToken = _tokenService.Generate(
-                    new List<Claim>
+                var securityToken = _tokenService.Generate(new TokenGenerateRequest
+                {
+                    Account = _appSettingsService.InfrastructureAccount,
+                    Expires = _appSettingsService.DefaultTokenExpiresTime,
+                    Claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, credentialsDto.UserName),
                         new Claim(ClaimTypes.Email, user.Email)
                     }
-                );
+                });
 
                 if (securityToken == null) throw new InternalServerException("SecurityToken could not be generated");
 

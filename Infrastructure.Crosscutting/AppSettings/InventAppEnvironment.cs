@@ -1,8 +1,6 @@
-﻿using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-
-namespace Infrastructure.Crosscutting.AppSettings
+﻿namespace Infrastructure.Crosscutting.AppSettings
 {
-    public class InventAppEnvironment : IInventAppEnvironment
+    public class InventAppEnvironment
     {
         public string Name { get; set; }
         public bool IsLocal()

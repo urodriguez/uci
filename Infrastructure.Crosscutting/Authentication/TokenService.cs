@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.AppSettings;
+using Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Authentication
 {
     public class TokenService : DelegatingHandler, ITokenService
     {
-        private const string AccountId = "InventApp";
-        private const string AccountSecretKey = "1nfr4structur3_1nv3nt4pp";
-
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
 
@@ -23,7 +19,7 @@ namespace Infrastructure.Crosscutting.Authentication
             _restClient = new RestClient(appSettingsService.AuthenticationUrl);
         }
 
-        public SecurityToken Generate(IReadOnlyCollection<Claim> claims)
+        public SecurityToken Generate(TokenGenerateRequest tokenGenerateRequest)
         {
             try
             {
@@ -32,12 +28,7 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens",
                     Method = Method.POST
                 };
-                request.AddJsonBody(new
-                {
-                    Account = new { Id = AccountId, SecretKey = AccountSecretKey },
-                    Expire = 1,
-                    claims
-                });
+                request.AddJsonBody(tokenGenerateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
@@ -84,7 +75,7 @@ namespace Infrastructure.Crosscutting.Authentication
             }
         }
 
-        public TokenValidation Validate(string securityToken)
+        public TokenValidation Validate(TokenValidateRequest tokenValidateRequest)
         {
             try
             {
@@ -93,11 +84,7 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens/validate",
                     Method = Method.POST
                 };
-                request.AddJsonBody(new
-                {
-                    Account = new { Id = AccountId, SecretKey = AccountSecretKey },
-                    Token = securityToken
-                });
+                request.AddJsonBody(tokenValidateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
 

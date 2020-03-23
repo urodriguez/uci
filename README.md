@@ -75,10 +75,10 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: autogenerate password and allow user to change it after first login -> DONE
 * Infrastructure: differentiate between invalid token or expired token exception (catching corrrect exception) -> DONE
 * InventApp: catch and process new Authentication response -> DONE
+* Infrastructure.Authentication: reduce exp token to 1h -> DONE
+* InventApp: get exp token from AppSettings -> DONE
+* InventApp: refactor Infrastructure services and refecerences -> DONE
 
-* Infrastructure.Authentication: reduce exp token to 1h 
-
-* InventApp: refactor Infrastructure services and refecerences
 * Infrastructure: use credencials validation in all products
 * InventApp: send credencials to external Infrastructure service
 * InventApp: avoid show internal message errors, only log them. Show reference Id

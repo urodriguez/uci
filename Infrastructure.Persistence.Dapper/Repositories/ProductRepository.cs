@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Domain.Aggregates;
-using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Infrastructure.Crosscutting.Logging;
 
 namespace Infrastructure.Persistence.Dapper.Repositories
 {

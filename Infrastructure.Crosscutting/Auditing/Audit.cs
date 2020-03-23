@@ -1,8 +1,6 @@
-﻿using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
-
-namespace Infrastructure.Crosscutting.Auditing
+﻿namespace Infrastructure.Crosscutting.Auditing
 {
-    public class Audit : IAuditable
+    public class Audit
     {
         public string Application { get; set; }
         public string Environment { get; set; }
