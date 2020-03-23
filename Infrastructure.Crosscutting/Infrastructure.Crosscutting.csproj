@@ -54,9 +54,11 @@
     <Compile Include="Auditing\Audit.cs" />
     <Compile Include="Auditing\AuditService.cs" />
     <Compile Include="Authentication\Claim.cs" />
+    <Compile Include="Authentication\ITokenService.cs" />
     <Compile Include="Authentication\SecurityToken.cs" />
     <Compile Include="Authentication\TokenService.cs" />
-    <Compile Include="Authentication\TokenValidate.cs" />
+    <Compile Include="Authentication\TokenStatus.cs" />
+    <Compile Include="Authentication\TokenValidation.cs" />
     <Compile Include="Logging\Correlation.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogService.cs" />

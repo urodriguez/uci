@@ -6,15 +6,15 @@ using System.Reflection;
 using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Exceptions;
-using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Exceptions;
+using Infrastructure.Crosscutting.Authentication;
 
 namespace Application.Services
 {
     public abstract class ApplicationService
     {
-        private readonly ITokenService _tokenService;
+        protected readonly ITokenService _tokenService;
         protected readonly ILogService _logService;
 
         protected ApplicationService(ITokenService tokenService, ILogService logService)
@@ -42,7 +42,7 @@ namespace Application.Services
                 return new EmptyResult
                 {
                     Status = ApplicationResultStatus.Unauthenticated,
-                    Message = "Authentication fails. Check credentials"
+                    Message = $"Authentication fails. Issue: {afe.Message}"
                 };
             }
             catch (UnauthorizedAccessException uae)
@@ -109,10 +109,12 @@ namespace Application.Services
 
         protected void CheckAuthentication()
         {
-            var claims = _tokenService.Validate(InventAppContext.SecurityToken);
-            if (claims == null) throw new InternalServerException("SecurityToken could not be validated");
+            var tokenValidation = _tokenService.Validate(InventAppContext.SecurityToken);
 
-            var claimName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (tokenValidation.TokenIsInvalid()) throw new AuthenticationFailException("SecurityToken is invalid");
+            if (tokenValidation.TokenIsExpired()) throw new AuthenticationFailException("SecurityToken is expired");
+
+            var claimName = tokenValidation.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
             if (claimName == null) throw new InternalServerException("Missing claim type 'name'");
 
             InventAppContext.UserName = claimName.Value;

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
-using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
@@ -14,7 +12,7 @@ namespace Infrastructure.Crosscutting.Authentication
     public class TokenService : DelegatingHandler, ITokenService
     {
         private const string AccountId = "InventApp";
-        private const string AccountSecret = "1nfr4structur3_1nv3nt4pp";
+        private const string AccountSecretKey = "1nfr4structur3_1nv3nt4pp";
 
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
@@ -25,7 +23,7 @@ namespace Infrastructure.Crosscutting.Authentication
             _restClient = new RestClient(appSettingsService.AuthenticationUrl);
         }
 
-        public ISecurityToken Generate(IReadOnlyCollection<System.Security.Claims.Claim> claims)
+        public SecurityToken Generate(IReadOnlyCollection<Claim> claims)
         {
             try
             {
@@ -36,7 +34,8 @@ namespace Infrastructure.Crosscutting.Authentication
                 };
                 request.AddJsonBody(new
                 {
-                    Account = new { Id = AccountId, Secret = AccountSecret },
+                    Account = new { Id = AccountId, SecretKey = AccountSecretKey },
+                    Expire = 1,
                     claims
                 });
 
@@ -85,7 +84,7 @@ namespace Infrastructure.Crosscutting.Authentication
             }
         }
 
-        public IEnumerable<System.Security.Claims.Claim> Validate(string securityToken)
+        public TokenValidation Validate(string securityToken)
         {
             try
             {
@@ -96,13 +95,13 @@ namespace Infrastructure.Crosscutting.Authentication
                 };
                 request.AddJsonBody(new
                 {
-                    Account = new { Id = AccountId, Secret = AccountSecret },
+                    Account = new { Id = AccountId, SecretKey = AccountSecretKey },
                     Token = securityToken
                 });
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
 
-                var response = _restClient.Post<TokenValidate>(request);
+                var response = _restClient.Post<TokenValidation>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
@@ -135,7 +134,7 @@ namespace Infrastructure.Crosscutting.Authentication
                     $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Account-Token data sent to Token Micro-service | Status=OK"
                 );
 
-                return response.Data.Claims.Select(c => new System.Security.Claims.Claim(c.Type, c.Value));
+                return response.Data;
             }
             catch (Exception e)
             {

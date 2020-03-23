@@ -1,9 +1,8 @@
 ﻿using System;
-using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 
 namespace Infrastructure.Crosscutting.Authentication
 {
-    public class SecurityToken : ISecurityToken
+    public class SecurityToken
     {
         public string Issuer { get; set; }
         public DateTime? Expires { get; set; }

@@ -66,25 +66,31 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: if (!_roleService.LoggedUserIsAdmin()) throw new UnauthorizedAccessException(); <- move to CrudService? -> DONE
 * InventApp: test user readOnly -> DONE
 * InventApp: create Execute on ApplicationService and handle all exceptions there -> DONE
-* InventApp-Infrastructe: move auth service to Infrastructure solution -> DONE
-* Infrastructe.Authentication: deploy -> DONE
+* InventApp-Infrastructure: move auth service to Infrastructure solution -> DONE
+* Infrastructure.Authentication: deploy -> DONE
 * InventApp: centralize RestSharp into SharedProject -> DONE
-* Infrastructe.Mailing: implement -> DONE
+* Infrastructure.Mailing: implement -> DONE
 * InventApp: create user sending confirm email -> DONE
 * InventApp: create injectable ApplicationSettingsService at crosscutting layer and replace all ConfigurationManager.AppSettings["Environment"] -> DONE
 * InventApp: autogenerate password and allow user to change it after first login -> DONE
+* Infrastructure: differentiate between invalid token or expired token exception (catching corrrect exception) -> DONE
+* InventApp: catch and process new Authentication response -> DONE
 
-* InventApp: diff between invalid token or expired token exception
+* Infrastructure.Authentication: reduce exp token to 1h 
+
+* InventApp: refactor Infrastructure services and refecerences
+* Infrastructure: use credencials validation in all products
+* InventApp: send credencials to external Infrastructure service
 * InventApp: avoid show internal message errors, only log them. Show reference Id
-* Infrastructe: versioning all projects + InventApp: update URLs
-* Infrastructe.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
-* Infrastructe: create application
+* Infrastructure: versioning all projects + InventApp: update URLs
+* Infrastructure.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
+* Infrastructure: create application
   * user register -> receive email
   * user login
   * user see list available infrastructure services
   * user select infrastructure services
   * user pay -> credit card transactions?
-* Infrastructe.Authentication: implement refresh token
+* Infrastructure.Authentication: implement refresh token
 * InventApp: implement unityOfWork
 * API test & unit test
 * Auditing: implement complex auditing (objects with nested objects) 

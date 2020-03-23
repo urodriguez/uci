@@ -5,10 +5,10 @@ using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Crosscutting.AppSettings;
 using Domain.Contracts.Infrastructure.Crosscutting.Auditing;
-using Domain.Contracts.Infrastructure.Crosscutting.Authentication;
 using Domain.Contracts.Infrastructure.Crosscutting.Logging;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Services;
+using Infrastructure.Crosscutting.Authentication;
 
 namespace Application.Services
 {

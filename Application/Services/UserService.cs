@@ -20,13 +20,13 @@ using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Mailing;
+using Claim = Infrastructure.Crosscutting.Authentication.Claim;
 
 namespace Application.Services
 {
     public class UserService : CrudService<UserDto, User>, IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly TokenService _tokenService;
         private readonly IUserPredicateFactory _userPredicateFactory;
         private readonly IEmailService _emailService;
 
@@ -34,7 +34,7 @@ namespace Application.Services
             IUserRepository userRepository, 
             IUserFactory factory, 
             IAuditService auditService, 
-            TokenService tokenService, 
+            ITokenService tokenService, 
             IRoleService roleService, 
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory,
@@ -53,7 +53,6 @@ namespace Application.Services
         )
         {
             _userRepository = userRepository;
-            _tokenService = tokenService;
             _userPredicateFactory = userPredicateFactory;
             _emailService = emailService;
         }
@@ -78,7 +77,7 @@ namespace Application.Services
                 };
 
                 //TODO use encrypted password
-                if (!user.PasswordIsValid(credentialsDto.Password)) throw new AuthenticationFailException();
+                if (!user.PasswordIsValid(credentialsDto.Password)) throw new AuthenticationFailException("Invalid credentials");
 
                 if (!user.IsUsingCustomPassword) return new ApplicationResult<LoginDto>
                 {
@@ -104,10 +103,10 @@ namespace Application.Services
                 _userRepository.Update(user);
 
                 var securityToken = _tokenService.Generate(
-                    new List<System.Security.Claims.Claim>
+                    new List<Claim>
                     {
-                        new System.Security.Claims.Claim(ClaimTypes.Name, credentialsDto.UserName),
-                        new System.Security.Claims.Claim(ClaimTypes.Email, user.Email)
+                        new Claim(ClaimTypes.Name, credentialsDto.UserName),
+                        new Claim(ClaimTypes.Email, user.Email)
                     }
                 );
 
@@ -212,7 +211,7 @@ namespace Application.Services
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
-                if (!user.PasswordIsValid(passwordDto.Default)) throw new AuthenticationFailException();
+                if (!user.PasswordIsValid(passwordDto.Default)) throw new AuthenticationFailException("Invalid credentials");
 
                 if (user.Password == passwordDto.Custom) return new EmptyResult
                 {
