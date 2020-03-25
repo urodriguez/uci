@@ -13,5 +13,6 @@ namespace Application.Dtos
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public UserRol? RoleId { get; set; }
+        public bool Activate { get; set; }
     }
 }

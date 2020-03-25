@@ -2,10 +2,10 @@
 
 namespace Infrastructure.Crosscutting.Authentication
 {
-    public class SecurityToken
+    public class TokenGenarateResponse
     {
         public string Issuer { get; set; }
         public DateTime? Expires { get; set; }
-        public string Token { get; set; }
+        public string SecurityToken { get; set; }
     }
 }

@@ -11,10 +11,12 @@ namespace Infrastructure.Crosscutting.Mailing
     {
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
+        private readonly IAppSettingsService _appSettingsService;
 
         public EmailService(ILogService logService, IAppSettingsService appSettingsService)
         {
             _logService = logService;
+            _appSettingsService = appSettingsService;
             _restClient = new RestClient(appSettingsService.MailingUrl);
         }
 
@@ -31,6 +33,7 @@ namespace Infrastructure.Crosscutting.Mailing
                         Resource = "emails",
                         Method = Method.POST
                     };
+                    email.Account = _appSettingsService.InfrastructureAccount;
                     request.AddJsonBody(email);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending email data to Email Micro-service");

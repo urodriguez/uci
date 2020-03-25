@@ -78,9 +78,13 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Infrastructure.Authentication: reduce exp token to 1h -> DONE
 * InventApp: get exp token from AppSettings -> DONE
 * InventApp: refactor Infrastructure services and refecerences -> DONE
+* Infrastructure: use credencials validation in all products -> DONE
+* InventApp: send credencials to external Infrastructure service -> DONE
 
-* Infrastructure: use credencials validation in all products
-* InventApp: send credencials to external Infrastructure service
+* Infrastructure: jenkins - stop app pool before build
+* Infrastructure: create BaseApiController and do credentials validation there
+* Infrastructure: merge ddbb
+* InventApp: jenkins - deploy test + test
 * InventApp: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure: versioning all projects + InventApp: update URLs
 * Infrastructure.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?

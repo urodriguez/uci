@@ -41,7 +41,7 @@ namespace Domain.Aggregates
 
         public DateTime? LastLoginTime { get; set; }
 
-        public bool Activated { get; set; }
+        public bool Activate { get; set; }
 
         public bool IsUsingCustomPassword { get; set; }
 

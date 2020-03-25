@@ -4,7 +4,7 @@ namespace Infrastructure.Crosscutting.Authentication
 {
     public interface ITokenService
     {
-        SecurityToken Generate(TokenGenerateRequest tokenGenerateRequest);
-        TokenValidation Validate(TokenValidateRequest tokenValidateRequest);
+        TokenGenarateResponse Generate(TokenGenerateRequest tokenGenerateRequest);
+        TokenValidateResponse Validate(TokenValidateRequest tokenValidateRequest);
     }
 }

@@ -101,9 +101,8 @@ namespace Application.Services
                 user.LastLoginTime = DateTime.UtcNow;
                 _userRepository.Update(user);
 
-                var securityToken = _tokenService.Generate(new TokenGenerateRequest
+                var tokenGenerateRequest = _tokenService.Generate(new TokenGenerateRequest
                 {
-                    Account = _appSettingsService.InfrastructureAccount,
                     Expires = _appSettingsService.DefaultTokenExpiresTime,
                     Claims = new List<Claim>
                     {
@@ -112,7 +111,7 @@ namespace Application.Services
                     }
                 });
 
-                if (securityToken == null) throw new InternalServerException("SecurityToken could not be generated");
+                if (tokenGenerateRequest == null) throw new InternalServerException("SecurityToken could not be generated");
 
                 return new ApplicationResult<LoginDto>
                 {
@@ -121,7 +120,7 @@ namespace Application.Services
                     Data = new LoginDto
                     {
                         Status = LoginStatus.Success,
-                        Token = securityToken.Token
+                        SecurityToken = tokenGenerateRequest.SecurityToken
                     }
                 };
             }, false);

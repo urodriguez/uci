@@ -12,14 +12,16 @@ namespace Infrastructure.Crosscutting.Authentication
     {
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
+        private readonly IAppSettingsService _appSettingsService;
 
         public TokenService(ILogService logService, IAppSettingsService appSettingsService)
         {
             _logService = logService;
+            _appSettingsService = appSettingsService;
             _restClient = new RestClient(appSettingsService.AuthenticationUrl);
         }
 
-        public SecurityToken Generate(TokenGenerateRequest tokenGenerateRequest)
+        public TokenGenarateResponse Generate(TokenGenerateRequest tokenGenerateRequest)
         {
             try
             {
@@ -28,11 +30,12 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens",
                     Method = Method.POST
                 };
+                tokenGenerateRequest.Account = _appSettingsService.InfrastructureAccount;
                 request.AddJsonBody(tokenGenerateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
-                var response = _restClient.Post<SecurityToken>(request);
+                var response = _restClient.Post<TokenGenarateResponse>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
@@ -75,7 +78,7 @@ namespace Infrastructure.Crosscutting.Authentication
             }
         }
 
-        public TokenValidation Validate(TokenValidateRequest tokenValidateRequest)
+        public TokenValidateResponse Validate(TokenValidateRequest tokenValidateRequest)
         {
             try
             {
@@ -84,11 +87,12 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens/validate",
                     Method = Method.POST
                 };
+                tokenValidateRequest.Account = _appSettingsService.InfrastructureAccount;
                 request.AddJsonBody(tokenValidateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
 
-                var response = _restClient.Post<TokenValidation>(request);
+                var response = _restClient.Post<TokenValidateResponse>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {

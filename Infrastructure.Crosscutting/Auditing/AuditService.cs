@@ -11,10 +11,12 @@ namespace Infrastructure.Crosscutting.Auditing
     {
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
+        private readonly IAppSettingsService _appSettingsService;
 
         public AuditService(ILogService logService, IAppSettingsService appSettingsService)
         {
             _logService = logService;
+            _appSettingsService = appSettingsService;
             _restClient = new RestClient(appSettingsService.AuditingUrl);
         }
 
@@ -32,6 +34,7 @@ namespace Infrastructure.Crosscutting.Auditing
                         Resource = "audits",
                         Method = Method.POST,
                     };
+                    audit.Account = _appSettingsService.InfrastructureAccount;
                     request.AddJsonBody(audit);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending audit data to Audit Micro-service");

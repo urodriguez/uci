@@ -10,6 +10,7 @@ namespace Infrastructure.Crosscutting.Logging
     public class LogService : ILogService
     {
         private readonly IRestClient _restClient;
+        private readonly IAppSettingsService _appSettingsService;
 
         private readonly string _application;
         private readonly string _projectName;
@@ -20,6 +21,7 @@ namespace Infrastructure.Crosscutting.Logging
             _application = "InventApp";
             _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
 
+            _appSettingsService = appSettingsService;
             _restClient = new RestClient(appSettingsService.LoggingUrl);
 
             var request = new RestRequest
@@ -61,7 +63,7 @@ namespace Infrastructure.Crosscutting.Logging
                         Resource = "logs",
                         Method = Method.POST
                     };
-                    request.AddJsonBody(new Log(_application, _projectName, _correlationId, messageToLog, logType));
+                    request.AddJsonBody(new LogDto(_appSettingsService.InfrastructureAccount, _application, _projectName, _correlationId, messageToLog, logType));
 
                     _restClient.Post(request);
                 }

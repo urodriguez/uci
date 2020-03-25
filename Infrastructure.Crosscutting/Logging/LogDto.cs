@@ -2,10 +2,11 @@
 
 namespace Infrastructure.Crosscutting.Logging
 {
-    internal class Log
+    internal class LogDto
     {
-        public Log(string application, string project, Guid correlationId, string text, LogType type)
+        public LogDto(InfrastructureAccount account, string application, string project, Guid correlationId, string text, LogType type)
         {
+            Account = account;
             Application = application;
             Project = project;
             CorrelationId = correlationId;
@@ -13,6 +14,7 @@ namespace Infrastructure.Crosscutting.Logging
             Type = type;
         }
 
+        public InfrastructureAccount Account { get; set; }
         public string Application { get; set; }
         public string Project { get; set; }
         public Guid CorrelationId { get; set; }

@@ -114,7 +114,6 @@ namespace Application.Services
         {
             var tokenValidation = _tokenService.Validate(new TokenValidateRequest
             {
-                Account = _appSettingsService.InfrastructureAccount,
                 SecurityToken = InventAppContext.SecurityToken
             });
 
