@@ -8,7 +8,7 @@
         string ConnectionString { get; }
         int DefaultTokenExpiresTime { get; }
         InventAppEnvironment Environment { get; }
-        InfrastructureAccount InfrastructureAccount { get; }
+        InfrastructureCredential InfrastructureCredential { get; }
         string LoggingUrl { get; }
         string MailingUrl { get; }
         string WebApiUrl { get; }

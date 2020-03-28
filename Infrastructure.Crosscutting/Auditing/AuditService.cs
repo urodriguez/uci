@@ -34,7 +34,7 @@ namespace Infrastructure.Crosscutting.Auditing
                         Resource = "audits",
                         Method = Method.POST,
                     };
-                    audit.Account = _appSettingsService.InfrastructureAccount;
+                    audit.Account = _appSettingsService.InfrastructureCredential;
                     request.AddJsonBody(audit);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending audit data to Audit Micro-service");

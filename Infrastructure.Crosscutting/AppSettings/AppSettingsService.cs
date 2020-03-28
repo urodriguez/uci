@@ -97,7 +97,7 @@ namespace Infrastructure.Crosscutting.AppSettings
             Name = ConfigurationManager.AppSettings["Environment"]
         };
 
-        public InfrastructureAccount InfrastructureAccount => new InfrastructureAccount { Id = "InventApp", SecretKey = "1nfr4structur3_1nv3nt4pp" };
+        public InfrastructureCredential InfrastructureCredential => new InfrastructureCredential { Id = "InventApp", SecretKey = "1nfr4structur3_1nv3nt4pp" };
 
         public string LoggingUrl
         {

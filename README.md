@@ -83,11 +83,12 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Infrastructure: jenkins - stop app pool before build -> DONE
 * Infrastructure: create BaseApiController and do credentials validation there -> DONE
 
-* Infrastructure: merge ddbb and create one InfrastructureDbContext
 * InventApp: jenkins - deploy test + test
 * InventApp: avoid show internal message errors, only log them. Show reference Id
-* Infrastructure: versioning all projects + InventApp: update URLs
+* Infrastructure: versioning all projects 
+* InventApp: update URLs after versioning
 * Infrastructure.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
+* Infrastructure.Reporting: implement 
 * Infrastructure: create application
   * user register -> receive email
   * user login
@@ -115,7 +116,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
   * CRUD customer
   * CRUD test reason
   * CRUD status
-* implement reporting
+
 * implement caching
 * implement integration events with NServiceBus
 * create application to show logs

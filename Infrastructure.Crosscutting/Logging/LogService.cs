@@ -63,7 +63,7 @@ namespace Infrastructure.Crosscutting.Logging
                         Resource = "logs",
                         Method = Method.POST
                     };
-                    request.AddJsonBody(new LogDto(_appSettingsService.InfrastructureAccount, _application, _projectName, _correlationId, messageToLog, logType));
+                    request.AddJsonBody(new LogDto(_appSettingsService.InfrastructureCredential, _application, _projectName, _correlationId, messageToLog, logType));
 
                     _restClient.Post(request);
                 }

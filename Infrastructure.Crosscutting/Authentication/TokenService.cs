@@ -30,7 +30,7 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens",
                     Method = Method.POST
                 };
-                tokenGenerateRequest.Account = _appSettingsService.InfrastructureAccount;
+                tokenGenerateRequest.Account = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(tokenGenerateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
@@ -87,7 +87,7 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens/validate",
                     Method = Method.POST
                 };
-                tokenValidateRequest.Account = _appSettingsService.InfrastructureAccount;
+                tokenValidateRequest.Account = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(tokenValidateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");

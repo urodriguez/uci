@@ -33,7 +33,7 @@ namespace Infrastructure.Crosscutting.Mailing
                         Resource = "emails",
                         Method = Method.POST
                     };
-                    email.Account = _appSettingsService.InfrastructureAccount;
+                    email.Account = _appSettingsService.InfrastructureCredential;
                     request.AddJsonBody(email);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending email data to Email Micro-service");

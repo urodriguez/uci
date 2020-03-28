@@ -2,7 +2,7 @@
 {
     public class TokenValidateRequest
     {
-        public InfrastructureAccount Account { get; set; }
+        public InfrastructureCredential Account { get; set; }
         public string SecurityToken { get; set; }
     }
 }
