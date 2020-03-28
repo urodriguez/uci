@@ -1,9 +1,9 @@
 # UciRod - Continous Integration - Jenkins
+
 http://localhost:8082 -> Jenkins (run by cmd: java -jar "C:\Program Files (x86)\Jenkins\jenkins.war" --httpPort=8082)
 
 # UciRod.Inventapp URL -> ENV
 http://localhost:8080 -> DEV
-
 http://www.ucirod.inventapp-test.com:8083 -> TEST (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
 
 # UciRod.Inventapp.WebApi URL -> ENV
@@ -11,8 +11,8 @@ http://localhost:8080/WebApi -> DEV
 
 http://www.ucirod.inventapp-test.com:8083/WebApi -> TEST
 
-# UciRod.Inventapp.WebApi - Swagger - URL -> ENV
 http://localhost:8080/WebApi/Swagger -> DEV
+# UciRod.Inventapp.WebApi - Swagger - URL -> ENV
 
 http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 
@@ -80,10 +80,10 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: refactor Infrastructure services and refecerences -> DONE
 * Infrastructure: use credencials validation in all products -> DONE
 * InventApp: send credencials to external Infrastructure service -> DONE
+* Infrastructure: jenkins - stop app pool before build -> DONE
+* Infrastructure: create BaseApiController and do credentials validation there -> DONE
 
-* Infrastructure: jenkins - stop app pool before build
-* Infrastructure: create BaseApiController and do credentials validation there
-* Infrastructure: merge ddbb
+* Infrastructure: merge ddbb and create one InfrastructureDbContext
 * InventApp: jenkins - deploy test + test
 * InventApp: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure: versioning all projects + InventApp: update URLs
