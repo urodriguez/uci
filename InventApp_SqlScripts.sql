@@ -41,8 +41,7 @@ alter column FilterPrefencesId uniqueidentifier not null
 COMMIT TRANSACTION
 
 
-alter table product
-add Code varchar(8) not null
+alter table product add Code varchar(8) not null
 
 alter table audit add Entity varchar(max)
 alter table audit add EntityId varchar(64)

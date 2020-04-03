@@ -82,9 +82,13 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: send credencials to external Infrastructure service -> DONE
 * Infrastructure: jenkins - stop app pool before build -> DONE
 * Infrastructure: create BaseApiController and do credentials validation there -> DONE
+* InventApp: jenkins - deploy test + test -> DONE
 
-* InventApp: jenkins - deploy test + test
-
+* InventApp: update script to be idempotent
+* InventApp.Test: swagger - check error "schemaValidationMessages":[{"level":"error","message"
+* InventApp.Test: jenkins - deploy assets folder
+* Infrastructure.Test: jenkins - full deploy
+* UciRod: IIS - script to update password
 * InventApp: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure: versioning all projects 
