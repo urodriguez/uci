@@ -4,7 +4,7 @@ namespace Infrastructure.Crosscutting.Authentication
 {
     public class TokenGenerateRequest
     {
-        public InfrastructureCredential Account { get; set; }
+        public InfrastructureCredential Credential { get; set; }
         public int Expires { get; set; }
         public IReadOnlyCollection<Claim> Claims { get; set; }
     }

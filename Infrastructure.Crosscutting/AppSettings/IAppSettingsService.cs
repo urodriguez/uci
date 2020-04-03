@@ -2,15 +2,15 @@
 {
     public interface IAppSettingsService
     {
-        string AuditingUrl { get; }
-        string AuthenticationUrl { get; }
+        string AuditingApiUrl { get; }
+        string AuthenticationApiUrl { get; }
         string ClientUrl { get; }
         string ConnectionString { get; }
         int DefaultTokenExpiresTime { get; }
         InventAppEnvironment Environment { get; }
         InfrastructureCredential InfrastructureCredential { get; }
-        string LoggingUrl { get; }
-        string MailingUrl { get; }
+        string LoggingApiUrl { get; }
+        string MailingApiUrl { get; }
         string WebApiUrl { get; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Crosscutting.Authentication
 {
-    public class TokenGenarateResponse
+    public class TokenGenerateResponse
     {
         public string Issuer { get; set; }
         public DateTime? Expires { get; set; }

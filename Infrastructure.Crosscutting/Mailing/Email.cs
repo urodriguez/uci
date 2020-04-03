@@ -2,7 +2,7 @@
 {
     public class Email 
     {
-        public InfrastructureCredential Account { get; set; }
+        public InfrastructureCredential Credential { get; set; }
         public bool UseCustomSmtpServer { get; set; }
         public SmtpServerConfiguration SmtpServerConfiguration { get; set; }
         public string To { get; set; }

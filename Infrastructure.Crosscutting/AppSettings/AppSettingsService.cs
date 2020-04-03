@@ -6,7 +6,7 @@ namespace Infrastructure.Crosscutting.AppSettings
 {
     public class AppSettingsService : IAppSettingsService
     {
-        public string AuditingUrl
+        public string AuditingApiUrl
         {
             get
             {
@@ -24,7 +24,7 @@ namespace Infrastructure.Crosscutting.AppSettings
             }
         }
 
-        public string AuthenticationUrl
+        public string AuthenticationApiUrl
         {
             get
             {
@@ -99,7 +99,7 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public InfrastructureCredential InfrastructureCredential => new InfrastructureCredential { Id = "InventApp", SecretKey = "1nfr4structur3_1nv3nt4pp" };
 
-        public string LoggingUrl
+        public string LoggingApiUrl
         {
             get
             {
@@ -117,7 +117,7 @@ namespace Infrastructure.Crosscutting.AppSettings
             }
         }
 
-        public string MailingUrl
+        public string MailingApiUrl
         {
             get
             {

@@ -17,7 +17,7 @@ namespace Infrastructure.Crosscutting.Auditing
         {
             _logService = logService;
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.AuditingUrl);
+            _restClient = new RestClient(appSettingsService.AuditingApiUrl);
         }
 
         //TODO: implement avoid lost audit if connection fails
@@ -34,7 +34,7 @@ namespace Infrastructure.Crosscutting.Auditing
                         Resource = "audits",
                         Method = Method.POST,
                     };
-                    audit.Account = _appSettingsService.InfrastructureCredential;
+                    audit.Credential = _appSettingsService.InfrastructureCredential;
                     request.AddJsonBody(audit);
 
                     _logService.LogInfoMessage($"{GetType().Name}.{methodName} | Sending audit data to Audit Micro-service");

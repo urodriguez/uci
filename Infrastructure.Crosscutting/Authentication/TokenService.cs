@@ -18,10 +18,10 @@ namespace Infrastructure.Crosscutting.Authentication
         {
             _logService = logService;
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.AuthenticationUrl);
+            _restClient = new RestClient(appSettingsService.AuthenticationApiUrl);
         }
 
-        public TokenGenarateResponse Generate(TokenGenerateRequest tokenGenerateRequest)
+        public TokenGenerateResponse Generate(TokenGenerateRequest tokenGenerateRequest)
         {
             try
             {
@@ -30,12 +30,12 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens",
                     Method = Method.POST
                 };
-                tokenGenerateRequest.Account = _appSettingsService.InfrastructureCredential;
+                tokenGenerateRequest.Credential = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(tokenGenerateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
-                var response = _restClient.Post<TokenGenarateResponse>(request);
+                var response = _restClient.Post<TokenGenerateResponse>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
@@ -87,7 +87,7 @@ namespace Infrastructure.Crosscutting.Authentication
                     Resource = "tokens/validate",
                     Method = Method.POST
                 };
-                tokenValidateRequest.Account = _appSettingsService.InfrastructureCredential;
+                tokenValidateRequest.Credential = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(tokenValidateRequest);
 
                 _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");

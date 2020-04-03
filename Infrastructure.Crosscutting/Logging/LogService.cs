@@ -22,7 +22,7 @@ namespace Infrastructure.Crosscutting.Logging
             _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
 
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.LoggingUrl);
+            _restClient = new RestClient(appSettingsService.LoggingApiUrl);
 
             var request = new RestRequest
             {
@@ -63,7 +63,7 @@ namespace Infrastructure.Crosscutting.Logging
                         Resource = "logs",
                         Method = Method.POST
                     };
-                    request.AddJsonBody(new LogDto(_appSettingsService.InfrastructureCredential, _application, _projectName, _correlationId, messageToLog, logType));
+                    request.AddJsonBody(new Log(_appSettingsService.InfrastructureCredential, _application, _projectName, _correlationId, messageToLog, logType));
 
                     _restClient.Post(request);
                 }

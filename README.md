@@ -84,10 +84,12 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Infrastructure: create BaseApiController and do credentials validation there -> DONE
 
 * InventApp: jenkins - deploy test + test
+
 * InventApp: avoid show internal message errors, only log them. Show reference Id
+* Infrastructure: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure: versioning all projects 
 * InventApp: update URLs after versioning
-* Infrastructure.Logging: implement process to delete old logs (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
+* Infrastructure.Logging: implement process to delete old logs (including LOGGING-DB-ERROR_{date}) (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
 * Infrastructure.Reporting: implement 
 * Infrastructure: create application
   * user register -> receive email
