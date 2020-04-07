@@ -1,5 +1,4 @@
 # UciRod - Continous Integration - Jenkins
-
 http://localhost:8082 -> Jenkins (run by cmd: java -jar "C:\Program Files (x86)\Jenkins\jenkins.war" --httpPort=8082)
 
 # UciRod.Inventapp URL -> ENV
@@ -8,12 +7,10 @@ http://www.ucirod.inventapp-test.com:8083 -> TEST (IIS Local - overwritten in C:
 
 # UciRod.Inventapp.WebApi URL -> ENV
 http://localhost:8080/WebApi -> DEV
-
 http://www.ucirod.inventapp-test.com:8083/WebApi -> TEST
 
-http://localhost:8080/WebApi/Swagger -> DEV
 # UciRod.Inventapp.WebApi - Swagger - URL -> ENV
-
+http://localhost:8080/WebApi/Swagger -> DEV
 http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 
 {username: "urodriguez-admin", password: "admin"}
@@ -83,17 +80,18 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * Infrastructure: jenkins - stop app pool before build -> DONE
 * Infrastructure: create BaseApiController and do credentials validation there -> DONE
 * InventApp: jenkins - deploy test + test -> DONE
+* InventApp/Infrastructure: update scripts to be idempotent -> DONE
+* InventApp.Test: jenkins - deploy assets folder -> DONE
+* Infrastructure.Test: jenkins - full deploy + improve powershell scripts -> DONE
+* Infrastructure.Auditing: handling exceptions-> DONE
+* InventApp.Test: swagger - check error "schemaValidationMessages":[{"level":"error","message" ... -> DONE
 
-* InventApp: update script to be idempotent
-* InventApp.Test: swagger - check error "schemaValidationMessages":[{"level":"error","message"
-* InventApp.Test: jenkins - deploy assets folder
-* Infrastructure.Test: jenkins - full deploy
-* UciRod: IIS - script to update password
+* UciRod: jenkins - script to update password on IIS user
 * InventApp: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure: avoid show internal message errors, only log them. Show reference Id
+* Infrastructure.Logging: implement process to delete old logs (including LOGGING-DB-ERROR_{date}) (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
 * Infrastructure: versioning all projects 
 * InventApp: update URLs after versioning
-* Infrastructure.Logging: implement process to delete old logs (including LOGGING-DB-ERROR_{date}) (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
 * Infrastructure.Reporting: implement 
 * Infrastructure: create application
   * user register -> receive email
