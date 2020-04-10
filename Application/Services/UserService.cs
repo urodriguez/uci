@@ -60,7 +60,7 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                if (credentialsDto == null) throw new InvalidDataException();
+                if (credentialsDto == null) throw new CredentialNotProvidedException();
 
                 var byName = _userPredicateFactory.CreateByName(credentialsDto.UserName);
                 var user = _userRepository.Get(byName).Single();

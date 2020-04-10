@@ -62,7 +62,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             container.RegisterType<IAppSettingsService, AppSettingsService>(new PerThreadLifetimeManager());
             container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
             container.RegisterType<IEmailService, EmailService>(new PerThreadLifetimeManager());
-            container.RegisterType<ILogService, LogService>(new PerThreadLifetimeManager());
+            container.RegisterType<ILogService, LogService>(new PerResolveLifetimeManager());
             container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
             container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 

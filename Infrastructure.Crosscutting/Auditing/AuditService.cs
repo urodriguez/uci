@@ -51,6 +51,8 @@ namespace Infrastructure.Crosscutting.Auditing
                 {
                     _logService.LogErrorMessage($"{GetType().Name}.{methodName} | An error has occurred serializing | id={audit.EntityName} - action={audit.Action}");
                     _logService.LogErrorMessage($"{GetType().Name}.{methodName} | errorMessage={e.Message}");
+
+                    //queue
                 }
             });
 

@@ -4,7 +4,7 @@ namespace Infrastructure.Crosscutting.Logging
 {
     internal class Log
     {
-        public Log(InfrastructureCredential credential, string application, string project, Guid correlationId, string text, LogType type)
+        public Log(InfrastructureCredential credential, string application, string project, Guid correlationId, string text, LogType type, string environment)
         {
             Credential = credential;
             Application = application;
@@ -12,6 +12,7 @@ namespace Infrastructure.Crosscutting.Logging
             CorrelationId = correlationId;
             Text = text;
             Type = type;
+            Environment = environment;
         }
 
         public InfrastructureCredential Credential { get; set; }
@@ -20,5 +21,6 @@ namespace Infrastructure.Crosscutting.Logging
         public Guid CorrelationId { get; set; }
         public string Text { get; set; }
         public LogType Type { get; set; }
+        public string Environment { get; set; }
     }
 }

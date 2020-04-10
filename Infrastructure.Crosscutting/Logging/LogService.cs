@@ -29,10 +29,30 @@ namespace Infrastructure.Crosscutting.Logging
                 Resource = "correlations",
                 Method = Method.POST
             };
-            var correlationResponse = _restClient.Post<Correlation>(request);
+            request.AddJsonBody(new
+            {
+                Id = _appSettingsService.InfrastructureCredential.Id,
+                SecretKey = _appSettingsService.InfrastructureCredential.SecretKey
+            });
 
-            _correlationId = correlationResponse.Data.Id;
+            try
+            {
+                var correlationResponse = _restClient.Post<Correlation>(request);
+                
+                if (!correlationResponse.IsSuccessful) 
+                    throw new Exception(
+                        $"correlationResponse.IsSuccessful=false - correlationResponse.StatusCode={correlationResponse.StatusCode} - correlationResponse.Content={correlationResponse.Content}"
+                    );
+
+                _correlationId = correlationResponse.Data.Id;
+            }
+            catch (Exception e)
+            {
+                throw new CorrelationException(e.Message, e.StackTrace);
+            }
         }
+
+        public Guid GetCorrelationId() => _correlationId;
 
         //Very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development
         public void LogTraceMessage(string messageToLog)
@@ -52,6 +72,7 @@ namespace Infrastructure.Crosscutting.Logging
             LogMessage(messageToLog, LogType.Error);
         }
 
+        //TODO: implement avoid lost logs if connection fails
         private void LogMessage(string messageToLog, LogType logType)
         {
             var task = new Task(() =>
@@ -63,14 +84,28 @@ namespace Infrastructure.Crosscutting.Logging
                         Resource = "logs",
                         Method = Method.POST
                     };
-                    request.AddJsonBody(new Log(_appSettingsService.InfrastructureCredential, _application, _projectName, _correlationId, messageToLog, logType));
+                    request.AddJsonBody(new Log(
+                        _appSettingsService.InfrastructureCredential, 
+                        _application, 
+                        _projectName,
+                        _correlationId,
+                        messageToLog, 
+                        logType, 
+                        _appSettingsService.Environment.Name)
+                    );
 
-                    _restClient.Post(request);
+                    var logResponse =  _restClient.Post(request);
+
+                    if (!logResponse.IsSuccessful)
+                        throw new Exception(
+                            $"logResponse.IsSuccessful=false - logResponse.StatusCode={logResponse.StatusCode} - logResponse.Content={logResponse.Content}"
+                        );
                 }
                 catch (Exception e) 
                 {
-                    //TODO: log locally in somewhere when the connection with Log Micro-Service fails (example: local file, local db, iis)
-                    Console.WriteLine(e);
+                    //TODO: log error locally here
+                    //queue
+                    //do not throw the exception in order to avoid finish the main request
                 }
             });
 

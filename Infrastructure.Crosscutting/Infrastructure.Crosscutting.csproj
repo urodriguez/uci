@@ -69,6 +69,7 @@
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogService.cs" />
+    <Compile Include="Logging\CorrelationException.cs" />
     <Compile Include="Logging\LogType.cs" />
     <Compile Include="Mailing\Email.cs" />
     <Compile Include="Mailing\EmailService.cs" />

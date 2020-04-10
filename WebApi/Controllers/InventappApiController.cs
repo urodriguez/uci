@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Application;
@@ -63,7 +64,8 @@ namespace WebApi.Controllers
                     return Content(HttpStatusCode.InternalServerError, serviceResult.Message);
 
                 default:
-                    return Content(HttpStatusCode.InternalServerError, "Invalid internal ApplicationStatus");
+                    _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid ApplicationResultStatus(enum) value| serviceResult.Status={serviceResult.Status}");
+                    return Content(HttpStatusCode.InternalServerError, $"An Internal Server Error has ocurred. Please contact with your administrator. CorrelationId = {_logService.GetCorrelationId()}");
             }
         }
 

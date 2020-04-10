@@ -68,9 +68,9 @@ namespace Application.Services
                     Message = onfe.Message
                 };
             }
-            catch (InvalidDataException ide)
+            catch (CredentialNotProvidedException cnpe)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InvalidDataException | e.Message={ide.Message} - e.StackTrace={ide}");
+                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | CredentialNotProvidedException | e.Message={cnpe.Message} - e.StackTrace={cnpe}");
 
                 return new EmptyResult
                 {
@@ -88,6 +88,17 @@ namespace Application.Services
                     Message = bre.Message
                 };
             }
+            catch (CorrelationException ce)
+            {
+                //ce.Message & ce.StackTrace
+                //TODO: log locally in somewhere when the connection with Log Micro-Service fails (example: local file, local db, iis)
+
+                return new EmptyResult
+                {
+                    Status = ApplicationResultStatus.InternalServerError,
+                    Message = "An Internal Server Error has ocurred. Please contact with your administrator. CorrelationId = CORR_ID_ERROR"
+                };
+            }            
             catch (InternalServerException ise)
             {
                 _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InternalServerException | e.Message={ise.Message} - e.StackTrace={ise}");
@@ -95,7 +106,7 @@ namespace Application.Services
                 return new EmptyResult
                 {
                     Status = ApplicationResultStatus.InternalServerError,
-                    Message = ise.Message
+                    Message = $"An Internal Server Error has ocurred. Please contact with your administrator. CorrelationId = {_logService.GetCorrelationId()}"
                 };
             }
             catch (Exception e)
@@ -105,7 +116,7 @@ namespace Application.Services
                 return new EmptyResult
                 {
                     Status = ApplicationResultStatus.InternalServerError,
-                    Message = e.Message
+                    Message = $"An Internal Server Error has ocurred. Please contact with your administrator. CorrelationId = {_logService.GetCorrelationId()}"
                 };
             }
         }
