@@ -87,8 +87,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp.Test: swagger - check error "schemaValidationMessages":[{"level":"error","message" ... -> DONE
 * UciRod: jenkins - script to update password on IIS user -> DONE
 * InventApp: avoid show internal message errors, only log them. Show reference Id -> DONE
+* Infrastructure: avoid show internal message errors, only log them. Show reference Id -> DONE
 
-* Infrastructure: avoid show internal message errors, only log them. Show reference Id
 * Infrastructure.Logging: implement process to delete old logs (including LOGGING-DB-ERROR_{date}) (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
 * Infrastructure: versioning all projects 
 * InventApp: update URLs after versioning

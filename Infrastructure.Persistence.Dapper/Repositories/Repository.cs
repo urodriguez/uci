@@ -26,7 +26,6 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             _queryFiller = new QueryFiller();
 
             var x = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Repository created | ORM={x}");
         }
 
         /// <summary>

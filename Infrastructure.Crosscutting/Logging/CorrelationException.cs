@@ -4,13 +4,8 @@ namespace Infrastructure.Crosscutting.Logging
 {
     public class CorrelationException : Exception
     {
-        public string OriginalStackTrace { get; set; }
-
-        public CorrelationException(string message, string originalStackTrace) : base(message)
+        public CorrelationException(Exception inner) : base("An error has ocurred trying to generate a Correlation", inner)
         {
-            OriginalStackTrace = originalStackTrace;
         }
-
-        public override string StackTrace => OriginalStackTrace;
     }
 }

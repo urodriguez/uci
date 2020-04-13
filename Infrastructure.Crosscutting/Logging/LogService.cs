@@ -14,7 +14,7 @@ namespace Infrastructure.Crosscutting.Logging
 
         private readonly string _application;
         private readonly string _projectName;
-        private readonly Guid _correlationId;
+        private Guid _correlationId;
 
         public LogService(IAppSettingsService appSettingsService)
         {
@@ -23,33 +23,6 @@ namespace Infrastructure.Crosscutting.Logging
 
             _appSettingsService = appSettingsService;
             _restClient = new RestClient(appSettingsService.LoggingApiUrl);
-
-            var request = new RestRequest
-            {
-                Resource = "correlations",
-                Method = Method.POST
-            };
-            request.AddJsonBody(new
-            {
-                Id = _appSettingsService.InfrastructureCredential.Id,
-                SecretKey = _appSettingsService.InfrastructureCredential.SecretKey
-            });
-
-            try
-            {
-                var correlationResponse = _restClient.Post<Correlation>(request);
-                
-                if (!correlationResponse.IsSuccessful) 
-                    throw new Exception(
-                        $"correlationResponse.IsSuccessful=false - correlationResponse.StatusCode={correlationResponse.StatusCode} - correlationResponse.Content={correlationResponse.Content}"
-                    );
-
-                _correlationId = correlationResponse.Data.Id;
-            }
-            catch (Exception e)
-            {
-                throw new CorrelationException(e.Message, e.StackTrace);
-            }
         }
 
         public Guid GetCorrelationId() => _correlationId;
@@ -72,9 +45,42 @@ namespace Infrastructure.Crosscutting.Logging
             LogMessage(messageToLog, LogType.Error);
         }
 
-        //TODO: implement avoid lost logs if connection fails
+        private void GenerateCorrelationId()
+        {
+            if (_correlationId != Guid.Empty) return;
+
+            var request = new RestRequest
+            {
+                Resource = "correlations",
+                Method = Method.POST
+            };
+            request.AddJsonBody(new
+            {
+                Id = _appSettingsService.InfrastructureCredential.Id,
+                SecretKey = _appSettingsService.InfrastructureCredential.SecretKey
+            });
+
+            try
+            {
+                var correlationResponse = _restClient.Post<Correlation>(request);
+
+                if (!correlationResponse.IsSuccessful)
+                    throw new Exception(
+                        $"correlationResponse.IsSuccessful=false - correlationResponse.StatusCode={correlationResponse.StatusCode} - correlationResponse.Content={correlationResponse.Content}"
+                    );
+
+                _correlationId = correlationResponse.Data.Id;
+            }
+            catch (Exception e)
+            {
+                throw new CorrelationException(e);
+            }
+        }
+
         private void LogMessage(string messageToLog, LogType logType)
         {
+            GenerateCorrelationId();
+
             var task = new Task(() =>
             {
                 try
