@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Infrastructure.Crosscutting.Authentication
+﻿namespace Infrastructure.Crosscutting.Authentication
 {
     public interface ITokenService
     {

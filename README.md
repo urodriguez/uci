@@ -88,6 +88,10 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * UciRod: jenkins - script to update password on IIS user -> DONE
 * InventApp: avoid show internal message errors, only log them. Show reference Id -> DONE
 * Infrastructure: avoid show internal message errors, only log them. Show reference Id -> DONE
+* Infrastructure: remove correlations endpoint + make it optional on dto and string -> DONE
+* InventApp: handle and send custom correlation -> DONE
+* InventAppInfrastructure: log locally Correlation & LoggingDb -> DONE
+* Infrastructure: log locally Correlation & LoggingDb -> DONE
 
 * Infrastructure.Logging: implement process to delete old logs (including LOGGING-DB-ERROR_{date}) (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
 * Infrastructure: versioning all projects 

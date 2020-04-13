@@ -65,11 +65,9 @@
     <Compile Include="Authentication\TokenService.cs" />
     <Compile Include="Authentication\TokenStatus.cs" />
     <Compile Include="Authentication\TokenValidateResponse.cs" />
-    <Compile Include="Logging\Correlation.cs" />
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogService.cs" />
-    <Compile Include="Logging\CorrelationException.cs" />
     <Compile Include="Logging\LogType.cs" />
     <Compile Include="Mailing\Email.cs" />
     <Compile Include="Mailing\EmailService.cs" />

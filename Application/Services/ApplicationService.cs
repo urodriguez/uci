@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
@@ -75,7 +74,7 @@ namespace Application.Services
                 return new EmptyResult
                 {
                     Status = ApplicationResultStatus.BadRequest,
-                    Message = "Missing data to process the request"
+                    Message = cnpe.Message
                 };
             }
             catch (BusinessRuleException bre)
@@ -88,18 +87,6 @@ namespace Application.Services
                     Message = bre.Message
                 };
             }
-            catch (CorrelationException ce)
-            {
-                var correlationId = $"CORR_ID_ERROR_{Guid.NewGuid()}";
-                var msgToLog = $"CorrelationId = {correlationId} | {ce}";
-                //TODO: log locally (example: local file, iis) 'msgToLog'
-
-                return new EmptyResult
-                {
-                    Status = ApplicationResultStatus.InternalServerError,
-                    Message = $"An Internal Server Error has ocurred. Please contact with your administrator. CorrelationId = {correlationId}"
-                };
-            }            
             catch (InternalServerException ise)
             {
                 _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InternalServerException | e={ise}");
