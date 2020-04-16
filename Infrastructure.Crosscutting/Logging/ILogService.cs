@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Infrastructure.Crosscutting.Logging
+﻿namespace Infrastructure.Crosscutting.Logging
 {
     public interface ILogService
     {
-        Guid GetCorrelationId();
+        string GetCorrelationId();
         void LogTraceMessage(string messageToLog);
         void LogInfoMessage(string messageToLog);
         void LogErrorMessage(string messageToLog);

@@ -92,12 +92,20 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventApp: handle and send custom correlation -> DONE
 * InventAppInfrastructure: log locally Correlation & LoggingDb -> DONE
 * Infrastructure: log locally Correlation & LoggingDb -> DONE
+* Infrastructure.Logging: implement process to delete old logs (database and file system) -> DONE
 
-* Infrastructure.Logging: implement process to delete old logs (including LOGGING-DB-ERROR_{date}) (one mounth) in database (maybe directly in LogService) - use hangfire with recurrent job?
+* InventApp: implement process to delete old logs from file system
+
 * Infrastructure: versioning all projects 
 * InventApp: update URLs after versioning
 * Infrastructure.Reporting: implement 
-* Infrastructure: create application
+* Infrastructure: resolve logs queued
+* InventApp: resolve logs queued
+* InventApp: create application (Angular)
+  * user login
+  * products module
+  * users module
+* Infrastructure: create application (React)
   * user register -> receive email
   * user login
   * user see list available infrastructure services

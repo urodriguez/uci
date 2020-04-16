@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Compilation;
 using Infrastructure.Crosscutting.AppSettings;
@@ -15,7 +16,9 @@ namespace Infrastructure.Crosscutting.Logging
 
         private readonly string _application;
         private readonly string _projectName;
-        private Guid _correlationId;
+        private readonly string _correlationId;
+
+        private static readonly object Locker = new Object();
 
         public LogService(IAppSettingsService appSettingsService)
         {
@@ -24,9 +27,11 @@ namespace Infrastructure.Crosscutting.Logging
 
             _appSettingsService = appSettingsService;
             _restClient = new RestClient(appSettingsService.LoggingApiUrl);
+
+            _correlationId = Guid.NewGuid().ToString();
         }
 
-        public Guid GetCorrelationId() => _correlationId;
+        public string GetCorrelationId() => _correlationId;
 
         //Very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development
         public void LogTraceMessage(string messageToLog)
@@ -48,8 +53,6 @@ namespace Infrastructure.Crosscutting.Logging
 
         private void LogMessage(string messageToLog, LogType logType)
         {
-            GenerateCorrelationId();
-
             var task = new Task(() =>
             {
                 try
@@ -90,22 +93,21 @@ namespace Infrastructure.Crosscutting.Logging
             task.Start();
         }
 
-        private void GenerateCorrelationId()
-        {
-            _correlationId = _correlationId == Guid.Empty ? Guid.NewGuid() : _correlationId;
-        }
-
         private void FileSystemLog(string messageToLog)
         {
-            var fileSystemLogsDirectory = $"{AppDomain.CurrentDomain.BaseDirectory}FileSystemLogs";
-            Directory.CreateDirectory(fileSystemLogsDirectory);
+            var projFileSystemLogsDirectory = $"{_appSettingsService.FileSystemLogsDirectory}";
+            Directory.CreateDirectory(projFileSystemLogsDirectory);
 
             var logFileName = $"FSL,{_correlationId}";
-            var logFilePath = $"{fileSystemLogsDirectory}\\{logFileName}.txt";
+            var logFilePath = $"{projFileSystemLogsDirectory}\\{logFileName}.txt";
 
-            using (StreamWriter sw = File.AppendText(logFilePath))
+            lock (Locker)
             {
-                sw.WriteLine($"{messageToLog}{Environment.NewLine}----------------******----------------{Environment.NewLine}");
+                using (FileStream file = new FileStream(logFilePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                using (StreamWriter sw = new StreamWriter(file, Encoding.Unicode))
+                {
+                    sw.WriteLine($"{messageToLog}{Environment.NewLine}----------------******----------------{Environment.NewLine}");
+                }
             }
         }
     }

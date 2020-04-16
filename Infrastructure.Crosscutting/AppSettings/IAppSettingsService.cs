@@ -12,5 +12,7 @@
         string LoggingApiUrl { get; }
         string MailingApiUrl { get; }
         string WebApiUrl { get; }
+        string FileSystemLogsDirectory { get; }
+        string InventAppDirectory { get; }
     }
 }
