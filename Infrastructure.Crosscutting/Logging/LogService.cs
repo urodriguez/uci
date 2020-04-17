@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Compilation;
@@ -49,6 +50,28 @@ namespace Infrastructure.Crosscutting.Logging
         public void LogErrorMessage(string messageToLog)
         {
             LogMessage(messageToLog, LogType.Error);
+        }
+
+        public void DeleteOldLogs()
+        {
+            //Remove logs from file system
+            try
+            {
+                LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=PENDING");
+
+                var directoryInfo = new DirectoryInfo(_appSettingsService.FileSystemLogsDirectory);
+                var filesToDelete = directoryInfo.GetFiles("*.txt").Where(f => f.CreationTime < DateTime.Today.AddDays(-7));
+                foreach (var fileToDelete in filesToDelete)
+                {
+                    fileToDelete.Delete();
+                }
+
+                LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=FINISHED");
+            }
+            catch (Exception e)
+            {
+                LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Logging FS Exception | e={e}");
+            }
         }
 
         private void LogMessage(string messageToLog, LogType logType)

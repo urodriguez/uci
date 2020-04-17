@@ -10,8 +10,12 @@ http://localhost:8080/WebApi -> DEV
 http://www.ucirod.inventapp-test.com:8083/WebApi -> TEST
 
 # UciRod.Inventapp.WebApi - Swagger - URL -> ENV
-http://localhost:8080/WebApi/Swagger -> DEV
-http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
+http://localhost:8080/WebApi/swagger -> DEV
+http://www.ucirod.inventapp-test.com:8083/WebApi/swagger -> TEST
+
+# UciRod.Inventapp.WebApi - Hangire - URL -> ENV
+http://localhost:8080/WebApi/hangfire -> DEV
+http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 
 {username: "urodriguez-admin", password: "admin"}
 
@@ -22,7 +26,53 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
   "price": 13
 }
 
-## TODO list - backend
+## TODO list
+* Infrastructure: versioning all projects 
+* InventApp: update URLs after versioning
+* Infrastructure.Reporting: implement 
+* Infrastructure.Auditing: implement complex auditing (objects with nested objects) 
+* InventApp: resolve logs queued
+* Infrastructure: resolve logs queued
+* implement caching
+* expose swagger api url to external (no localhost) URL 
+* InventApp: create application (Angular)
+  * user login
+  * products module
+  * users module
+* Infrastructure: create application (React)
+  * user register -> receive email
+  * user login
+  * user see list available infrastructure services
+  * user select infrastructure services
+  * user pay -> credit card transactions?
+  * logs module
+* Infrastructure.Authentication: implement refresh token
+* InventApp: implement unityOfWork
+* API test & unit test
+* create index in db tables
+* create all necessary elements to create registration
+  * CRUD panel type
+  * CRUD panel
+  * CRUD lab
+  * CRUD lab/panel
+  * CRUD site 
+    * site1 -> manually
+    * site2 -> excel (using Excel library)
+    * site3 -> rest GET
+    * site4 -> soap
+    * site5 -> rest POST (notification on new one + recurrent db updates)
+  * CRUD innovator
+  * CRUD customer
+  * CRUD test reason
+  * CRUD status
+* implement integration events with NServiceBus
+* create script to configure sites on IIS
+* use TeamCity
+* use Docker
+* use PusherServer/WebSockets to notify UI on server changes
+* deploy app to cloud 
+
+## DONE list
 * automapper -> DONE
 * move tables to own db -> DONE
 * refector repositories to use no hardcoded querys -> DONE
@@ -93,55 +143,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/Swagger -> TEST
 * InventAppInfrastructure: log locally Correlation & LoggingDb -> DONE
 * Infrastructure: log locally Correlation & LoggingDb -> DONE
 * Infrastructure.Logging: implement process to delete old logs (database and file system) -> DONE
-
-* InventApp: implement process to delete old logs from file system
-
-* Infrastructure: versioning all projects 
-* InventApp: update URLs after versioning
-* Infrastructure.Reporting: implement 
-* Infrastructure: resolve logs queued
-* InventApp: resolve logs queued
-* InventApp: create application (Angular)
-  * user login
-  * products module
-  * users module
-* Infrastructure: create application (React)
-  * user register -> receive email
-  * user login
-  * user see list available infrastructure services
-  * user select infrastructure services
-  * user pay -> credit card transactions?
-* Infrastructure.Authentication: implement refresh token
-* InventApp: implement unityOfWork
-* API test & unit test
-* Auditing: implement complex auditing (objects with nested objects) 
-* InventApp: implement retry queue system to avoid lost data sent to micro-services if connection fails
-* create index in db tables
-* create all necessary elements to create registration
-  * CRUD panel type
-  * CRUD panel
-  * CRUD lab
-  * CRUD lab/panel
-  * CRUD site 
-    * site1 -> manually
-    * site2 -> excel (using Excel library)
-    * site3 -> rest GET
-    * site4 -> soap
-    * site5 -> rest POST (notification on new one + recurrent db updates)
-  * CRUD innovator
-  * CRUD customer
-  * CRUD test reason
-  * CRUD status
-
-* implement caching
-* implement integration events with NServiceBus
-* create application to show logs
-* create script to configure sites on IIS
-* use TeamCity
-* use Docker
-* use PusherServer/WebSockets to notify UI on server changes
-* expose swagger api url to external (no localhost) URL 
-* deploy app to cloud 
+* InventApp: implement process to delete old logs from file system -> DONE
 
 ## Angular architercure styleguide
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Infrastructure.Crosscutting.Logging
+﻿namespace Infrastructure.Crosscutting.Logging
 {
     internal class Log
     {

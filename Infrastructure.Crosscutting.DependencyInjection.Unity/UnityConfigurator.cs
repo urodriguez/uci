@@ -27,53 +27,57 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
 {
     public class UnityConfigurator
     {
-        public static void Configure(HttpConfiguration config)
+        private static IUnityContainer _container;
+
+        public static void Configure(HttpConfiguration httpConfiguration)
         {
-            var container = new UnityContainer();
+            _container = new UnityContainer();
 
             #region APPLICATION
             //Services
-            container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
-            container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
-            container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
 
             //Adapters
-            container.RegisterType<IProductFactory, ProductFactory>(new PerThreadLifetimeManager());
-            container.RegisterType<IProductTypeFactory, ProductTypeFactory>(new PerThreadLifetimeManager());
-            container.RegisterType<IUserFactory, UserFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductFactory, ProductFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductTypeFactory, ProductTypeFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUserFactory, UserFactory>(new PerThreadLifetimeManager());
             #endregion
 
             #region DOMAIN
             //BusinessValidators
-            container.RegisterType<IProductBusinessValidator, ProductBusinessValidator>(new PerThreadLifetimeManager());
-            container.RegisterType<IProductTypeBusinessValidator, ProductTypeBusinessValidator>(new PerThreadLifetimeManager());
-            container.RegisterType<IUserBusinessValidator, UserBusinessValidator>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductBusinessValidator, ProductBusinessValidator>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductTypeBusinessValidator, ProductTypeBusinessValidator>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUserBusinessValidator, UserBusinessValidator>(new PerThreadLifetimeManager());
 
             //PredicateFactories
-            container.RegisterType<IProductPredicateFactory, ProductPredicateFactory>(new PerThreadLifetimeManager());
-            container.RegisterType<IUserPredicateFactory, UserPredicateFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductPredicateFactory, ProductPredicateFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUserPredicateFactory, UserPredicateFactory>(new PerThreadLifetimeManager());
 
             //Services
-            container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IRoleService, RoleService>(new PerThreadLifetimeManager());
             #endregion
 
             #region INFRASTRUCTURE
             //Crosscutting
-            container.RegisterType<IAppSettingsService, AppSettingsService>(new PerThreadLifetimeManager());
-            container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
-            container.RegisterType<IEmailService, EmailService>(new PerThreadLifetimeManager());
-            container.RegisterType<ILogService, LogService>(new PerResolveLifetimeManager());
-            container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
-            container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IAppSettingsService, AppSettingsService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IEmailService, EmailService>(new PerThreadLifetimeManager());
+            _container.RegisterType<ILogService, LogService>(new PerResolveLifetimeManager());
+            _container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
+            _container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 
             //Persistence
-            container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
-            container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
-            container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
-            container.RegisterType<IUserRepository, UserRepository>(new PerThreadLifetimeManager());
+            _container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
+            _container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUserRepository, UserRepository>(new PerThreadLifetimeManager());
             #endregion
 
-            config.DependencyResolver = new UnityDependencyResolver(container);
+            httpConfiguration.DependencyResolver = new UnityDependencyResolver(_container);
         }
+
+        public static IUnityContainer GetConfiguredContainer() => _container;
     }
 }

@@ -99,6 +99,22 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public string FileSystemLogsDirectory => $"{InventAppDirectory}\\FileSystemLogs";
 
+        public string HangfireInventAppConnectionString
+        {
+            get
+            {
+                switch (Environment.Name)
+                {
+                    case "DEV": return   "Server=localhost;Database=UciRod.Inventapp.Hangfire;Integrated Security=SSPI;";
+                    case "TEST": return  "Server=localhost;Database=UciRod.Inventapp.Hangfire-Test;Integrated Security=SSPI;";
+                    case "STAGE": return "Server=localhost;Database=UciRod.Inventapp.Hangfire-Stage;Integrated Security=SSPI;";
+                    case "PROD": return  "Server=localhost;Database=UciRod.Inventapp.Hangfire;Integrated Security=SSPI;";
+
+                    default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
+                }
+            }
+        }
+
         public InfrastructureCredential InfrastructureCredential => new InfrastructureCredential { Id = "InventApp", SecretKey = "1nfr4structur3_1nv3nt4pp" };
 
         public string InventAppDirectory => AppContext.BaseDirectory;

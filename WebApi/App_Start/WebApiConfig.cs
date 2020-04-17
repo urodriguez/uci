@@ -18,8 +18,6 @@ namespace WebApi
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            //config.MessageHandlers.Add(new TokenService());
-
             config.Routes.MapHttpRoute(
                 name: "RESTfulApi",
                 routeTemplate: "api/{controller}/{id}",

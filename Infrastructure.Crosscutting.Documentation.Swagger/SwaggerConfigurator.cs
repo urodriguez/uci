@@ -5,9 +5,9 @@ namespace Infrastructure.Crosscutting.Documentation.Swagger
 {
     public class SwaggerConfigurator
     {
-        public static void Configure(HttpConfiguration config)
+        public static void Configure(HttpConfiguration httpConfiguration)
         {
-            config.EnableSwagger(c =>
+            httpConfiguration.EnableSwagger(c =>
             {
                 // By default, the service root url is inferred from the request used to access the docs.
                 // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
