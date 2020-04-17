@@ -5,6 +5,7 @@ using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Attributes;
 using Domain.Contracts.Aggregates;
+using Domain.Exceptions;
 
 namespace Application.BusinessValidators
 {
@@ -33,12 +34,12 @@ namespace Application.BusinessValidators
                 {
                     var propertyValue = dtoProperty.GetValue(dto, null);
 
-                    if (propertyValue == null) throw new Exception($"{AggregateRootName}: Property '{property.Name}' is required");
+                    if (propertyValue == null) throw new BusinessRuleException($"{AggregateRootName}: Property '{property.Name}' is required");
 
                     //case 'string'
                     if (typeof(string).IsAssignableFrom(dtoProperty.PropertyType) && propertyValue.ToString() == string.Empty)
                     {
-                        throw new Exception($"{AggregateRootName}: Property '{dtoProperty.Name}' is required");
+                        throw new BusinessRuleException($"{AggregateRootName}: Property '{dtoProperty.Name}' is required");
                     }
                 }
             }

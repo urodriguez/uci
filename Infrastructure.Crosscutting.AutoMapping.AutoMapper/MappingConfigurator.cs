@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Infrastructure.Crosscutting.Mapping.Profiles;
+using Infrastructure.Crosscutting.AutoMapping.AutoMapper.Profiles;
 
-namespace Infrastructure.Crosscutting.Mapping
+namespace Infrastructure.Crosscutting.AutoMapping.AutoMapper
 {
     public class MapperFactory
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{9E42E658-9490-47B4-BB3D-B31C281403F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure.Crosscutting.Mapping</RootNamespace>
-    <AssemblyName>Infrastructure.Crosscutting.Mapping</AssemblyName>
+    <RootNamespace>Infrastructure.Crosscutting.AutoMapping.AutoMapper</RootNamespace>
+    <AssemblyName>Infrastructure.Crosscutting.AutoMapping.AutoMapper</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

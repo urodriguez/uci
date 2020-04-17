@@ -5,6 +5,7 @@ using Application.Dtos;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates.Factories;
+using Domain.Exceptions;
 
 namespace Application.BusinessValidators
 {
@@ -22,12 +23,12 @@ namespace Application.BusinessValidators
         protected override void ValidateFields(UserDto userDto, Guid id)
         {
             var byDistinctIdAndName = _userPredicateFactory.CreateByDistinctIdAndName(id, userDto.Name);
-            if (_userRepository.Get(byDistinctIdAndName).Any()) throw new Exception($"{AggregateRootName}: name={userDto.Name} already exits");
+            if (_userRepository.Get(byDistinctIdAndName).Any()) throw new BusinessRuleException($"{AggregateRootName}: name={userDto.Name} already exits");
 
-            if (!User.EmailIsValid(userDto.Email)) throw new Exception($"{AggregateRootName}: email={userDto.Email} has invalid email format");
+            if (!User.EmailIsValid(userDto.Email)) throw new BusinessRuleException($"{AggregateRootName}: email={userDto.Email} has invalid email format");
 
             var byDistinctIdAndEmail = _userPredicateFactory.CreateByDistinctIdAndEmail(id, userDto.Email);
-            if (_userRepository.Get(byDistinctIdAndEmail).Any()) throw new Exception($"{AggregateRootName}: email={userDto.Email} already exits");
+            if (_userRepository.Get(byDistinctIdAndEmail).Any()) throw new BusinessRuleException($"{AggregateRootName}: email={userDto.Email} already exits");
         }
     }
 }

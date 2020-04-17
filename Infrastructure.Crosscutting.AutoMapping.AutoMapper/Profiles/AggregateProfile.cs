@@ -3,7 +3,7 @@ using Application.Dtos;
 using AutoMapper;
 using Domain.Contracts.Aggregates;
 
-namespace Infrastructure.Crosscutting.Mapping.Profiles
+namespace Infrastructure.Crosscutting.AutoMapping.AutoMapper.Profiles
 {
     public abstract class AggregateProfile<TDto, TAggregateRoot> : Profile where TAggregateRoot : IAggregateRoot where TDto : IDto 
     {
