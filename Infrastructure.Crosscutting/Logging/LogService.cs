@@ -61,12 +61,19 @@ namespace Infrastructure.Crosscutting.Logging
 
                 var directoryInfo = new DirectoryInfo(_appSettingsService.FileSystemLogsDirectory);
                 var filesToDelete = directoryInfo.GetFiles("*.txt").Where(f => f.CreationTime < DateTime.Today.AddDays(-7));
+                var filesDeleted = 0;
                 foreach (var fileToDelete in filesToDelete)
                 {
                     fileToDelete.Delete();
+                    filesDeleted++;
                 }
 
-                LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=FINISHED");
+                LogInfoMessage(
+                    filesToDelete.Count() != filesDeleted ? 
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=INCOMPLED - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}" 
+                        : 
+                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=FINISHED - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}"
+                );
             }
             catch (Exception e)
             {
