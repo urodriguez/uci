@@ -17,7 +17,7 @@ namespace Infrastructure.Crosscutting.Mailing
         {
             _logService = logService;
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.MailingApiUrl);
+            _restClient = new RestClient(appSettingsService.MailingApiUrlV1);
         }
 
         public void Send(Email email)

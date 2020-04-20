@@ -18,7 +18,7 @@ namespace Infrastructure.Crosscutting.Authentication
         {
             _logService = logService;
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.AuthenticationApiUrl);
+            _restClient = new RestClient(appSettingsService.AuthenticationApiUrlV1);
         }
 
         public TokenGenerateResponse Generate(TokenGenerateRequest tokenGenerateRequest)

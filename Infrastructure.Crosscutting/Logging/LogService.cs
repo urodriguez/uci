@@ -27,7 +27,7 @@ namespace Infrastructure.Crosscutting.Logging
             _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
 
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.LoggingApiUrl);
+            _restClient = new RestClient(appSettingsService.LoggingApiUrlV1);
 
             _correlationId = Guid.NewGuid().ToString();
         }

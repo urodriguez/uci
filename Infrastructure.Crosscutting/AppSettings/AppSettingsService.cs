@@ -6,36 +6,38 @@ namespace Infrastructure.Crosscutting.AppSettings
 {
     public class AppSettingsService : IAppSettingsService
     {
-        public string AuditingApiUrl
+        public string AuditingApiUrlV1
         {
             get
             {
                 const string project = "auditing";
+                const string version = "1.0";
 
                 switch (Environment.Name)
                 {
-                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api";
-                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api";
+                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api/v{version}";
+                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api/v{version}";
 
                     default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
                 }
             }
         }
 
-        public string AuthenticationApiUrl
+        public string AuthenticationApiUrlV1
         {
             get
             {
                 const string project = "authentication";
+                const string version = "1.0";
 
                 switch (Environment.Name)
                 {
-                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api";
-                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api";
+                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api/v{version}";
+                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api/v{version}";
 
                     default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
                 }
@@ -119,36 +121,38 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public string InventAppDirectory => AppContext.BaseDirectory;
 
-        public string LoggingApiUrl
+        public string LoggingApiUrlV1
         {
             get
             {
                 const string project = "logging";
+                const string version = "1.0";
 
                 switch (Environment.Name)
                 {
-                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api";
-                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api";
+                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api/v{version}";
+                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api/v{version}";
 
                     default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
                 }
             }
         }
 
-        public string MailingApiUrl
+        public string MailingApiUrlV1
         {
             get
             {
                 const string project = "mailing";
+                const string version = "1.0";
 
                 switch (Environment.Name)
                 {
-                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api";
-                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api";
-                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api";
+                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api/v{version}";
+                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api/v{version}";
 
                     default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
                 }

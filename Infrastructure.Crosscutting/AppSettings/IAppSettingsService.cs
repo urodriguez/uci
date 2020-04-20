@@ -2,8 +2,8 @@
 {
     public interface IAppSettingsService
     {
-        string AuditingApiUrl { get; }
-        string AuthenticationApiUrl { get; }
+        string AuditingApiUrlV1 { get; }
+        string AuthenticationApiUrlV1 { get; }
         string ClientUrl { get; }
         string ConnectionString { get; }
         int DefaultTokenExpiresTime { get; }
@@ -12,8 +12,8 @@
         string HangfireInventAppConnectionString { get; }
         string InventAppDirectory { get; }
         InfrastructureCredential InfrastructureCredential { get; }
-        string LoggingApiUrl { get; }
-        string MailingApiUrl { get; }
+        string LoggingApiUrlV1 { get; }
+        string MailingApiUrlV1 { get; }
         string WebApiUrl { get; }
     }
 }

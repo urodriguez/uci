@@ -17,7 +17,7 @@ namespace Infrastructure.Crosscutting.Auditing
         {
             _logService = logService;
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.AuditingApiUrl);
+            _restClient = new RestClient(appSettingsService.AuditingApiUrlV1);
         }
 
         //TODO: implement avoid lost audit if connection fails
