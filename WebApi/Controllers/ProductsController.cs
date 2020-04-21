@@ -5,7 +5,7 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {
-    [RoutePrefix("api/products")]
+    [RoutePrefix("api/v1.0/products")]
     public class ProductsController : CrudController<ProductDto>
     {
         private readonly IProductService _productService;

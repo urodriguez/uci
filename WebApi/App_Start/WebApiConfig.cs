@@ -19,8 +19,8 @@ namespace WebApi
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "RESTfulApi",
-                routeTemplate: "api/{controller}/{id}",
+                name: "InventAppApiV1",
+                routeTemplate: "api/v1.0/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

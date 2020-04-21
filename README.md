@@ -27,7 +27,6 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* InventApp: update URLs after versioning
 * Infrastructure.Reporting: implement 
 * Infrastructure.Auditing: implement complex auditing (objects with nested objects) 
 * InventApp: resolve logs queued
@@ -144,6 +143,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * Infrastructure.Logging: implement process to delete old logs (database and file system) -> DONE
 * InventApp: implement process to delete old logs from file system -> DONE
 * Infrastructure: versioning all projects -> DONE
+* InventApp: update URLs after versioning -> DONE
 
 ## Angular architercure styleguide
 
