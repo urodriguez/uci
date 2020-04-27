@@ -27,12 +27,14 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* Infrastructure.Reporting: implement 
+* InventApp.Reporting: integration - using rest request + send by email 
+* Infrastructure.Reporting: send report by email 
 * Infrastructure.Auditing: implement complex auditing (objects with nested objects) 
 * InventApp: resolve logs queued
 * Infrastructure: resolve logs queued
 * implement caching
-* expose swagger api url to external (no localhost) URL 
+* expose swagger api url to external (no localhost) URL
+* InventApp.Reporting: integration - using hangfire recurrent job 
 * InventApp: create application (Angular)
   * user login
   * products module
@@ -49,10 +51,10 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * API test & unit test
 * create index in db tables
 * create all necessary elements to create registration
-  * CRUD panel type
-  * CRUD panel
-  * CRUD lab
-  * CRUD lab/panel
+  * CRUD invention type
+  * CRUD invention
+  * CRUD sponsor
+  * CRUD sponsor/invention
   * CRUD site 
     * site1 -> manually
     * site2 -> excel (using Excel library)
@@ -61,8 +63,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
     * site5 -> rest POST (notification on new one + recurrent db updates)
   * CRUD innovator
   * CRUD customer
-  * CRUD test reason
-  * CRUD status
+  * CRUD registration reason
+  * CRUD registration status
 * implement integration events with NServiceBus
 * create script to configure sites on IIS
 * use TeamCity
@@ -144,6 +146,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * InventApp: implement process to delete old logs from file system -> DONE
 * Infrastructure: versioning all projects -> DONE
 * InventApp: update URLs after versioning -> DONE
+* Infrastructure.Reporting: implement -> DONE
+* InventApp.Reporting: integration - using rest request -> DONE
 
 ## Angular architercure styleguide
 

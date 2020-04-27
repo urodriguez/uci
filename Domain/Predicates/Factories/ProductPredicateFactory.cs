@@ -37,5 +37,17 @@ namespace Domain.Predicates.Factories
                 InventAppPredicateOperatorGroup.And
             );
         }
+
+        public IInventAppPredicate<Product> CreateByPriceRange(decimal minPrice, decimal maxPrice)
+        {
+            return new InventAppPredicateGroup<Product>(
+                new List<IInventAppPredicate<Product>>
+                {
+                    new InventAppPredicateIndividual<Product>(u => u.Price, InventAppPredicateOperator.Ge, minPrice),
+                    new InventAppPredicateIndividual<Product>(u => u.Price, InventAppPredicateOperator.Le, maxPrice)
+                },
+                InventAppPredicateOperatorGroup.And
+            );
+        }
     }
 }

@@ -2,6 +2,7 @@
 {
     public interface IAppSettingsService
     {
+        string AssetsDirectory { get; }
         string AuditingApiUrlV1 { get; }
         string AuthenticationApiUrlV1 { get; }
         string ClientUrl { get; }
@@ -14,6 +15,9 @@
         InfrastructureCredential InfrastructureCredential { get; }
         string LoggingApiUrlV1 { get; }
         string MailingApiUrlV1 { get; }
+        string ReportingApiUrlV1 { get; }
+        string ReportsDirectory { get; }
+        string TemplatesDirectory { get; }
         string WebApiUrl { get; }
     }
 }

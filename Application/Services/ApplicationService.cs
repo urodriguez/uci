@@ -6,7 +6,6 @@ using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Exceptions;
 using Domain.Exceptions;
-using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 
@@ -16,13 +15,11 @@ namespace Application.Services
     {
         protected readonly ITokenService _tokenService;
         protected readonly ILogService _logService;
-        protected readonly IAppSettingsService _appSettingsService;
 
-        protected ApplicationService(ITokenService tokenService, ILogService logService, IAppSettingsService appSettingsService)
+        protected ApplicationService(ITokenService tokenService, ILogService logService)
         {
             _tokenService = tokenService;
             _logService = logService;
-            _appSettingsService = appSettingsService;
         }
 
         protected IApplicationResult Execute<TResult>(Func<TResult> service, bool requiresAuthentication = true) where TResult : IApplicationResult

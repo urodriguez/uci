@@ -17,6 +17,7 @@ using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.AutoMapping.AutoMapper;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
+using Infrastructure.Crosscutting.Reporting;
 using Infrastructure.Persistence.Dapper;
 using Infrastructure.Persistence.Dapper.Repositories;
 using Unity;
@@ -37,6 +38,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             //Services
             _container.RegisterType<IProductService, ProductService>(new PerThreadLifetimeManager());
             _container.RegisterType<IProductTypeService, ProductTypeService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IReportService, ReportService>(new PerThreadLifetimeManager());
             _container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
 
             //Adapters
@@ -66,6 +68,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IEmailService, EmailService>(new PerThreadLifetimeManager());
             _container.RegisterType<ILogService, LogService>(new PerResolveLifetimeManager());
             _container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
+            _container.RegisterType<IReportInfrastructureService, ReportInfrastructureService>(new PerThreadLifetimeManager());
             _container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 
             //Persistence

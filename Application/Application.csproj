@@ -67,9 +67,11 @@
     <Compile Include="ApplicationResults\ApplicationResult.cs" />
     <Compile Include="ApplicationResults\EmptyResult.cs" />
     <Compile Include="ApplicationResultStatus.cs" />
+    <Compile Include="Contracts\Services\IReportService.cs" />
     <Compile Include="Dtos\LoginDto.cs" />
     <Compile Include="Dtos\LoginStatus.cs" />
     <Compile Include="Dtos\PasswordDto.cs" />
+    <Compile Include="Dtos\ReportProductDto.cs" />
     <Compile Include="Exceptions\AuthenticationFailException.cs" />
     <Compile Include="Exceptions\CredentialNotProvidedException.cs" />
     <Compile Include="Exceptions\InternalServerException.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ProductTypeService.cs" />
+    <Compile Include="Services\ReportService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

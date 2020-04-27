@@ -24,6 +24,7 @@ namespace Application.Services
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
         protected readonly IAuditService _auditService;
         private readonly IBusinessValidator<TDto> _businessValidator;
+        protected readonly IAppSettingsService _appSettingsService;
 
         protected CrudService(
             IRoleService roleService,
@@ -34,13 +35,14 @@ namespace Application.Services
             ITokenService tokenService,
             ILogService logService,
             IAppSettingsService appSettingsService
-        ) : base (tokenService, logService, appSettingsService)
+        ) : base (tokenService, logService)
         {
             _repository = repository;
             _factory = factory;
             _auditService = auditService;
             _businessValidator = businessValidator;
             _roleService = roleService;
+            _appSettingsService = appSettingsService;
         }
 
         public IApplicationResult GetAll()

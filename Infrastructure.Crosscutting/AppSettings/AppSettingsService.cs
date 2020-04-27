@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Reflection;
 
 namespace Infrastructure.Crosscutting.AppSettings
 {
     public class AppSettingsService : IAppSettingsService
     {
+        public string AssetsDirectory => $"{InventAppDirectory}\\Assets";
+
         public string AuditingApiUrlV1
         {
             get
@@ -119,7 +122,7 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public InfrastructureCredential InfrastructureCredential => new InfrastructureCredential { Id = "InventApp", SecretKey = "1nfr4structur3_1nv3nt4pp" };
 
-        public string InventAppDirectory => AppContext.BaseDirectory;
+        public string InventAppDirectory => Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @".."));
 
         public string LoggingApiUrlV1
         {
@@ -158,6 +161,29 @@ namespace Infrastructure.Crosscutting.AppSettings
                 }
             }
         }
+
+        public string ReportingApiUrlV1
+        {
+            get
+            {
+                const string project = "reporting";
+                const string version = "1.0";
+
+                switch (Environment.Name)
+                {
+                    case "DEV":   return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "TEST":  return $"http://www.ucirod.infrastructure-test.com:40000/{project}/api/v{version}";
+                    case "STAGE": return $"http://www.ucirod.infrastructure-stage.com:40000/{project}/api/v{version}";
+                    case "PROD":  return $"http://www.ucirod.infrastructure.com:40000/{project}/api/v{version}";
+
+                    default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
+                }
+            }
+        }
+
+        public string ReportsDirectory => $"{InventAppDirectory}\\Reports";
+
+        public string TemplatesDirectory => $"{AssetsDirectory}\\Templates";
 
         public string WebApiUrl
         {
