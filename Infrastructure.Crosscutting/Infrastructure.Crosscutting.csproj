@@ -69,6 +69,7 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogService.cs" />
     <Compile Include="Logging\LogType.cs" />
+    <Compile Include="Mailing\Attachment.cs" />
     <Compile Include="Mailing\Email.cs" />
     <Compile Include="Mailing\EmailService.cs" />
     <Compile Include="Mailing\Host.cs" />

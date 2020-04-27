@@ -142,7 +142,7 @@ namespace Application.Services
                 var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
                 var templatePath = assetsPath + "\\templates\\user_created_email.html";
                 var template = File.ReadAllText(templatePath);
-                var templateReplaced = template.Replace("{{ConfirmEmailUrl}}", $"{_appSettingsService.WebApiUrl}/users/{userId}/confirmEmail")
+                var userCreatedEmailBody = template.Replace("{{ConfirmEmailUrl}}", $"{_appSettingsService.WebApiUrl}/users/{userId}/confirmEmail")
                                                .Replace("{{FirstName}}", user.FirstName)
                                                .Replace("{{LastName}}", user.LastName)
                                                .Replace("{{UserName}}", user.Name)
@@ -169,7 +169,7 @@ namespace Application.Services
                     },
                     To = user.Email,
                     Subject = "User Created",
-                    Body = templateReplaced
+                    Body = userCreatedEmailBody
                 });
             }
 
@@ -192,14 +192,14 @@ namespace Application.Services
                 var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
                 var templatePath = assetsPath + "\\templates\\user_confirmed.html";
                 var template = File.ReadAllText(templatePath);
-                var templateReplaced = template.Replace("{{UserName}}", user.Name)
+                var userConfirmedEmailBody = template.Replace("{{UserName}}", user.Name)
                                                .Replace("{{InventAppClientUrl}}", _appSettingsService.ClientUrl);
 
                 return new ApplicationResult<string>
                 {
                     Status = ApplicationResultStatus.Ok,
                     Message = "Email has been confirmed",
-                    Data = templateReplaced
+                    Data = userConfirmedEmailBody
                 };
             }, false);
         }

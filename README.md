@@ -27,14 +27,13 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* InventApp.Reporting: integration - using rest request + send by email 
-* Infrastructure.Reporting: send report by email 
 * Infrastructure.Auditing: implement complex auditing (objects with nested objects) 
 * InventApp: resolve logs queued
 * Infrastructure: resolve logs queued
 * implement caching
 * expose swagger api url to external (no localhost) URL
 * InventApp.Reporting: integration - using hangfire recurrent job 
+* Infrastructe: API Gateway
 * InventApp: create application (Angular)
   * user login
   * products module
@@ -148,6 +147,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * InventApp: update URLs after versioning -> DONE
 * Infrastructure.Reporting: implement -> DONE
 * InventApp.Reporting: integration - using rest request -> DONE
+* Infrastructure.Mailing: allow attachments -> DONE
+* InventApp.Reporting: integration - using rest request + send by email -> DONE
 
 ## Angular architercure styleguide
 

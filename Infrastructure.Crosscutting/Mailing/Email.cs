@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Crosscutting.Mailing
+﻿using System.Collections.Generic;
+
+namespace Infrastructure.Crosscutting.Mailing
 {
     public class Email 
     {
@@ -8,5 +10,6 @@
         public string To { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
+        public IEnumerable<Attachment> Attachments { get; set; }
     }
 }

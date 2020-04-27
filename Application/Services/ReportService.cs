@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Application.ApplicationResults;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -8,6 +10,7 @@ using Domain.Contracts.Predicates.Factories;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.Mailing;
 using Infrastructure.Crosscutting.Reporting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,26 +21,35 @@ namespace Application.Services
     public class ReportService : ApplicationService, IReportService
     {
         private readonly IReportInfrastructureService _reportInfrastructureService;
-        private readonly IProductRepository _productRepository;
         private readonly IProductPredicateFactory _productPredicateFactory;
+        private readonly IProductRepository _productRepository;
         private readonly IAppSettingsService _appSettingsService;
+        private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly IUserRepository _userRepository;
+        private readonly IEmailService _emailService;
 
         public ReportService(
             ITokenService tokenService, 
             ILogService logService, 
-            IReportInfrastructureService reportInfrastructureService, 
-            IProductRepository productRepository,
+            IReportInfrastructureService reportInfrastructureService,
             IProductPredicateFactory productPredicateFactory,
-            IAppSettingsService appSettingsService
+            IProductRepository productRepository,
+            IAppSettingsService appSettingsService,
+            IUserPredicateFactory userPredicateFactory, 
+            IUserRepository userRepository,
+            IEmailService emailService
         ) : base(
             tokenService, 
             logService
         )
         {
             _reportInfrastructureService = reportInfrastructureService;
-            _productRepository = productRepository;
             _productPredicateFactory = productPredicateFactory;
+            _productRepository = productRepository;
             _appSettingsService = appSettingsService;
+            _userPredicateFactory = userPredicateFactory;
+            _userRepository = userRepository;
+            _emailService = emailService;
 
             Directory.CreateDirectory($"{_appSettingsService.ReportsDirectory}");
         }
@@ -72,6 +84,32 @@ namespace Application.Services
                         Status = ApplicationResultStatus.InternalServerError,
                         Message = "Report couldn't be generated"
                     };
+                }
+
+                if (reportProductDto.SendByEmail)
+                {
+                    var byName = _userPredicateFactory.CreateByName(InventAppContext.UserName);
+                    var user = _userRepository.Get(byName).Single();
+
+                    var userRequestReportEmailTemplatePath = $"{_appSettingsService.TemplatesDirectory}\\user_request_report.html";
+                    var userRequestReportEmailTemplate = File.ReadAllText(userRequestReportEmailTemplatePath);
+                    var userRequestReportEmailBody = userRequestReportEmailTemplate.Replace("{{UserName}}", user.FirstName);
+
+                    _emailService.Send(new Email
+                    {
+                        UseCustomSmtpServer = false,
+                        To = user.Email,
+                        Subject = "Products Report",
+                        Body = userRequestReportEmailBody,
+                        Attachments = new List<Attachment>
+                        {
+                            new Attachment
+                            {
+                                FileContent = reportBytes,
+                                FileName = $"products_{Guid.NewGuid()}.pdf"
+                            }
+                        }
+                    });
                 }
 
                 //TODO: return to UI
