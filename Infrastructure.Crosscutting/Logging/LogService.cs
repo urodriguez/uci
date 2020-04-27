@@ -57,23 +57,26 @@ namespace Infrastructure.Crosscutting.Logging
             //Remove logs from file system
             try
             {
-                LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=PENDING");
+                LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS");
 
-                var directoryInfo = new DirectoryInfo(_appSettingsService.FileSystemLogsDirectory);
-                var filesToDelete = directoryInfo.GetFiles("*.txt").Where(f => f.CreationTime < DateTime.Today.AddDays(-7));
-                var filesDeleted = 0;
-                foreach (var fileToDelete in filesToDelete)
+                foreach (var fileSystemLogsDirectory in Directory.GetDirectories(_appSettingsService.FileSystemLogsDirectory))
                 {
-                    fileToDelete.Delete();
-                    filesDeleted++;
-                }
+                    var directoryInfo = new DirectoryInfo(fileSystemLogsDirectory);
+                    var filesToDelete = directoryInfo.GetFiles("*.txt").Where(f => f.CreationTime < DateTime.Today.AddDays(-7));
+                    var filesDeleted = 0;
+                    foreach (var fileToDelete in filesToDelete)
+                    {
+                        fileToDelete.Delete();
+                        filesDeleted++;
+                    }
 
-                LogInfoMessage(
-                    filesToDelete.Count() != filesDeleted ? 
-                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=INCOMPLED - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}" 
-                        : 
-                        $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=FINISHED - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}"
-                );
+                    LogInfoMessage(
+                        filesToDelete.Count() != filesDeleted ?
+                            $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=INCOMPLED - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}"
+                            :
+                            $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FS | status=FINISHED - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}"
+                        );
+                }
             }
             catch (Exception e)
             {
@@ -125,7 +128,7 @@ namespace Infrastructure.Crosscutting.Logging
 
         private void FileSystemLog(string messageToLog)
         {
-            var projFileSystemLogsDirectory = $"{_appSettingsService.FileSystemLogsDirectory}";
+            var projFileSystemLogsDirectory = $"{_appSettingsService.FileSystemLogsDirectory}\\{_projectName}";
             Directory.CreateDirectory(projFileSystemLogsDirectory);
 
             var logFileName = $"FSL,{_correlationId}";
