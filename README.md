@@ -27,11 +27,11 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* Infrastructure.Auditing: implement complex auditing (objects with nested objects) 
+* InventApp: test new auditing features
 * InventApp: resolve logs queued
 * Infrastructure: resolve logs queued
-* implement caching
 * expose swagger api url to external (no localhost) URL
+* implement caching
 * InventApp.Reporting: integration - using hangfire recurrent job 
 * Infrastructe: API Gateway
 * InventApp: create application (Angular)
@@ -149,6 +149,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * InventApp.Reporting: integration - using rest request -> DONE
 * Infrastructure.Mailing: allow attachments -> DONE
 * InventApp.Reporting: integration - using rest request + send by email -> DONE
+* Infrastructure.Auditing: implement complex auditing - objects with nested objects -> DONE
+* Infrastructure.Auditing: implement complex auditing - objects with nested arrays of objects -> DONE
 
 ## Angular architercure styleguide
 
