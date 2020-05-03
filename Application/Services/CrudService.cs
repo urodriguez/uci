@@ -98,8 +98,9 @@ namespace Application.Services
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
                     User = InventAppContext.UserName,
-                    Entity = JsonConvert.SerializeObject(aggregate),
+                    EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
+                    Entity = JsonConvert.SerializeObject(aggregate),
                     Action = AuditAction.Create
                 });
 
@@ -133,8 +134,9 @@ namespace Application.Services
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
                     User = InventAppContext.UserName,
-                    Entity = JsonConvert.SerializeObject(aggregateUpdated),
+                    EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
+                    Entity = JsonConvert.SerializeObject(aggregateUpdated),
                     Action = AuditAction.Update
                 });
 
@@ -163,8 +165,9 @@ namespace Application.Services
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
                     User = InventAppContext.UserName,
-                    Entity = JsonConvert.SerializeObject(aggregate),
+                    EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
+                    Entity = JsonConvert.SerializeObject(aggregate),
                     Action = AuditAction.Delete
                 });
 

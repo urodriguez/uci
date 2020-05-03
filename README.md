@@ -27,7 +27,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* InventApp: test new auditing features
+* Infrastructure.Auditing: test on TEST env + fix bugs
 * InventApp: resolve logs queued
 * Infrastructure: resolve logs queued
 * expose swagger api url to external (no localhost) URL
@@ -151,6 +151,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * InventApp.Reporting: integration - using rest request + send by email -> DONE
 * Infrastructure.Auditing: implement complex auditing - objects with nested objects -> DONE
 * Infrastructure.Auditing: implement complex auditing - objects with nested arrays of objects -> DONE
+* InventApp: integrate with new auditing -> DONE
 
 ## Angular architercure styleguide
 
