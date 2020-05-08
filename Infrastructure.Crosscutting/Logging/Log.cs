@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Crosscutting.Logging
 {
-    internal class Log : IQueueable
+    public class Log : IQueueable
     {
         public Log(InfrastructureCredential credential, string application, string project, string correlationId, string text, LogType type, string environment) 
         {

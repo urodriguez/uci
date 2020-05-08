@@ -4,6 +4,9 @@ namespace Infrastructure.Crosscutting.Queueing
 {
     public class QueueItem
     {
+        //EF
+        public QueueItem() { }
+
         public QueueItem(QueueItemType type, string data)
         {
             Id = Guid.NewGuid();

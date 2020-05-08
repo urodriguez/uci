@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -6,10 +7,13 @@ using System.Text;
 using System.Web.Compilation;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Queueing;
+using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
+using Infrastructure.Crosscutting.Queueing.Enqueue;
+using Newtonsoft.Json;
 
 namespace Infrastructure.Crosscutting.Logging
 {
-    public class LogService : AsyncInfrastractureService, ILogService
+    public class LogService : AsyncInfrastractureService, ILogService, ILogDequeueResolver
     {
         private readonly IAppSettingsService _appSettingsService;
 
@@ -17,7 +21,7 @@ namespace Infrastructure.Crosscutting.Logging
 
         private static readonly object Locker = new Object();
 
-        public LogService(IAppSettingsService appSettingsService, IQueueService queueService) : base(queueService)
+        public LogService(IAppSettingsService appSettingsService, IEnqueueService queueService) : base(queueService)
         {
             _appSettingsService = appSettingsService;
 
@@ -45,6 +49,27 @@ namespace Infrastructure.Crosscutting.Logging
         public void LogErrorMessage(string messageToLog)
         {
             LogMessage(messageToLog, LogType.Error);
+        }
+
+        private void LogMessage(string messageToLog, LogType logType)
+        {
+            var log = new Log(
+                _appSettingsService.InfrastructureCredential,
+                "InventApp",
+                BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First(),
+                _correlationId,
+                messageToLog,
+                logType,
+                _appSettingsService.Environment.Name
+            );
+
+            ExecuteAsync("logs", log);
+        }
+
+        public void Log(Log log)
+        {
+            log.Credential = _appSettingsService.InfrastructureCredential;
+            ExecuteAsync("logs", log);
         }
 
         public void DeleteOldLogs()
@@ -79,21 +104,6 @@ namespace Infrastructure.Crosscutting.Logging
             }
         }
 
-        private void LogMessage(string messageToLog, LogType logType)
-        {
-            var log = new Log(
-                _appSettingsService.InfrastructureCredential,
-                "InventApp",
-                BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First(),
-                _correlationId,
-                messageToLog,
-                logType,
-                _appSettingsService.Environment.Name
-            );
-
-            ExecuteAsync("logs", log);
-        }
-
         public void FileSystemLog(string messageToLog)
         {
             var projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
@@ -112,5 +122,16 @@ namespace Infrastructure.Crosscutting.Logging
                 }
             }
         }
+
+        public void ResolveDequeue(IReadOnlyCollection<string> queueItemsJsonData)
+        {
+            foreach (var queueItemJsonData in queueItemsJsonData)
+            {
+                var log = JsonConvert.DeserializeObject<Log>(queueItemJsonData);
+                Log(log);
+            }
+        }
+
+        public bool ResolvesQueueItemType(QueueItemType queueItemType) => queueItemType == QueueItemType.Log;
     }
 }

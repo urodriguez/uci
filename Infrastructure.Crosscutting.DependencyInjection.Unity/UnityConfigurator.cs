@@ -18,6 +18,9 @@ using Infrastructure.Crosscutting.AutoMapping.AutoMapper;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
 using Infrastructure.Crosscutting.Queueing;
+using Infrastructure.Crosscutting.Queueing.Dequeue;
+using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
+using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Infrastructure.Crosscutting.Reporting;
 using Infrastructure.Persistence.Dapper;
 using Infrastructure.Persistence.Dapper.Repositories;
@@ -65,11 +68,15 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             #region INFRASTRUCTURE
             //Crosscutting
             _container.RegisterType<IAppSettingsService, AppSettingsService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IAuditDequeueResolver, AuditService>(new PerThreadLifetimeManager());
             _container.RegisterType<IAuditService, AuditService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IDequeueService, DequeueService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IEmailDequeueResolver, EmailService>(new PerThreadLifetimeManager());
             _container.RegisterType<IEmailService, EmailService>(new PerThreadLifetimeManager());
+            _container.RegisterType<IEnqueueService, EnqueueService>(new PerThreadLifetimeManager());
+            _container.RegisterType<ILogDequeueResolver, LogService>(new PerThreadLifetimeManager());
             _container.RegisterType<ILogService, LogService>(new PerResolveLifetimeManager());
             _container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());
-            _container.RegisterType<IQueueService, QueueService>(new PerThreadLifetimeManager());
             _container.RegisterType<IReportInfrastructureService, ReportInfrastructureService>(new PerThreadLifetimeManager());
             _container.RegisterType<ITokenService, TokenService>(new PerThreadLifetimeManager());
 

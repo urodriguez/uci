@@ -78,8 +78,14 @@
     <Compile Include="Authentication\TokenValidateResponse.cs" />
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Queueing\Dequeue\Resolvers\IAuditDequeueResolver.cs" />
+    <Compile Include="Queueing\Dequeue\Resolvers\IEmailDequeueResolver.cs" />
+    <Compile Include="Queueing\Dequeue\Resolvers\ILogDequeueResolver.cs" />
+    <Compile Include="Queueing\Dequeue\DequeueService.cs" />
+    <Compile Include="Queueing\Dequeue\Resolvers\IDequeueResolver.cs" />
+    <Compile Include="Queueing\Dequeue\IDequeueService.cs" />
     <Compile Include="Queueing\IQueueable.cs" />
-    <Compile Include="Queueing\IQueueService.cs" />
+    <Compile Include="Queueing\Enqueue\IEnqueueService.cs" />
     <Compile Include="Queueing\QueueItem.cs" />
     <Compile Include="Logging\LogService.cs" />
     <Compile Include="Logging\LogType.cs" />
@@ -93,7 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queueing\QueueContext.cs" />
     <Compile Include="Queueing\QueueItemType.cs" />
-    <Compile Include="Queueing\QueueService.cs" />
+    <Compile Include="Queueing\Enqueue\EnqueueService.cs" />
     <Compile Include="Reporting\IReportInfrastructureService.cs" />
     <Compile Include="Reporting\Report.cs" />
     <Compile Include="Reporting\ReportInfrastructureService.cs" />

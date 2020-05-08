@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Queueing;
+using Infrastructure.Crosscutting.Queueing.Enqueue;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting
@@ -12,15 +13,15 @@ namespace Infrastructure.Crosscutting
     {
         protected ILogService _logService;
         protected IRestClient _restClient;
-        private readonly IQueueService _queueService;
+        private readonly IEnqueueService _queueService;
 
-        protected AsyncInfrastractureService(ILogService logService, IQueueService queueService)
+        protected AsyncInfrastractureService(ILogService logService, IEnqueueService queueService)
         {
             _logService = logService;
             _queueService = queueService;
         }        
         
-        protected AsyncInfrastractureService(IQueueService queueService)
+        protected AsyncInfrastractureService(IEnqueueService queueService)
         {
             _queueService = queueService;
         }
@@ -61,7 +62,7 @@ namespace Infrastructure.Crosscutting
                     if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.ServiceUnavailable) 
                         Enqueue(queueable, childServiceName, childMethodName);
 
-                    if (response.IsSuccessful)
+                    if (response.IsSuccessful && !IsLogService(childServiceName))
                     {
                         _logService.LogInfoMessage($"{childServiceName}.{childMethodName} | Data sent to {childServiceName} Micro-service | Status=SUCCESSFUL");
                     }
@@ -98,7 +99,7 @@ namespace Infrastructure.Crosscutting
         {
             try
             {
-                _queueService.Enqueue(queueable.QueueItemType, queueable);
+                _queueService.Execute(queueable, queueable.QueueItemType);
             }
             catch (Exception qex)
             {

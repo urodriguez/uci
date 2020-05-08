@@ -3,6 +3,7 @@
     public interface ILogService
     {
         string GetCorrelationId();
+        void Log(Log log);
         void LogTraceMessage(string messageToLog);
         void LogInfoMessage(string messageToLog);
         void LogErrorMessage(string messageToLog);

@@ -1,18 +1,18 @@
 ﻿using Infrastructure.Crosscutting.AppSettings;
 using Newtonsoft.Json;
 
-namespace Infrastructure.Crosscutting.Queueing
+namespace Infrastructure.Crosscutting.Queueing.Enqueue
 {
-    public class QueueService : IQueueService
+    public class EnqueueService : IEnqueueService
     {
         private readonly IAppSettingsService _appSettingsService;
 
-        public QueueService(IAppSettingsService appSettingsService)
+        public EnqueueService(IAppSettingsService appSettingsService)
         {
             _appSettingsService = appSettingsService;
         }
 
-        public void Enqueue(QueueItemType type, IQueueable queueable)
+        public void Execute(IQueueable queueable, QueueItemType type)
         {
             using (var context = new QueueContext(_appSettingsService.ConnectionString))
             {
