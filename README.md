@@ -27,8 +27,9 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* InventApp: resolve logs queued
-* Infrastructure: resolve logs queued
+* InventApp: dequeue failed data and resend
+* Infrastructe: enqueue failed data
+* Infrastructe: dequeue failed data and resend
 * expose swagger api url to external (no localhost) URL
 * implement caching
 * InventApp.Reporting: integration - using hangfire recurrent job 
@@ -153,6 +154,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * InventApp: integrate with new auditing -> DONE
 * Infrastructure.Auditing: test on TEST env + fix bugs -> DONE
 * Infrastructure.Auditing: feature to add/remove elements on object/array -> DONE
+* InventApp: enqueue failed data -> DONE
 
 ## Angular architercure styleguide
 

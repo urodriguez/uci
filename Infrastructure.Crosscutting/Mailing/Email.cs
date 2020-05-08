@@ -1,9 +1,15 @@
 ﻿using System.Collections.Generic;
+using Infrastructure.Crosscutting.Queueing;
 
 namespace Infrastructure.Crosscutting.Mailing
 {
-    public class Email 
+    public class Email  : IQueueable
     {
+        public Email()
+        {
+            QueueItemType = QueueItemType.Email;
+        }
+
         public InfrastructureCredential Credential { get; set; }
         public bool UseCustomSmtpServer { get; set; }
         public SmtpServerConfiguration SmtpServerConfiguration { get; set; }
@@ -11,5 +17,6 @@ namespace Infrastructure.Crosscutting.Mailing
         public string Subject { get; set; }
         public string Body { get; set; }
         public IEnumerable<Attachment> Attachments { get; set; }
+        public QueueItemType QueueItemType { get; set; }
     }
 }

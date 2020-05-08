@@ -6,6 +6,7 @@
         void LogTraceMessage(string messageToLog);
         void LogInfoMessage(string messageToLog);
         void LogErrorMessage(string messageToLog);
+        void FileSystemLog(string messageToLog);
         void DeleteOldLogs();
     }
 }

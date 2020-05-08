@@ -3,31 +3,26 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.Compilation;
 using Infrastructure.Crosscutting.AppSettings;
-using RestSharp;
+using Infrastructure.Crosscutting.Queueing;
 
 namespace Infrastructure.Crosscutting.Logging
 {
-    public class LogService : ILogService
+    public class LogService : AsyncInfrastractureService, ILogService
     {
-        private readonly IRestClient _restClient;
         private readonly IAppSettingsService _appSettingsService;
 
-        private readonly string _application;
-        private readonly string _projectName;
         private readonly string _correlationId;
 
         private static readonly object Locker = new Object();
 
-        public LogService(IAppSettingsService appSettingsService)
+        public LogService(IAppSettingsService appSettingsService, IQueueService queueService) : base(queueService)
         {
-            _application = "InventApp";
-            _projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
-
             _appSettingsService = appSettingsService;
-            _restClient = new RestClient(appSettingsService.LoggingApiUrlV1);
+
+            UseLogger(this);
+            UseBaseUrl(appSettingsService.LoggingApiUrlV1);
 
             _correlationId = Guid.NewGuid().ToString();
         }
@@ -86,49 +81,23 @@ namespace Infrastructure.Crosscutting.Logging
 
         private void LogMessage(string messageToLog, LogType logType)
         {
-            var task = new Task(() =>
-            {
-                try
-                {
-                    var request = new RestRequest
-                    {
-                        Resource = "logs",
-                        Method = Method.POST
-                    };
-                    request.AddJsonBody(new Log(
-                        _appSettingsService.InfrastructureCredential, 
-                        _application, 
-                        _projectName,
-                        _correlationId,
-                        messageToLog, 
-                        logType, 
-                        _appSettingsService.Environment.Name)
-                    );
+            var log = new Log(
+                _appSettingsService.InfrastructureCredential,
+                "InventApp",
+                BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First(),
+                _correlationId,
+                messageToLog,
+                logType,
+                _appSettingsService.Environment.Name
+            );
 
-                    var logResponse =  _restClient.Post(request);
-
-                    if (!logResponse.IsSuccessful)
-                        throw new Exception(
-                            $"logResponse.IsSuccessful=false - logResponse.StatusCode={logResponse.StatusCode} - logResponse.Content={logResponse.Content}"
-                        );
-                }
-                catch (Exception e) 
-                {
-                    //Do not call LogService to log this exception in order to avoid infinite loop
-                    FileSystemLog($"{e}");
-
-                    //queue 'log' data
-
-                    //do not throw the exception in order to avoid finish the main request
-                }
-            });
-
-            task.Start();
+            ExecuteAsync("logs", log);
         }
 
-        private void FileSystemLog(string messageToLog)
+        public void FileSystemLog(string messageToLog)
         {
-            var projFileSystemLogsDirectory = $"{_appSettingsService.FileSystemLogsDirectory}\\{_projectName}";
+            var projectName = BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First();
+            var projFileSystemLogsDirectory = $"{_appSettingsService.FileSystemLogsDirectory}\\{projectName}";
             Directory.CreateDirectory(projFileSystemLogsDirectory);
 
             var logFileName = $"FSL,{_correlationId}";

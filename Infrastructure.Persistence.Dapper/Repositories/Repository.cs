@@ -25,7 +25,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             _logService = logService;
             _queryFiller = new QueryFiller();
 
-            var x = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
+            var t = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
 
         /// <summary>

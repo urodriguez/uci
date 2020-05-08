@@ -4,6 +4,7 @@ using Infrastructure.Crosscutting.BackgroundProcessing.Hangfire;
 using Infrastructure.Crosscutting.DependencyInjection.Unity;
 using Infrastructure.Crosscutting.Documentation.Swagger;
 using Infrastructure.Crosscutting.Logging;
+using Infrastructure.Crosscutting.Queueing;
 using Owin;
 using GlobalConfiguration = System.Web.Http.GlobalConfiguration;
 
@@ -20,7 +21,8 @@ namespace WebApi
             SwaggerConfigurator.Configure(GlobalConfiguration.Configuration);
             HangfireConfigurator.Configure(Hangfire.GlobalConfiguration.Configuration, app);
 
-            var logService = new LogService(new AppSettingsService());
+            var appSettingsService = new AppSettingsService();
+            var logService = new LogService(appSettingsService, new QueueService(appSettingsService));
             RecurringJob.AddOrUpdate("delete-old-logs", () => logService.DeleteOldLogs(), Cron.Daily);
         }
     }
