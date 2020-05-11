@@ -14,7 +14,7 @@ using WebApi.HttpActionResults;
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class InventAppApiController : ApiController
+    public class InventAppApiController : ApiController;
     {
         protected readonly ILogService _logService;
 
