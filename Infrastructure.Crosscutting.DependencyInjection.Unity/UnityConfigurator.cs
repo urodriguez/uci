@@ -17,7 +17,6 @@ using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.AutoMapping.AutoMapper;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue;
 using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
@@ -91,5 +90,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
         }
 
         public static IUnityContainer GetConfiguredContainer() => _container;
+
+        public static T ResolveDependency<T>() => _container.Resolve<T>();
     }
 }

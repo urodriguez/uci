@@ -27,8 +27,8 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* Infrastructe: enqueue failed data
-* Infrastructe: dequeue failed data and resend
+* InventApp.Jenkins: add sql script to build process
+* Infrastructe.Jenkins: add sql script to build process
 * expose swagger api url to external (no localhost) URL
 * implement caching
 * InventApp.Reporting: integration - using hangfire recurrent job 
@@ -65,10 +65,11 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
   * CRUD registration status
 * implement integration events with NServiceBus
 * create script to configure sites on IIS
-* use TeamCity
 * use Docker
 * use PusherServer/WebSockets to notify UI on server changes
 * deploy app to cloud 
+* Infrastructe: enqueue failed data
+* Infrastructe: dequeue failed data and resend
 
 ## DONE list
 * automapper -> DONE
@@ -155,6 +156,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * Infrastructure.Auditing: feature to add/remove elements on object/array -> DONE
 * InventApp: enqueue failed data -> DONE
 * InventApp: dequeue failed data and resend -> DONE
+* InventApp.Queueing: use dependecy resolver -> DONE
 
 ## Angular architercure styleguide
 

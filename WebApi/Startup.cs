@@ -6,7 +6,6 @@ using Infrastructure.Crosscutting.DependencyInjection.Unity;
 using Infrastructure.Crosscutting.Documentation.Swagger;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Owin;
@@ -25,12 +24,8 @@ namespace WebApi
             SwaggerConfigurator.Configure(GlobalConfiguration.Configuration);
             HangfireConfigurator.Configure(Hangfire.GlobalConfiguration.Configuration, app);
 
-            var appSettingsService = new AppSettingsService();
-            var enqueueService = new EnqueueService(appSettingsService);
-            var logService = new LogService(appSettingsService, enqueueService);
-            var auditService = new AuditService(logService, appSettingsService, enqueueService);
-            var emailService = new EmailService(logService, appSettingsService, enqueueService);
-            var dequeueService = new DequeueService(appSettingsService, logService, logService, auditService, emailService);
+            var logService = UnityConfigurator.ResolveDependency<ILogService>();
+            var dequeueService = UnityConfigurator.ResolveDependency<IDequeueService>();
 
             RecurringJob.AddOrUpdate("delete-old-logs", () => logService.DeleteOldLogs(), Cron.Daily);
             RecurringJob.AddOrUpdate("dequeue", () => dequeueService.Execute(), Cron.Minutely);
