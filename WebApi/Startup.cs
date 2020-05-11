@@ -1,13 +1,9 @@
 ﻿using Hangfire;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.BackgroundProcessing.Hangfire;
 using Infrastructure.Crosscutting.DependencyInjection.Unity;
 using Infrastructure.Crosscutting.Documentation.Swagger;
 using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Mailing;
 using Infrastructure.Crosscutting.Queueing.Dequeue;
-using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Owin;
 using GlobalConfiguration = System.Web.Http.GlobalConfiguration;
 
