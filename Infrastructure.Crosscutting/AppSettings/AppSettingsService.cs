@@ -71,10 +71,10 @@ namespace Infrastructure.Crosscutting.AppSettings
             {
                 switch (Environment.Name)
                 {
-                    case "DEV":   return "Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True";
-                    case "TEST":  return "Server=localhost;Database=UciRod.Inventapp-Test;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True";
-                    case "STAGE": return "Server=localhost;Database=UciRod.Inventapp-Stage;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True";
-                    case "PROD":  return "Server=localhost;Database=UciRod.Inventapp-Prod;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;Trusted_Connection=True;MultipleActiveResultSets=True";
+                    case "DEV":   return "Server=localhost;Database=UciRod.Inventapp;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;MultipleActiveResultSets=True";
+                    case "TEST":  return "Server=localhost;Database=UciRod.Inventapp-Test;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;MultipleActiveResultSets=True";
+                    case "STAGE": return "Server=localhost;Database=UciRod.Inventapp-Stage;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;MultipleActiveResultSets=True";
+                    case "PROD":  return "Server=localhost;Database=UciRod.Inventapp-Prod;User ID=inventappUser;Password=Uc1R0d-1nv3nt4pp;MultipleActiveResultSets=True";
 
                     default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
                 }
