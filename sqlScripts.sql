@@ -1,10 +1,33 @@
 DECLARE @isDevEnv bit = 1
 
+IF @isDevEnv = 1
+	USE [UciRod.Infrastructure.Logging]
+ELSE
+	USE [UciRod.Infrastructure.Logging-Test]
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
+	CREATE TABLE [dbo].[User](
+		[Id] uniqueidentifier NOT NULL,
+		[Name] nvarchar(20) NOT NULL,
+		[Password] nvarchar(max) NULL,
+		[FirstName] nvarchar(20) NOT NULL,
+		[MiddleName] nvarchar(50) NULL,
+		[LastName] nvarchar(20) NOT NULL,
+		[Email] nvarchar(70) NOT NULL,
+		[RoleId] int NOT NULL,
+		[DateCreated] datetime NOT NULL,
+		[LastLoginTime] datetime NULL,
+		[Activate] bit NOT NULL,
+		[EmailConfirmed] bit NOT NULL,
+		[AccessFailedCount] int NOT NULL,
+		[IsUsingCustomPassword] bit NOT NULL
+	)
+
 IF COL_LENGTH('dbo.[Product]', 'Code') IS NULL
 	alter table dbo.[Product] add Code varchar(8) not null
-
-IF COL_LENGTH('dbo.[User]', 'IsUsingCustomPassword') IS NULL
-	ALTER TABLE dbo.[User] ADD IsUsingCustomPassword bit NOT NULL DEFAULT 1
 
 IF @isDevEnv = 1
 begin
@@ -27,4 +50,3 @@ BEGIN
 		QueueDate datetime NOT NULL
 	)
 END
-GO
