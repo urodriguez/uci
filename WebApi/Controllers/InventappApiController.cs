@@ -8,7 +8,6 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Application;
 using Application.ApplicationResults;
-using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using WebApi.HttpActionResults;
 
@@ -18,21 +17,15 @@ namespace WebApi.Controllers
     public class InventAppApiController : ApiController
     {
         protected readonly ILogService _logService;
-        private readonly IAppSettingsService _appSettingsService;
 
-        public InventAppApiController(ILogService logService, IAppSettingsService appSettingsService)
+        public InventAppApiController(ILogService logService)
         {
             _logService = logService;
-            _appSettingsService = appSettingsService;
         }
 
         protected IHttpActionResult Execute<TResult>(Func<TResult> service, MediaType mediaType = MediaType.ApplicationJson) where TResult : IApplicationResult
         {
             InventAppContext.SecurityToken = ExtractToken(Request);
-
-            var clientIpAddress = GetClientIpAddress(Request);
-            if (_appSettingsService.Environment.IsTest() && !clientIpAddress.Equals("192.168.0.239"))//clientIpAddress == 192.168.0.239 => internal testing
-                _appSettingsService.BaseInventAppApiUrl = "152.171.94.90";//for external requests that uses public ip 152.171.94.90
 
             var serviceResult = service.Invoke();
 
@@ -83,45 +76,6 @@ namespace WebApi.Controllers
 
             var bearerToken = authzHeaders.ElementAt(0);
             return bearerToken.StartsWith("Bearer ") ? bearerToken.Substring(7) : bearerToken;
-        }
-
-        private static string GetClientIpAddress(HttpRequestMessage request)
-        {
-            const string httpContext = "MS_HttpContext";
-            const string remoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
-            const string owinContext = "MS_OwinContext";
-
-            //Web-hosting
-            if (request.Properties.ContainsKey(httpContext))
-            {
-                dynamic ctx = request.Properties[httpContext];
-                if (ctx != null)
-                {
-                    return ctx.Request.UserHostAddress;
-                }
-            }
-
-            //Self-hosting
-            if (request.Properties.ContainsKey(remoteEndpointMessage))
-            {
-                dynamic remoteEndpoint = request.Properties[remoteEndpointMessage];
-                if (remoteEndpoint != null)
-                {
-                    return remoteEndpoint.Address;
-                }
-            }
-
-            //Owin-hosting
-            if (request.Properties.ContainsKey(owinContext))
-            {
-                dynamic ctx = request.Properties[owinContext];
-                if (ctx != null)
-                {
-                    return ctx.Request.RemoteIpAddress;
-                }
-            }
-
-            return null;
         }
     }
 }
