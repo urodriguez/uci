@@ -1,9 +1,9 @@
 DECLARE @isDevEnv bit = 1
 
 IF @isDevEnv = 1
-	USE [UciRod.Infrastructure.Logging]
+	USE [UciRod.Inventapp]
 ELSE
-	USE [UciRod.Infrastructure.Logging-Test]
+	USE [UciRod.Inventapp-Test]
 
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
