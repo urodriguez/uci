@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 
 namespace Infrastructure.Crosscutting.AppSettings
@@ -39,7 +42,9 @@ namespace Infrastructure.Crosscutting.AppSettings
                 {
                     const string sqlServerInstance = "localhost";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
-                    _baseInventAppApiUrl = $"www.ucirod.inventapp-test.com:{inventAppApiPort}";
+                    _baseInventAppApiUrl = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Any(a => a.AddressFamily == AddressFamily.InterNetwork && a.ToString().Equals("192.168.0.239")) 
+                        ? $"www.ucirod.inventapp-test.com:{inventAppApiPort}" //mapped to internal private ip
+                        : $"152.171.94.90:{inventAppApiPort}"; //mapped to external public ip
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase}-Test;{integratedSecuritySspi}";
