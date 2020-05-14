@@ -26,9 +26,6 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 		[IsUsingCustomPassword] bit NOT NULL
 	)
 
-IF COL_LENGTH('dbo.[Product]', 'Code') IS NULL
-	alter table dbo.[Product] add Code varchar(8) not null
-
 IF @isDevEnv = 1
 begin
 	IF DB_ID('UciRod.Inventapp.Hangfire') IS NULL 
