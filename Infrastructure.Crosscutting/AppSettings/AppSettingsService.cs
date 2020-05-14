@@ -42,9 +42,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                 {
                     const string sqlServerInstance = "localhost";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
-                    _baseInventAppApiUrl = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Any(a => a.AddressFamily == AddressFamily.InterNetwork && a.ToString().Equals("192.168.0.239")) 
-                        ? $"www.ucirod.inventapp-test.com:{inventAppApiPort}" //mapped to internal private ip
-                        : $"152.171.94.90:{inventAppApiPort}"; //mapped to external public ip
+                    _baseInventAppApiUrl = $"152.171.94.90:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase}-Test;{integratedSecuritySspi}";
@@ -79,7 +77,6 @@ namespace Infrastructure.Crosscutting.AppSettings
                 default: throw new ArgumentOutOfRangeException($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Invalid Environment");
             }
         }
-
 
         public string AssetsDirectory => $"{InventAppDirectory}\\Assets";
 
