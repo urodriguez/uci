@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 
 namespace Infrastructure.Crosscutting.AppSettings
@@ -8,6 +11,7 @@ namespace Infrastructure.Crosscutting.AppSettings
     public class AppSettingsService : IAppSettingsService
     {
         private readonly string _baseInfrastructureApiUrl;
+        private readonly string _baseInventAppApiUrl;
 
         public AppSettingsService()
         {
@@ -26,7 +30,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                 {
                     const string sqlServerInstance = "localhost";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
-                    BaseInventAppApiUrl = $"www.ucirod.inventapp-dev.com:{inventAppApiPort}";
+                    _baseInventAppApiUrl = $"www.ucirod.inventapp-dev.com:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
                     DefaultTokenExpiresTime = 120;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
@@ -38,7 +42,9 @@ namespace Infrastructure.Crosscutting.AppSettings
                 {
                     const string sqlServerInstance = "localhost";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
-                    BaseInventAppApiUrl = $"www.ucirod.inventapp-test.com:{inventAppApiPort}"; //by default is mapped to internal private ip 192.168.0.239 for internal testing
+                    _baseInventAppApiUrl = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Any(a => a.AddressFamily == AddressFamily.InterNetwork && a.ToString().Equals("192.168.0.239")) 
+                        ? $"www.ucirod.inventapp-test.com:{inventAppApiPort}" //mapped to internal private ip
+                        : $"152.171.94.90:{inventAppApiPort}"; //mapped to external public ip
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase}-Test;{integratedSecuritySspi}";
@@ -50,7 +56,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                 {
                     const string sqlServerInstance = "ucirod-stage1234.amazonaws.com";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-stage.com:{infrastructureApiPort}";
-                    BaseInventAppApiUrl = $"www.ucirod.inventapp-stage.com:{inventAppApiPort}";
+                    _baseInventAppApiUrl = $"www.ucirod.inventapp-stage.com:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
@@ -62,7 +68,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                 {
                     const string sqlServerInstance = "ucirod-prod1234.amazonaws.com";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure.com:{infrastructureApiPort}";
-                    BaseInventAppApiUrl = $"www.ucirod.inventapp.com:{inventAppApiPort}";
+                    _baseInventAppApiUrl = $"www.ucirod.inventapp.com:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
@@ -81,9 +87,7 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public string AuthenticationApiUrlV1 => $"http://{_baseInfrastructureApiUrl}/authentication/api/v1.0";
 
-        public string BaseInventAppApiUrl { get; set; }
-
-        public string ClientUrl => $"http://{BaseInventAppApiUrl}/webapi/swagger";
+        public string ClientUrl => $"http://{_baseInventAppApiUrl}/webapi/swagger";
 
         public string ConnectionString { get; }
 
@@ -112,6 +116,6 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public string TemplatesDirectory => $"{AssetsDirectory}\\Templates";
 
-        public string WebApiUrl => $"http://{BaseInventAppApiUrl}/webapi/api";
+        public string WebApiUrl => $"http://{_baseInventAppApiUrl}/webapi/api";
     }
 }

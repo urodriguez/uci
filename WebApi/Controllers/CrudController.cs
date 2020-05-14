@@ -2,7 +2,6 @@
 using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
@@ -11,7 +10,7 @@ namespace WebApi.Controllers
     {
         private readonly ICrudService<TDto> _crudService;
 
-        public CrudController(ICrudService<TDto> crudService, ILogService loggerService, IAppSettingsService appSettingsService) : base (loggerService, appSettingsService)
+        public CrudController(ICrudService<TDto> crudService, ILogService loggerService) : base (loggerService)
         {
             _crudService = crudService;
         }

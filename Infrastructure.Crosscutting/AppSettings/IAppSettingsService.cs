@@ -5,7 +5,6 @@
         string AssetsDirectory { get; }
         string AuditingApiUrlV1 { get; }
         string AuthenticationApiUrlV1 { get; }
-        string BaseInventAppApiUrl { get; set; }
         string ClientUrl { get; }
         string ConnectionString { get; }
         int DefaultTokenExpiresTime { get; }

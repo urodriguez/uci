@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
@@ -11,7 +10,7 @@ namespace WebApi.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductsController(IProductService productService, ILogService loggerService, IAppSettingsService appSettingsService) : base(productService, loggerService, appSettingsService)
+        public ProductsController(IProductService productService, ILogService loggerService) : base(productService, loggerService)
         {
             _productService = productService;
         }
