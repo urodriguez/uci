@@ -27,14 +27,15 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
-* expose swagger api url to external (no localhost) URL
 * implement unityOfWork
 * implement caching
-* Reporting: integration - using hangfire recurrent job 
-* create client application (Angular)
+* delete old client application
+* create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
   * products module
   * users module
+* expose client application to external (no localhost) URL via public ip for TEST env
+* Reporting: integration - using hangfire recurrent job
 * unit test
 * Automation: API test
 * create index in db tables
@@ -125,6 +126,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * Queueing: use dependecy resolver
 * Jenkins: add sql script to build process
 * deploy app to cloud - PROD env
+* expose swagger to external (no localhost) URL via public ip for TEST env
 
 ## Angular architercure styleguide
 
