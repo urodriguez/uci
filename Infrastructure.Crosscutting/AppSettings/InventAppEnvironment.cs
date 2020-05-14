@@ -3,9 +3,8 @@
     public class InventAppEnvironment
     {
         public string Name { get; set; }
-        public bool IsLocal()
-        {
-            return Name == "DEV";
-        }
+        public bool IsLocal() => Name == "DEV";
+
+        public bool IsTest() => Name == "TEST";
     }
 }

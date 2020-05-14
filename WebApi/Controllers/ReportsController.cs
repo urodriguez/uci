@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
+using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
@@ -10,7 +11,7 @@ namespace WebApi.Controllers
     {
         private readonly IReportService _reportService;
 
-        public ReportsController(IReportService reportService, ILogService logService) : base(logService)
+        public ReportsController(IReportService reportService, ILogService logService, IAppSettingsService appSettingsService) : base(logService, appSettingsService)
         {
             _reportService = reportService;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using Application.Contracts.Services;
 using Application.Dtos;
+using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
@@ -9,7 +10,7 @@ namespace WebApi.Controllers
     {
         private readonly IUserService _userService;
 
-        public TokensController(IUserService userService, ILogService logService) : base(logService)
+        public TokensController(IUserService userService, ILogService logService, IAppSettingsService appSettingsService) : base(logService, appSettingsService)
         {
             _userService = userService;
         }
