@@ -4,14 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Application;
 using Application.ApplicationResults;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
-using Microsoft.Owin;
 using WebApi.HttpActionResults;
 
 namespace WebApi.Controllers
