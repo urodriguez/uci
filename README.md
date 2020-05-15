@@ -23,7 +23,6 @@ http://152.171.94.90:8080/WebApi/hangfire
 }
 
 ## TODO list
-* check invalid user on login
 * implement unityOfWork
 * implement caching
 * delete old client application
@@ -125,7 +124,7 @@ http://152.171.94.90:8080/WebApi/hangfire
 * deploy app to cloud - PROD env
 * expose swagger to external (no localhost) URL via public ip for TEST env
 * organize readme by ENV
-
+* check invalid user on login
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

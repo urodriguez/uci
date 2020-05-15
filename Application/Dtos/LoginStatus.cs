@@ -5,6 +5,7 @@
         Success = 0,
         NonCustomPassword = 1,
         UnconfirmedEmail = 2,
-        Locked = 3
+        Locked = 3,
+        Inactive = 4
     }
 }

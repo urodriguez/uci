@@ -63,8 +63,20 @@ namespace Application.Services
                 if (credentialsDto == null) throw new CredentialNotProvidedException();
 
                 var byName = _userPredicateFactory.CreateByName(credentialsDto.UserName);
-                var user = _userRepository.Get(byName).Single();
+                var user = _userRepository.Get(byName).FirstOrDefault();
 
+                if (user == null) throw new ObjectNotFoundException($"User '{credentialsDto.UserName}' not found");
+
+                if (!user.Activate) return new ApplicationResult<LoginDto>
+                {
+                    Status = ApplicationResultStatus.Ok,
+                    Message = $"User '{user.Name}' is inactive",
+                    Data = new LoginDto
+                    {
+                        Status = LoginStatus.Inactive
+                    }
+                };                
+                
                 if (!user.EmailConfirmed) return new ApplicationResult<LoginDto>
                 {
                     Status = ApplicationResultStatus.Ok,
