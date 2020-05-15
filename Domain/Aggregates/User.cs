@@ -79,5 +79,10 @@ namespace Domain.Aggregates
         {
             return password.Length == 10; //TODO: improve complexity
         }
+
+        public void ResetAccessFailedCount()
+        {
+            AccessFailedCount = 0;
+        }
     }
 }

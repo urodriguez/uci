@@ -66,16 +66,6 @@ namespace Application.Services
                 var user = _userRepository.Get(byName).FirstOrDefault();
 
                 if (user == null) throw new ObjectNotFoundException($"User '{credentialsDto.UserName}' not found");
-
-                if (!user.Activate) return new ApplicationResult<LoginDto>
-                {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = $"User '{user.Name}' is inactive",
-                    Data = new LoginDto
-                    {
-                        Status = LoginStatus.Inactive
-                    }
-                };                
                 
                 if (!user.EmailConfirmed) return new ApplicationResult<LoginDto>
                 {
@@ -87,8 +77,38 @@ namespace Application.Services
                     }
                 };
 
+                if (!user.Activate) return new ApplicationResult<LoginDto>
+                {
+                    Status = ApplicationResultStatus.Ok,
+                    Message = $"User '{user.Name}' is inactive",
+                    Data = new LoginDto
+                    {
+                        Status = LoginStatus.Inactive
+                    }
+                };
+
+                if (user.IsLocked())
+                {
+                    //TODO: send reset password email
+
+                    return new ApplicationResult<LoginDto>
+                    {
+                        Status = ApplicationResultStatus.Ok,
+                        Message = $"User '{user.Name}' has his account locked",
+                        Data = new LoginDto
+                        {
+                            Status = LoginStatus.Locked
+                        }
+                    };
+                }
+
                 //TODO use encrypted password
-                if (!user.PasswordIsValid(credentialsDto.Password)) throw new AuthenticationFailException("Invalid credentials");
+                if (!user.PasswordIsValid(credentialsDto.Password))
+                {
+                    user.AccessFailedCount++;
+                    _userRepository.Update(user);
+                    throw new AuthenticationFailException("Invalid credentials");
+                }
 
                 if (!user.IsUsingCustomPassword) return new ApplicationResult<LoginDto>
                 {
@@ -100,17 +120,8 @@ namespace Application.Services
                     }
                 };
 
-                if (user.IsLocked()) return new ApplicationResult<LoginDto>
-                {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = $"User '{user.Name}' has his account locked",
-                    Data = new LoginDto
-                    {
-                        Status = LoginStatus.Locked
-                    }
-                };
-
                 user.LastLoginTime = DateTime.UtcNow;
+                user.ResetAccessFailedCount();
                 _userRepository.Update(user);
 
                 var tokenGenerateRequest = _tokenService.Generate(new TokenGenerateRequest

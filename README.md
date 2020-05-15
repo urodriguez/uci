@@ -23,6 +23,7 @@ http://152.171.94.90:8080/WebApi/hangfire
 }
 
 ## TODO list
+* send reset password email on locked account
 * implement unityOfWork
 * implement caching
 * delete old client application
@@ -125,6 +126,7 @@ http://152.171.94.90:8080/WebApi/hangfire
 * expose swagger to external (no localhost) URL via public ip for TEST env
 * organize readme by ENV
 * check invalid user on login
+* handle user AccessFailedCount
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide
