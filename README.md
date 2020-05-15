@@ -1,21 +1,17 @@
-# UciRod - Continous Integration - Jenkins
-http://localhost:8082 -> Jenkins (run by cmd: java -jar "C:\Program Files (x86)\Jenkins\jenkins.war" --httpPort=8082)
+# UciRod - CI/CD - Jenkins  - ip: 127.0.0.1 - www.ucirod.jenkins.com mapped in C:\Windows\System32\drivers\etc\hosts
+http://www.ucirod.jenkins.com:8082 | user: ucirod, password: ucirod
 
-# UciRod.Inventapp URL -> ENV
-http://localhost:8080 -> DEV
-http://www.ucirod.inventapp-test.com:8083 -> TEST (IIS Local - overwritten in C:\Windows\System32\drivers\etc\hosts)
+# Inventapp - DEV - ip: 127.0.0.1 - IIS - www.ucirod.inventapp-dev.com mapped in C:\Windows\System32\drivers\etc\hosts
+http://www.ucirod.inventapp-dev.com:8080
+http://www.ucirod.inventapp-dev.com:8080/WebApi
+http://www.ucirod.inventapp-dev.com:8080/WebApi/swagger
+http://www.ucirod.inventapp-dev.com:8080/WebApi/hangfire
 
-# UciRod.Inventapp.WebApi URL -> ENV
-http://localhost:8080/WebApi -> DEV
-http://www.ucirod.inventapp-test.com:8083/WebApi -> TEST
-
-# UciRod.Inventapp.WebApi - Swagger - URL -> ENV
-http://localhost:8080/WebApi/swagger -> DEV
-http://www.ucirod.inventapp-test.com:8083/WebApi/swagger -> TEST
-
-# UciRod.Inventapp.WebApi - Hangire - URL -> ENV
-http://localhost:8080/WebApi/hangfire -> DEV
-http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
+# Inventapp - TEST - ip: 152.171.94.90 (external public ip) - IIS - 152.171.94.90 mapped to 192.168.0.239 (internal private ip)
+http://152.171.94.90:8080
+http://152.171.94.90:8080/WebApi
+http://152.171.94.90:8080/WebApi/swagger
+http://152.171.94.90:8080/WebApi/hangfire
 
 {username: "urodriguez-admin", password: "admin"}
 
@@ -27,6 +23,7 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 }
 
 ## TODO list
+* check invalid user on login
 * implement unityOfWork
 * implement caching
 * delete old client application
@@ -127,19 +124,17 @@ http://www.ucirod.inventapp-test.com:8083/WebApi/hangfire -> TEST
 * Jenkins: add sql script to build process
 * deploy app to cloud - PROD env
 * expose swagger to external (no localhost) URL via public ip for TEST env
+* organize readme by ENV
+
 
 ## Angular architercure styleguide
-
 https://angular.io/guide/styleguide
 
 ## Development server
-
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
-
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
-
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
