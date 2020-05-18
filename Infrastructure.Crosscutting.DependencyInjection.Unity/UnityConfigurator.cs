@@ -44,9 +44,10 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IReportService, ReportService>(new PerThreadLifetimeManager());
             _container.RegisterType<IUserService, UserService>(new PerThreadLifetimeManager());
 
-            //Adapters
+            //Factories
             _container.RegisterType<IProductFactory, ProductFactory>(new PerThreadLifetimeManager());
             _container.RegisterType<IProductTypeFactory, ProductTypeFactory>(new PerThreadLifetimeManager());
+            _container.RegisterType<ITemplateFactory, TemplateFactory>(new PerThreadLifetimeManager());
             _container.RegisterType<IUserFactory, UserFactory>(new PerThreadLifetimeManager());
             #endregion
 

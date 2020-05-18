@@ -6,8 +6,9 @@ namespace Application.Contracts.Services
 {
     public interface IUserService : ICrudService<UserDto>
     {
-        IApplicationResult Login(CredentialsDto credentialsDto);
         IApplicationResult ConfirmEmail(Guid id);
         IApplicationResult CustomPassword(Guid id, PasswordDto passwordDto);
+        IApplicationResult ForgotPassword(string userName);
+        IApplicationResult Login(CredentialsDto credentialsDto);
     }
 }

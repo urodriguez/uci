@@ -4,6 +4,6 @@
     {
         public ApplicationResultStatus Status { get; set; }
         public string Message { get; set; }
-        public bool IsSuccessful() => Status == ApplicationResultStatus.Ok;
+        public virtual bool IsSuccessful() => Status == ApplicationResultStatus.Ok;
     }
 }

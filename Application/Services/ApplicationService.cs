@@ -30,8 +30,6 @@ namespace Application.Services
 
                 var serviceResult = service.Invoke();
 
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Service Execution Succeed | message={serviceResult.Message}");
-
                 return serviceResult;
             }
             catch (AuthenticationFailException afe)

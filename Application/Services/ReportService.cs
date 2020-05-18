@@ -61,7 +61,7 @@ namespace Application.Services
                 var byPriceRange = _productPredicateFactory.CreateByPriceRange(reportProductDto.MinPrice, reportProductDto.MaxPrice);
                 var products = _productRepository.Get(byPriceRange);
 
-                var templatePath = $"{_appSettingsService.TemplatesDirectory}\\product_report.html";
+                var templatePath = $"{_appSettingsService.ReportsTemplatesDirectory}\\product_report.html";
                 var template = File.ReadAllText(templatePath);
 
                 var serializer = new JsonSerializer { ContractResolver = new CamelCasePropertyNamesContractResolver() };
@@ -91,7 +91,7 @@ namespace Application.Services
                     var byName = _userPredicateFactory.CreateByName(InventAppContext.UserName);
                     var user = _userRepository.Get(byName).Single();
 
-                    var userRequestReportEmailTemplatePath = $"{_appSettingsService.TemplatesDirectory}\\user_request_report.html";
+                    var userRequestReportEmailTemplatePath = $"{_appSettingsService.EmailsTemplatesDirectory}\\user_reportRequested.html";
                     var userRequestReportEmailTemplate = File.ReadAllText(userRequestReportEmailTemplatePath);
                     var userRequestReportEmailBody = userRequestReportEmailTemplate.Replace("{{UserName}}", user.FirstName);
 
@@ -115,11 +115,7 @@ namespace Application.Services
                 //TODO: return to UI
                 File.WriteAllBytes($"{_appSettingsService.ReportsDirectory}\\products_{Guid.NewGuid()}.pdf", reportBytes);
 
-                return new EmptyResult
-                {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Report generated"
-                };
+                return new OkEmptyResult();
             });
         }
     }

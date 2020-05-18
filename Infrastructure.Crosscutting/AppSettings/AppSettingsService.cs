@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
 
 namespace Infrastructure.Crosscutting.AppSettings
@@ -89,6 +86,8 @@ namespace Infrastructure.Crosscutting.AppSettings
         public string ConnectionString { get; }
 
         public int DefaultTokenExpiresTime { get; }
+        
+        public string EmailsTemplatesDirectory => $"{TemplatesDirectory}\\Emails";
 
         public InventAppEnvironment Environment => new InventAppEnvironment
         {
@@ -110,6 +109,8 @@ namespace Infrastructure.Crosscutting.AppSettings
         public string ReportingApiUrlV1 => $"http://{_baseInfrastructureApiUrl}/reporting/api/v1.0";
 
         public string ReportsDirectory => $"{InventAppDirectory}\\Reports";
+        
+        public string ReportsTemplatesDirectory => $"{TemplatesDirectory}\\Reports";
 
         public string TemplatesDirectory => $"{AssetsDirectory}\\Templates";
 

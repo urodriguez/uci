@@ -54,10 +54,8 @@ namespace Application.Services
 
                 var cheapestProductsDto = _factory.CreateFromRange(cheapestProducts);
 
-                return new ApplicationResult<IEnumerable<ProductDto>>
+                return new OkApplicationResult<IEnumerable<ProductDto>>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Cheapest products found",
                     Data = cheapestProductsDto
                 };
             });

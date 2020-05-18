@@ -53,10 +53,8 @@ namespace Application.Services
 
                 var dtos = _factory.CreateFromRange(aggregates);
 
-                return new ApplicationResult<IEnumerable<TDto>>
+                return new OkApplicationResult<IEnumerable<TDto>>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Entries found",
                     Data = dtos
                 };
             });
@@ -72,10 +70,8 @@ namespace Application.Services
 
                 var dto = _factory.Create(aggregate);
 
-                return new ApplicationResult<TDto>
+                return new OkApplicationResult<TDto>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Entry found",
                     Data = dto
                 };
             });
@@ -104,10 +100,8 @@ namespace Application.Services
                     Action = AuditAction.Create
                 });
 
-                return new ApplicationResult<Guid>
+                return new OkApplicationResult<Guid>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Entry has been created",
                     Data = aggregate.Id
                 };
             });
@@ -140,11 +134,7 @@ namespace Application.Services
                     Action = AuditAction.Update
                 });
 
-                return new EmptyResult
-                {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = $"Entry with Id={aggregate.Id} has been updated"
-                };
+                return new OkEmptyResult();
             });
         }
 
@@ -171,11 +161,7 @@ namespace Application.Services
                     Action = AuditAction.Delete
                 });
 
-                return new EmptyResult
-                {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = $"Entry with Id={aggregate.Id} has been deleted"
-                };
+                return new OkEmptyResult();
             });
         }
     }

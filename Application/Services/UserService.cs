@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using Application.ApplicationResults;
@@ -27,6 +26,7 @@ namespace Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly ITemplateFactory _templateFactory;
         private readonly IEmailService _emailService;
 
         public UserService(
@@ -37,10 +37,10 @@ namespace Application.Services
             IRoleService roleService, 
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory,
-            ILogService logService, 
+            ILogService logService,
+            ITemplateFactory templateFactory,
             IEmailService emailService,
-            IAppSettingsService appSettingsService
-        ) : base(
+            IAppSettingsService appSettingsService) : base(
             roleService,
             userRepository, 
             factory, 
@@ -53,6 +53,7 @@ namespace Application.Services
         {
             _userRepository = userRepository;
             _userPredicateFactory = userPredicateFactory;
+            _templateFactory = templateFactory;
             _emailService = emailService;
         }
 
@@ -67,38 +68,34 @@ namespace Application.Services
 
                 if (user == null) throw new ObjectNotFoundException($"User '{credentialsDto.UserName}' not found");
                 
-                if (!user.EmailConfirmed) return new ApplicationResult<LoginDto>
+                if (!user.EmailConfirmed) return new OkApplicationResult<LoginDto>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = $"User '{user.Name}' has not been confirmed his email yet",
-                    Data = new LoginDto
-                    {
-                        Status = LoginStatus.UnconfirmedEmail
-                    }
+                    Data = new LoginDto { Status = LoginStatus.UnconfirmedEmail }
                 };
 
-                if (!user.Activate) return new ApplicationResult<LoginDto>
+                if (!user.Activate) return new OkApplicationResult<LoginDto>
                 {
                     Status = ApplicationResultStatus.Ok,
-                    Message = $"User '{user.Name}' is inactive",
-                    Data = new LoginDto
-                    {
-                        Status = LoginStatus.Inactive
-                    }
+                    Data = new LoginDto { Status = LoginStatus.Inactive }
                 };
 
                 if (user.IsLocked())
                 {
-                    //TODO: send reset password email
+                    user.GenerateDefaultPassword();
+                    user.ResetAccessFailedCount();
+                    _userRepository.Update(user);
 
-                    return new ApplicationResult<LoginDto>
+                    var emailTemplateRendered = _templateFactory.CreateForUserPasswordLost(user);
+                    _emailService.Send(new Email
                     {
-                        Status = ApplicationResultStatus.Ok,
-                        Message = $"User '{user.Name}' has his account locked",
-                        Data = new LoginDto
-                        {
-                            Status = LoginStatus.Locked
-                        }
+                        To = user.Email,
+                        Subject = emailTemplateRendered.Subject,
+                        Body = emailTemplateRendered.Body
+                    });
+
+                    return new OkApplicationResult<LoginDto>
+                    {
+                        Data = new LoginDto { Status = LoginStatus.Locked }
                     };
                 }
 
@@ -110,14 +107,9 @@ namespace Application.Services
                     throw new AuthenticationFailException("Invalid credentials");
                 }
 
-                if (!user.IsUsingCustomPassword) return new ApplicationResult<LoginDto>
+                if (!user.IsUsingCustomPassword) return new OkApplicationResult<LoginDto>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = $"User '{user.Name}' has not set his custom password yet",
-                    Data = new LoginDto
-                    {
-                        Status = LoginStatus.NonCustomPassword
-                    }
+                    Data = new LoginDto { Status = LoginStatus.NonCustomPassword }
                 };
 
                 user.LastLoginTime = DateTime.UtcNow;
@@ -136,10 +128,8 @@ namespace Application.Services
 
                 if (tokenGenerateRequest == null) throw new InternalServerException("SecurityToken could not be generated");
 
-                return new ApplicationResult<LoginDto>
+                return new OkApplicationResult<LoginDto>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Token generated",
                     Data = new LoginDto
                     {
                         Status = LoginStatus.Success,
@@ -155,44 +145,19 @@ namespace Application.Services
 
             if (applicationResult.IsSuccessful())
             {
-                var userId = ((ApplicationResult<Guid>)applicationResult).Data;
+                var userId = ((OkApplicationResult<Guid>)applicationResult).Data;
 
                 var user = _userRepository.GetById(userId);
                 user.GenerateDefaultPassword();
                 _userRepository.Update(user);
 
-                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
-                var templatePath = assetsPath + "\\templates\\user_created_email.html";
-                var template = File.ReadAllText(templatePath);
-                var userCreatedEmailBody = template.Replace("{{ConfirmEmailUrl}}", $"{_appSettingsService.WebApiUrl}/users/{userId}/confirmEmail")
-                                               .Replace("{{FirstName}}", user.FirstName)
-                                               .Replace("{{LastName}}", user.LastName)
-                                               .Replace("{{UserName}}", user.Name)
-                                               .Replace("{{Password}}", user.Password)
-                                               .Replace("{{Role}}", user.RoleId.ToString());
+                var emailTemplateRendered = _templateFactory.CreateForUserCreated(user);
 
                 _emailService.Send(new Email
                 {
-                    UseCustomSmtpServer = true,
-                    SmtpServerConfiguration = new SmtpServerConfiguration
-                    {
-                        Sender = new Sender
-                        {
-                            Name = "InventApp",
-                            Email = "ucirod.infrastructure@gmail.com",
-                            Password = "uc1r0d.1nfr4structur3"
-                        },
-                        Host = new Host
-                        {
-                            Name = "smtp.gmail.com",
-                            Port = 465,
-                            UseSsl = true
-                        }
-                    },
                     To = user.Email,
-                    Subject = "User Created",
-                    Body = userCreatedEmailBody
+                    Subject = emailTemplateRendered.Subject,
+                    Body = emailTemplateRendered.Body
                 });
             }
 
@@ -211,18 +176,11 @@ namespace Application.Services
 
                 _userRepository.Update(user);
 
-                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                var assetsPath = Path.GetFullPath(Path.Combine(appDirectory, @"..\Assets"));
-                var templatePath = assetsPath + "\\templates\\user_confirmed.html";
-                var template = File.ReadAllText(templatePath);
-                var userConfirmedEmailBody = template.Replace("{{UserName}}", user.Name)
-                                               .Replace("{{InventAppClientUrl}}", _appSettingsService.ClientUrl);
+                var templateRendered = _templateFactory.CreateForUserEmailConfirmed(user);
 
-                return new ApplicationResult<string>
+                return new OkApplicationResult<string>
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Email has been confirmed",
-                    Data = userConfirmedEmailBody
+                    Data = templateRendered
                 };
             }, false);
         }
@@ -253,11 +211,32 @@ namespace Application.Services
                 user.IsUsingCustomPassword = true;
                 _userRepository.Update(user);
 
-                return new EmptyResult
+                return new OkEmptyResult();
+            }, false);
+        }
+        
+        public IApplicationResult ForgotPassword(string userName)
+        {
+            return Execute(() =>
+            {
+                var byUserName = _userPredicateFactory.CreateByName(userName);
+                var user = _userRepository.Get(byUserName).FirstOrDefault();
+
+                if (user == null) throw new ObjectNotFoundException($"User with UserName={userName} not found");
+
+                user.GenerateDefaultPassword();
+                user.ResetAccessFailedCount();
+                _userRepository.Update(user);
+
+                var emailTemplateRendered = _templateFactory.CreateForUserPasswordLost(user);
+                _emailService.Send(new Email
                 {
-                    Status = ApplicationResultStatus.Ok,
-                    Message = "Password has been updated"
-                };
+                    To = user.Email,
+                    Subject = emailTemplateRendered.Subject,
+                    Body = emailTemplateRendered.Body
+                });
+
+                return new OkEmptyResult();
             }, false);
         }
     }

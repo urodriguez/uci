@@ -8,6 +8,7 @@
         string ClientUrl { get; }
         string ConnectionString { get; }
         int DefaultTokenExpiresTime { get; }
+        string EmailsTemplatesDirectory { get; }
         InventAppEnvironment Environment { get; }
         string FileSystemLogsDirectory { get; }
         string HangfireInventAppConnectionString { get; }
@@ -17,6 +18,7 @@
         string MailingApiUrlV1 { get; }
         string ReportingApiUrlV1 { get; }
         string ReportsDirectory { get; }
+        string ReportsTemplatesDirectory { get; }
         string TemplatesDirectory { get; }
         string WebApiUrl { get; }
     }

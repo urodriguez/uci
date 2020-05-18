@@ -13,7 +13,8 @@ http://152.171.94.90:8080/WebApi
 http://152.171.94.90:8080/WebApi/swagger
 http://152.171.94.90:8080/WebApi/hangfire
 
-{username: "urodriguez-admin", password: "admin"}
+id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
+{username: "urodriguez-admin", password: "admin-1990"}
 
 {
   "code": "P00",
@@ -23,7 +24,6 @@ http://152.171.94.90:8080/WebApi/hangfire
 }
 
 ## TODO list
-* send reset password email on locked account
 * implement unityOfWork
 * implement caching
 * delete old client application
@@ -127,6 +127,7 @@ http://152.171.94.90:8080/WebApi/hangfire
 * organize readme by ENV
 * check invalid user on login
 * handle user AccessFailedCount
+* send reset password email on locked account
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

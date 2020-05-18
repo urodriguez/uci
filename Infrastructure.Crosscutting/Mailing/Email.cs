@@ -7,6 +7,7 @@ namespace Infrastructure.Crosscutting.Mailing
     {
         public Email()
         {
+            UseCustomSmtpServer = false;
             QueueItemType = QueueItemType.Email;
         }
 

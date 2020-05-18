@@ -23,5 +23,9 @@ namespace WebApi.Controllers
         [HttpPatch]
         [Route("{id:Guid}/customPassword")]
         public IHttpActionResult CustomPassword([FromUri] Guid id, [FromBody] PasswordDto passwordDto) => Execute(() => _userService.CustomPassword(id, passwordDto));
+
+        [HttpGet]
+        [Route("{userName}/forgotPassword")]
+        public IHttpActionResult ForgotPassword([FromUri] string userName) => Execute(() => _userService.ForgotPassword(userName));
     }
 }
