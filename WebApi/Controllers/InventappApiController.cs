@@ -32,7 +32,7 @@ namespace WebApi.Controllers
             switch (serviceResult.Status)
             {
                 case ApplicationResultStatus.Ok:
-                    if (serviceResult is EmptyResult) return Content(HttpStatusCode.OK, serviceResult.Message);
+                    if (serviceResult is EmptyResult) return Ok();
                     switch (mediaType)
                     {
                         case MediaType.ApplicationJson:
