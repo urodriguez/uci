@@ -75,7 +75,6 @@ namespace Application.Services
 
                 if (!user.Activate) return new OkApplicationResult<LoginDto>
                 {
-                    Status = ApplicationResultStatus.Ok,
                     Data = new LoginDto { Status = LoginStatus.Inactive }
                 };
 
