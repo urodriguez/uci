@@ -21,3 +21,6 @@ Web.Debug.config
 FileSystemLogs
 
 Reports
+
+# Avoid ignore template reports from previous ignore match
+!Assets/Templates/Reports/
