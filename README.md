@@ -11,7 +11,7 @@ http://www.ucirod.inventapp-dev.com:8080/WebApi/hangfire
 http://152.171.94.90:8080
 http://152.171.94.90:8080/WebApi
 http://152.171.94.90:8080/WebApi/swagger
-http://152.171.94.90:8080/WebApi/hangfire
+http://152.171.94.90:8080/WebApi/hangfire -> TODO
 
 id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 {username: "urodriguez-admin", password: "admin-1990"}
@@ -26,6 +26,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 ## TODO list
 * implement unityOfWork
 * implement caching
+* expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
 * delete old client application
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login

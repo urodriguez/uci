@@ -62,9 +62,10 @@ namespace Infrastructure.Crosscutting
                     if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.ServiceUnavailable) 
                         Enqueue(queueable, childServiceName, childMethodName);
 
-                    if (response.IsSuccessful && !IsLogService(childServiceName))
+                    if (response.IsSuccessful)
                     {
-                        _logService.LogInfoMessage($"{childServiceName}.{childMethodName} | Data sent to {childServiceName} Micro-service | Status=SUCCESSFUL");
+                        if (!IsLogService(childServiceName))
+                            _logService.LogInfoMessage($"{childServiceName}.{childMethodName} | Data sent to {childServiceName} Micro-service | Status=SUCCESSFUL");
                     }
                     else
                     {
