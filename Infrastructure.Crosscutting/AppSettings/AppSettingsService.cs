@@ -14,11 +14,14 @@ namespace Infrastructure.Crosscutting.AppSettings
         {
             const int inventAppApiPort = 8080;
             const int infrastructureApiPort = 8081;
+
             const string sqlServerInventAppDatabase = "UciRod.Inventapp";
             string sqlServerHangfireDatabase = $"{sqlServerInventAppDatabase}.Hangfire";
+
             const string sqlServerUser = "inventappUser";
             const string sqlServerPassword = "Uc1R0d-1nv3nt4pp";
-            const string multipleactiveresultsetsTrue = "MultipleActiveResultSets=True";
+
+            const string multipleActiveResultSetsTrue = "MultipleActiveResultSets=True";
             const string integratedSecuritySspi = "Integrated Security=SSPI";
 
             switch (Environment.Name)
@@ -28,7 +31,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     const string sqlServerInstance = "localhost";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"www.ucirod.inventapp-dev.com:{inventAppApiPort}";
-                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
+                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
                     DefaultTokenExpiresTime = 120;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
 
@@ -40,7 +43,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     const string sqlServerInstance = "localhost";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"152.171.94.90:{inventAppApiPort}";
-                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
+                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase}-Test;{integratedSecuritySspi}";
 
@@ -52,7 +55,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     const string sqlServerInstance = "ucirod-stage1234.amazonaws.com";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-stage.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"www.ucirod.inventapp-stage.com:{inventAppApiPort}";
-                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
+                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
                         
@@ -64,7 +67,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     const string sqlServerInstance = "ucirod-prod1234.amazonaws.com";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"www.ucirod.inventapp.com:{inventAppApiPort}";
-                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleactiveresultsetsTrue}";
+                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
                         
@@ -89,10 +92,7 @@ namespace Infrastructure.Crosscutting.AppSettings
         
         public string EmailsTemplatesDirectory => $"{TemplatesDirectory}\\Emails";
 
-        public InventAppEnvironment Environment => new InventAppEnvironment
-        {
-            Name = ConfigurationManager.AppSettings["Environment"]
-        };
+        public InventAppEnvironment Environment => new InventAppEnvironment { Name = ConfigurationManager.AppSettings["Environment"] };
 
         public string FileSystemLogsDirectory => $"{InventAppDirectory}\\FileSystemLogs";
 

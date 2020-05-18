@@ -11,6 +11,7 @@ http://www.ucirod.inventapp-dev.com:8080/WebApi/hangfire
 http://152.171.94.90:8080
 http://152.171.94.90:8080/WebApi
 http://152.171.94.90:8080/WebApi/swagger
+http://127.0.0.1:8083/WebApi/hangfire/recurring -> only allow local request (dashboard visible only on TEST server), allow external request on TODO list
 http://152.171.94.90:8080/WebApi/hangfire -> TODO
 
 id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
