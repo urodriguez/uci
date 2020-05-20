@@ -3,7 +3,7 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Aggregates;
-using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Auditing;
@@ -16,20 +16,20 @@ namespace Application.Services
     {
         public ProductTypeService(
             IRoleService roleService,
-            IProductTypeRepository repository, 
             IProductTypeFactory factory, 
             IAuditService auditService,
             IProductTypeBusinessValidator productTypeBusinessValidator,
             ITokenService tokenService,
+            IUnitOfWork unitOfWork,
             ILogService logService,
             IAppSettingsService appSettingsService
         ) : base(
             roleService,
-            repository,
             factory, 
             auditService, 
             productTypeBusinessValidator,
             tokenService,
+            unitOfWork,
             logService,
             appSettingsService
         )

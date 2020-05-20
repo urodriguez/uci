@@ -25,8 +25,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 }
 
 ## TODO list
-* implement unityOfWork
-* implement caching
+* fix services instantiation on UnityConfigurator
 * expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
 * delete old client application
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
@@ -53,11 +52,12 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
   * CRUD customer
   * CRUD registration reason
   * CRUD registration status
-* implement integration events with NServiceBus
+* deploy app to cloud - PROD env
 * create script to configure sites on IIS
 * use Docker
 * use PusherServer/WebSockets to notify UI on server changes
-* deploy app to cloud - PROD env
+* implement integration events with NServiceBus
+* implement caching
 
 ## DONE list
 * automapper
@@ -130,6 +130,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * check invalid user on login
 * handle user AccessFailedCount
 * send reset password email on locked account
+* implement unityOfWork
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

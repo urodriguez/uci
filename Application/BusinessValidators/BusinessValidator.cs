@@ -5,16 +5,19 @@ using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Attributes;
 using Domain.Contracts.Aggregates;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Exceptions;
 
 namespace Application.BusinessValidators
 {
     public abstract class BusinessValidator<TDto, TAggregateRoot> : IBusinessValidator<TDto> where TDto : IDto where TAggregateRoot : IAggregateRoot
     {
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly string AggregateRootName;
 
-        protected BusinessValidator()
+        protected BusinessValidator(IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             AggregateRootName = typeof(TAggregateRoot).Name;
         }
 

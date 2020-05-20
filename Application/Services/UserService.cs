@@ -10,7 +10,7 @@ using Application.Contracts.Services;
 using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
-using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.AppSettings;
@@ -18,20 +18,20 @@ using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
+using Newtonsoft.Json;
 using Claim = Infrastructure.Crosscutting.Authentication.Claim;
 
 namespace Application.Services
 {
     public class UserService : CrudService<UserDto, User>, IUserService
     {
-        private readonly IUserRepository _userRepository;
         private readonly IUserPredicateFactory _userPredicateFactory;
         private readonly ITemplateFactory _templateFactory;
         private readonly IEmailService _emailService;
 
         public UserService(
-            IUserRepository userRepository, 
-            IUserFactory factory, 
+            IUnitOfWork unitOfWork, 
+            IUserFactory userFactory, 
             IAuditService auditService, 
             ITokenService tokenService, 
             IRoleService roleService, 
@@ -40,18 +40,18 @@ namespace Application.Services
             ILogService logService,
             ITemplateFactory templateFactory,
             IEmailService emailService,
-            IAppSettingsService appSettingsService) : base(
+            IAppSettingsService appSettingsService) 
+        : base(
             roleService,
-            userRepository, 
-            factory, 
+            userFactory, 
             auditService, 
             userBusinessValidator,
             tokenService,
+            unitOfWork,
             logService,
             appSettingsService
         )
         {
-            _userRepository = userRepository;
             _userPredicateFactory = userPredicateFactory;
             _templateFactory = templateFactory;
             _emailService = emailService;
@@ -64,7 +64,7 @@ namespace Application.Services
                 if (credentialsDto == null) throw new CredentialNotProvidedException();
 
                 var byName = _userPredicateFactory.CreateByName(credentialsDto.UserName);
-                var user = _userRepository.Get(byName).FirstOrDefault();
+                var user = _unitOfWork.Users.Get(byName).FirstOrDefault();
 
                 if (user == null) throw new ObjectNotFoundException($"User '{credentialsDto.UserName}' not found");
                 
@@ -82,7 +82,7 @@ namespace Application.Services
                 {
                     user.GenerateDefaultPassword();
                     user.ResetAccessFailedCount();
-                    _userRepository.Update(user);
+                    _unitOfWork.Users.Update(user);
 
                     var emailTemplateRendered = _templateFactory.CreateForUserPasswordLost(user);
                     _emailService.Send(new Email
@@ -102,7 +102,7 @@ namespace Application.Services
                 if (!user.PasswordIsValid(credentialsDto.Password))
                 {
                     user.AccessFailedCount++;
-                    _userRepository.Update(user);
+                    _unitOfWork.Users.Update(user);
                     throw new AuthenticationFailException("Invalid credentials");
                 }
 
@@ -113,7 +113,7 @@ namespace Application.Services
 
                 user.LastLoginTime = DateTime.UtcNow;
                 user.ResetAccessFailedCount();
-                _userRepository.Update(user);
+                _unitOfWork.Users.Update(user);
 
                 var tokenGenerateRequest = _tokenService.Generate(new TokenGenerateRequest
                 {
@@ -138,17 +138,30 @@ namespace Application.Services
             }, false);
         }
 
-        public new IApplicationResult Create(UserDto userDto)
+        public override IApplicationResult Create(UserDto userDto)
         {
-            var applicationResult = base.Create(userDto);
-
-            if (applicationResult.IsSuccessful())
+            return Execute(() =>
             {
-                var userId = ((OkApplicationResult<Guid>)applicationResult).Data;
+                if (!_roleService.IsAdmin(InventAppContext.UserName)) 
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
-                var user = _userRepository.GetById(userId);
+                _businessValidator.Validate(userDto);
+
+                var user = _factory.Create(userDto);
                 user.GenerateDefaultPassword();
-                _userRepository.Update(user);
+
+                _unitOfWork.GetRepository<User>().Add(user);
+
+                _auditService.Audit(new Audit
+                {
+                    Application = "InventApp",
+                    Environment = _appSettingsService.Environment.Name,
+                    User = InventAppContext.UserName,
+                    EntityId = user.Id.ToString(),
+                    EntityName = user.GetType().Name,
+                    Entity = JsonConvert.SerializeObject(user),
+                    Action = AuditAction.Create
+                });
 
                 var emailTemplateRendered = _templateFactory.CreateForUserCreated(user);
 
@@ -158,22 +171,25 @@ namespace Application.Services
                     Subject = emailTemplateRendered.Subject,
                     Body = emailTemplateRendered.Body
                 });
-            }
 
-            return applicationResult;
+                return new OkApplicationResult<Guid>
+                {
+                    Data = user.Id
+                };
+            });
         }
 
         public IApplicationResult ConfirmEmail(Guid id)
         {
             return Execute(() =>
             {
-                var user = _userRepository.GetById(id);
+                var user = _unitOfWork.Users.GetById(id);
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
                 user.EmailConfirmed = true;
 
-                _userRepository.Update(user);
+                _unitOfWork.Users.Update(user);
 
                 var templateRendered = _templateFactory.CreateForUserEmailConfirmed(user);
 
@@ -188,7 +204,7 @@ namespace Application.Services
         {
             return Execute(() =>
             {
-                var user = _userRepository.GetById(id);
+                var user = _unitOfWork.Users.GetById(id);
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
@@ -208,7 +224,7 @@ namespace Application.Services
 
                 user.Password = passwordDto.Custom;
                 user.IsUsingCustomPassword = true;
-                _userRepository.Update(user);
+                _unitOfWork.Users.Update(user);
 
                 return new OkEmptyResult();
             }, false);
@@ -219,13 +235,13 @@ namespace Application.Services
             return Execute(() =>
             {
                 var byUserName = _userPredicateFactory.CreateByName(userName);
-                var user = _userRepository.Get(byUserName).FirstOrDefault();
+                var user = _unitOfWork.Users.Get(byUserName).FirstOrDefault();
 
                 if (user == null) throw new ObjectNotFoundException($"User with UserName={userName} not found");
 
                 user.GenerateDefaultPassword();
                 user.ResetAccessFailedCount();
-                _userRepository.Update(user);
+                _unitOfWork.Users.Update(user);
 
                 var emailTemplateRendered = _templateFactory.CreateForUserPasswordLost(user);
                 _emailService.Send(new Email

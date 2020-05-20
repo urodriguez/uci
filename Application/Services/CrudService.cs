@@ -7,7 +7,7 @@ using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Aggregates;
-using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Services;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Auditing;
@@ -17,27 +17,27 @@ using Newtonsoft.Json;
 
 namespace Application.Services
 {
-    public abstract class CrudService<TDto, TAggregateRoot> : ApplicationService, ICrudService<TDto> where TAggregateRoot : IAggregateRoot where TDto : IDto
+    public abstract class CrudService<TDto, TAggregateRoot> : ApplicationService, ICrudService<TDto> 
+        where TAggregateRoot : class, IAggregateRoot 
+        where TDto : IDto
     {
-        private readonly IRoleService _roleService;
-        private readonly IRepository<TAggregateRoot> _repository;
+        protected readonly IRoleService _roleService;
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
         protected readonly IAuditService _auditService;
-        private readonly IBusinessValidator<TDto> _businessValidator;
+        protected readonly IBusinessValidator<TDto> _businessValidator;
         protected readonly IAppSettingsService _appSettingsService;
 
         protected CrudService(
             IRoleService roleService,
-            IRepository<TAggregateRoot> repository, 
             IFactory<TDto, TAggregateRoot> factory, 
             IAuditService auditService, 
             IBusinessValidator<TDto> businessValidator, 
             ITokenService tokenService,
+            IUnitOfWork unitOfWork,
             ILogService logService,
             IAppSettingsService appSettingsService
-        ) : base (tokenService, logService)
+        ) : base (tokenService, unitOfWork, logService)
         {
-            _repository = repository;
             _factory = factory;
             _auditService = auditService;
             _businessValidator = businessValidator;
@@ -45,11 +45,11 @@ namespace Application.Services
             _appSettingsService = appSettingsService;
         }
 
-        public IApplicationResult GetAll()
+        public virtual IApplicationResult GetAll()
         {
             return Execute(() =>
             {
-                var aggregates = _repository.Get();
+                var aggregates = _unitOfWork.GetRepository<TAggregateRoot>().Get();
 
                 var dtos = _factory.CreateFromRange(aggregates);
 
@@ -60,11 +60,11 @@ namespace Application.Services
             });
         }
 
-        public IApplicationResult GetById(Guid id)
+        public virtual IApplicationResult GetById(Guid id)
         {
             return Execute(() =>
             {
-                var aggregate = _repository.GetById(id);
+                var aggregate = _unitOfWork.GetRepository<TAggregateRoot>().GetById(id);
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
@@ -77,7 +77,7 @@ namespace Application.Services
             });
         }
 
-        public IApplicationResult Create(TDto dto)
+        public virtual IApplicationResult Create(TDto dto)
         {
             return Execute(() =>
             {
@@ -87,7 +87,7 @@ namespace Application.Services
 
                 var aggregate = _factory.Create(dto);
 
-                _repository.Add(aggregate);
+                _unitOfWork.GetRepository<TAggregateRoot>().Add(aggregate);
 
                 _auditService.Audit(new Audit
                 {
@@ -107,7 +107,7 @@ namespace Application.Services
             });
         }
 
-        public IApplicationResult Update(Guid id, TDto dto)
+        public virtual IApplicationResult Update(Guid id, TDto dto)
         {
             return Execute(() =>
             {
@@ -115,13 +115,13 @@ namespace Application.Services
 
                 _businessValidator.Validate(dto, id);
 
-                var aggregate = _repository.GetById(id);
+                var aggregate = _unitOfWork.GetRepository<TAggregateRoot>().GetById(id);
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
                 var aggregateUpdated = _factory.CreateFromExisting(dto, aggregate);
 
-                _repository.Update(aggregateUpdated);
+                _unitOfWork.GetRepository<TAggregateRoot>().Update(aggregateUpdated);
 
                 _auditService.Audit(new Audit
                 {
@@ -138,17 +138,17 @@ namespace Application.Services
             });
         }
 
-        public IApplicationResult Delete(Guid id)
+        public virtual IApplicationResult Delete(Guid id)
         {
             return Execute(() =>
             {
                 if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
 
-                var aggregate = _repository.GetById(id);
+                var aggregate = _unitOfWork.GetRepository<TAggregateRoot>().GetById(id);
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
-                _repository.Delete(aggregate);
+                _unitOfWork.GetRepository<TAggregateRoot>().Delete(aggregate);
 
                 _auditService.Audit(new Audit
                 {

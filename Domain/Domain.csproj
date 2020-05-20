@@ -50,6 +50,7 @@
     <Compile Include="Aggregates\User.cs" />
     <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
+    <Compile Include="Contracts\Infrastructure\Persistence\IUnitOfWork.cs" />
     <Compile Include="Contracts\Predicates\Factories\IPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IProductPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IUserPredicateFactory.cs" />
@@ -60,7 +61,6 @@
     <Compile Include="Contracts\Services\IRoleService.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\SearchPreferences.cs" />
     <Compile Include="Enums\InventAppPredicateOperatorGroup.cs" />
     <Compile Include="Enums\InventAppPredicateOperator.cs" />
     <Compile Include="Enums\UserRol.cs" />

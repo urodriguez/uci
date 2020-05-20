@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates;
+﻿using System.Data;
+using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Infrastructure.Crosscutting.Logging;
 
@@ -6,7 +7,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
 {
     public class ProductTypeRepository: Repository<ProductType>, IProductTypeRepository
     {
-        public ProductTypeRepository(IDbConnectionFactory dbConnectionFactory, ILogService loggerService) : base(dbConnectionFactory, loggerService)
+        public ProductTypeRepository(ILogService logService, IDbTransaction transaction) : base(logService, transaction)
         {
         }
     }

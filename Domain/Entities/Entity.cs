@@ -6,10 +6,10 @@ namespace Domain.Entities
     {
         protected Entity()
         {
-            EntityName = $"{GetType().BaseType.Name}";
+            Name = $"{GetType().BaseType.Name}";
         }
 
-        protected string EntityName { get; }
+        protected string Name { get; }
 
         public Guid Id { get; set; }
     }

@@ -5,7 +5,7 @@ using Domain.Contracts.Predicates;
 
 namespace Domain.Contracts.Infrastructure.Persistence.Repositories
 {
-    public interface IRepository<TAggregateRoot> where TAggregateRoot : IAggregateRoot
+    public interface IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
         IEnumerable<TAggregateRoot> Get(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null);
 

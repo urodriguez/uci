@@ -7,7 +7,9 @@ using Domain.Contracts.Aggregates;
 
 namespace Application.Factories
 {
-    public abstract class Factory<TDto, TAggregateRoot> : IFactory<TDto, TAggregateRoot> where TAggregateRoot : IAggregateRoot where TDto : IDto
+    public abstract class Factory<TDto, TAggregateRoot> : IFactory<TDto, TAggregateRoot> 
+        where TAggregateRoot : class, IAggregateRoot 
+        where TDto : IDto
     {
         protected readonly IMapper _mapper;
 

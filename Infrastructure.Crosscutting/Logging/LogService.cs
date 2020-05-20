@@ -17,7 +17,7 @@ namespace Infrastructure.Crosscutting.Logging
     {
         private readonly IAppSettingsService _appSettingsService;
 
-        private readonly string _correlationId;
+        private string _correlationId;
 
         private static readonly object Locker = new Object();
 
@@ -104,6 +104,11 @@ namespace Infrastructure.Crosscutting.Logging
             {
                 LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | FileSystem Exception | e={e}");
             }
+        }
+
+        public void ResetCorrelationId()
+        {
+            _correlationId = Guid.NewGuid().ToString();
         }
 
         public void FileSystemLog(string messageToLog)

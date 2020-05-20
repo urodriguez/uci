@@ -6,7 +6,7 @@ using Application.Contracts.Services;
 using Application.Factories;
 using Application.Services;
 using AutoMapper;
-using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 using Domain.Predicates.Factories;
@@ -22,7 +22,6 @@ using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Infrastructure.Crosscutting.Reporting;
 using Infrastructure.Persistence.Dapper;
-using Infrastructure.Persistence.Dapper.Repositories;
 using Unity;
 using Unity.Lifetime;
 using Unity.WebApi;
@@ -82,9 +81,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
 
             //Persistence
             _container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerThreadLifetimeManager());
-            _container.RegisterType<IProductRepository, ProductRepository>(new PerThreadLifetimeManager());
-            _container.RegisterType<IProductTypeRepository, ProductTypeRepository>(new PerThreadLifetimeManager());
-            _container.RegisterType<IUserRepository, UserRepository>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUnitOfWork, UnitOfWork>(new PerResolveLifetimeManager());
             #endregion
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(_container);

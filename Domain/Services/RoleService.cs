@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Linq;
-using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
 
@@ -8,19 +8,19 @@ namespace Domain.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserPredicateFactory _userPredicateFactory;
 
-        public RoleService(IUserRepository userRepository, IUserPredicateFactory userPredicateFactory)
+        public RoleService(IUnitOfWork unitOfWork, IUserPredicateFactory userPredicateFactory)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _userPredicateFactory = userPredicateFactory;
         }
 
         public bool IsAdmin(string userName)
         {
             var byName = _userPredicateFactory.CreateByName(userName);
-            var user = _userRepository.Get(byName).FirstOrDefault();
+            var user = _unitOfWork.Users.Get(byName).FirstOrDefault();
 
             if (user == null) throw new ObjectNotFoundException($"UserName={userName} not exists in database");
 

@@ -9,5 +9,6 @@
         void LogErrorMessage(string messageToLog);
         void FileSystemLog(string messageToLog);
         void DeleteOldLogs();
+        void ResetCorrelationId();
     }
 }

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Security.Claims;
 using Application.ApplicationResults;
 using Application.Exceptions;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Exceptions;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
@@ -14,11 +15,13 @@ namespace Application.Services
     public abstract class ApplicationService
     {
         protected readonly ITokenService _tokenService;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ILogService _logService;
 
-        protected ApplicationService(ITokenService tokenService, ILogService logService)
+        protected ApplicationService(ITokenService tokenService, IUnitOfWork unitOfWork, ILogService logService)
         {
             _tokenService = tokenService;
+            _unitOfWork = unitOfWork;
             _logService = logService;
         }
 
@@ -28,7 +31,11 @@ namespace Application.Services
             {
                 if (requiresAuthentication) CheckAuthentication();
 
+                _unitOfWork.BeginTransaction();
+
                 var serviceResult = service.Invoke();
+                
+                _unitOfWork.Commit();
 
                 return serviceResult;
             }
@@ -101,6 +108,11 @@ namespace Application.Services
                     Status = ApplicationResultStatus.InternalServerError,
                     Message = $"An Internal Server Error has ocurred. Please contact with your administrator. CorrelationId = {_logService.GetCorrelationId()}"
                 };
+            }
+            finally
+            {
+                _unitOfWork.Dispose();
+                //_logService.ResetCorrelationId();
             }
         }
 

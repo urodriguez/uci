@@ -8,6 +8,8 @@ ELSE
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 
+BEGIN TRANSACTION
+
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 	CREATE TABLE [dbo].[User](
 		[Id] uniqueidentifier NOT NULL,
@@ -47,3 +49,5 @@ BEGIN
 		QueueDate datetime NOT NULL
 	)
 END
+
+COMMIT TRANSACTION

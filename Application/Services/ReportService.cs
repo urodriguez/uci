@@ -5,7 +5,7 @@ using System.Linq;
 using Application.ApplicationResults;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Authentication;
@@ -22,33 +22,29 @@ namespace Application.Services
     {
         private readonly IReportInfrastructureService _reportInfrastructureService;
         private readonly IProductPredicateFactory _productPredicateFactory;
-        private readonly IProductRepository _productRepository;
         private readonly IAppSettingsService _appSettingsService;
         private readonly IUserPredicateFactory _userPredicateFactory;
-        private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
 
         public ReportService(
             ITokenService tokenService, 
+            IUnitOfWork unitOfWork,
             ILogService logService, 
             IReportInfrastructureService reportInfrastructureService,
             IProductPredicateFactory productPredicateFactory,
-            IProductRepository productRepository,
             IAppSettingsService appSettingsService,
             IUserPredicateFactory userPredicateFactory, 
-            IUserRepository userRepository,
             IEmailService emailService
         ) : base(
-            tokenService, 
+            tokenService,
+            unitOfWork,
             logService
         )
         {
             _reportInfrastructureService = reportInfrastructureService;
             _productPredicateFactory = productPredicateFactory;
-            _productRepository = productRepository;
             _appSettingsService = appSettingsService;
             _userPredicateFactory = userPredicateFactory;
-            _userRepository = userRepository;
             _emailService = emailService;
 
             Directory.CreateDirectory($"{_appSettingsService.ReportsDirectory}");
@@ -59,7 +55,7 @@ namespace Application.Services
             return Execute(() =>
             {
                 var byPriceRange = _productPredicateFactory.CreateByPriceRange(reportProductDto.MinPrice, reportProductDto.MaxPrice);
-                var products = _productRepository.Get(byPriceRange);
+                var products = _unitOfWork.Products.Get(byPriceRange);
 
                 var templatePath = $"{_appSettingsService.ReportsTemplatesDirectory}\\product_report.html";
                 var template = File.ReadAllText(templatePath);
@@ -89,7 +85,7 @@ namespace Application.Services
                 if (reportProductDto.SendByEmail)
                 {
                     var byName = _userPredicateFactory.CreateByName(InventAppContext.UserName);
-                    var user = _userRepository.Get(byName).Single();
+                    var user = _unitOfWork.Users.Get(byName).Single();
 
                     var userRequestReportEmailTemplatePath = $"{_appSettingsService.EmailsTemplatesDirectory}\\user_reportRequested.html";
                     var userRequestReportEmailTemplate = File.ReadAllText(userRequestReportEmailTemplatePath);
