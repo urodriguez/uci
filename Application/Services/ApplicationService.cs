@@ -31,8 +31,6 @@ namespace Application.Services
             {
                 if (requiresAuthentication) CheckAuthentication();
 
-                _unitOfWork.BeginTransaction();
-
                 var serviceResult = service.Invoke();
                 
                 _unitOfWork.Commit();
@@ -112,7 +110,6 @@ namespace Application.Services
             finally
             {
                 _unitOfWork.Dispose();
-                //_logService.ResetCorrelationId();
             }
         }
 

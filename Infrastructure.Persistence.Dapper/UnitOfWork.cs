@@ -13,30 +13,25 @@ namespace Infrastructure.Persistence.Dapper
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ILogService _logService;
-        private readonly IDbConnectionFactory _dbConnectionFactory;
 
-        private IDbConnection _connection;
-        private IDbTransaction _transaction;
+        private readonly IDbConnection _connection;
+        private readonly IDbTransaction _transaction;
 
         private IDictionary<string, object> _aggregatesRepositories;
 
         public UnitOfWork(ILogService logService, IDbConnectionFactory dbConnectionFactory)
         {
             _logService = logService;
-            _dbConnectionFactory = dbConnectionFactory;
-        }
 
-        public IProductRepository Products { get; set; }
-        public IUserRepository Users { get; set; }
-
-        public void BeginTransaction()
-        {
-            _connection = _dbConnectionFactory.GetSqlConnection();
+            _connection = dbConnectionFactory.GetSqlConnection();
             _connection.Open();
             _transaction = _connection.BeginTransaction();
 
             InitializeRepositories();
         }
+
+        public IProductRepository Products { get; set; }
+        public IUserRepository Users { get; set; }
 
         private void InitializeRepositories()
         {
@@ -48,7 +43,6 @@ namespace Infrastructure.Persistence.Dapper
                 {typeof(Product).Name, Products}, 
                 {typeof(User).Name, Users}
             };
-            
         }
 
         public void Commit()

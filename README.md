@@ -25,7 +25,6 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 }
 
 ## TODO list
-* fix services instantiation on UnityConfigurator
 * expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
 * delete old client application
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
@@ -131,6 +130,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * handle user AccessFailedCount
 * send reset password email on locked account
 * implement unityOfWork
+* fix services instantiation on UnityConfigurator
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

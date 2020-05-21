@@ -9,7 +9,6 @@ namespace Domain.Contracts.Infrastructure.Persistence
         IProductRepository Products { get; }
         IUserRepository Users { get; }
 
-        void BeginTransaction();
         void Commit();
         IRepository<TAggregateRoot> GetRepository<TAggregateRoot>() where TAggregateRoot : class, IAggregateRoot;
     }
