@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Domain.Aggregates;
+using System.Reflection;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
@@ -30,19 +30,20 @@ namespace Infrastructure.Persistence.Dapper
             InitializeRepositories();
         }
 
-        public IProductRepository Products { get; set; }
-        public IUserRepository Users { get; set; }
+        public IProductRepository Products { get; private set; }
+        public IUserRepository Users { get; private set; }
 
         private void InitializeRepositories()
         {
             Products = new ProductRepository(_logService, _transaction);
             Users = new UserRepository(_logService, _transaction);
 
-            _aggregatesRepositories = new Dictionary<string, object>
+            _aggregatesRepositories = new Dictionary<string, object>();
+            foreach (PropertyInfo property in typeof(UnitOfWork).GetProperties())
             {
-                {typeof(Product).Name, Products}, 
-                {typeof(User).Name, Users}
-            };
+                var aggregateName = property.Name.Remove(property.Name.Length - 1);//removes the final 's'
+                _aggregatesRepositories.Add(aggregateName, property.GetValue(this));
+            }
         }
 
         public void Commit()
