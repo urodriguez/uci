@@ -5,6 +5,7 @@ using System.Reflection;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
+using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Persistence.Dapper.Repositories;
 
@@ -13,15 +14,17 @@ namespace Infrastructure.Persistence.Dapper
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ILogService _logService;
+        private readonly IAppSettingsService _appSettingsService;
 
         private readonly IDbConnection _connection;
         private readonly IDbTransaction _transaction;
 
         private IDictionary<string, object> _aggregatesRepositories;
 
-        public UnitOfWork(ILogService logService, IDbConnectionFactory dbConnectionFactory)
+        public UnitOfWork(ILogService logService, IAppSettingsService appSettingsService, IDbConnectionFactory dbConnectionFactory)
         {
             _logService = logService;
+            _appSettingsService = appSettingsService;
 
             _connection = dbConnectionFactory.GetSqlConnection();
             _connection.Open();
@@ -35,8 +38,8 @@ namespace Infrastructure.Persistence.Dapper
 
         private void InitializeRepositories()
         {
-            Products = new ProductRepository(_logService, _transaction);
-            Users = new UserRepository(_logService, _transaction);
+            Products = new ProductRepository(_logService, _appSettingsService, _transaction);
+            Users = new UserRepository(_logService, _appSettingsService, _transaction);
 
             _aggregatesRepositories = new Dictionary<string, object>();
             foreach (PropertyInfo property in typeof(UnitOfWork).GetProperties())

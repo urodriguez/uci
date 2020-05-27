@@ -9,6 +9,7 @@ using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates;
 using Domain.Enums;
 using Domain.Predicates;
+using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using MiniProfiler.Integrations;
 
@@ -17,20 +18,18 @@ namespace Infrastructure.Persistence.Dapper.Repositories
     public class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
         private readonly ILogService _logService;
+        private readonly IAppSettingsService _appSettingsService;
 
         private readonly IDbTransaction _dbTransaction;
         private readonly IDbConnection _dbConnection;
 
-        private readonly QueryFiller _queryFiller;
-
-        public Repository(ILogService logService, IDbTransaction dbTransaction)
+        public Repository(ILogService logService, IAppSettingsService appSettingsService, IDbTransaction dbTransaction)
         {
             _logService = logService;
+            _appSettingsService = appSettingsService;
 
             _dbTransaction = dbTransaction;
             _dbConnection = dbTransaction.Connection;
-
-            _queryFiller = new QueryFiller();
 
             var t = typeof(global::Dapper.CommandFlags);//dummy code used to import explicitly Dapper - DO NOT DELETE
         }
@@ -52,7 +51,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
 
             var aggregates = _dbConnection.GetList<TAggregateRoot>(dapperPredicate, null, _dbTransaction).ToList();
 
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+            LogLastQuery();
 
             return aggregates;
         }
@@ -87,7 +86,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         {
             var aggregate = _dbConnection.Get<TAggregateRoot>(id, _dbTransaction);
 
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+            LogLastQuery();
 
             return aggregate;
         }
@@ -96,30 +95,37 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         {
             _dbConnection.Update(aggregateRoot, _dbTransaction);
 
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+            LogLastQuery();
         }
 
         public void Add(TAggregateRoot aggregate)
         {
             _dbConnection.Insert(aggregate, _dbTransaction);//Insert aggregate in db and assign it an Id
-            
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+
+            LogLastQuery();
         }
 
         public void Delete(TAggregateRoot aggregate)
         {
             _dbConnection.Delete(aggregate, _dbTransaction);
 
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | commands={_queryFiller.Fill(CustomDbProfiler.Current.GetCommands())}");
+            LogLastQuery();
         }
 
         public bool Contains(TAggregateRoot aggregate)
         {
             var aggregateInDb = GetById(aggregate.Id);
-
-            _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Element in database obtained, checking if it is not null");
-
             return aggregateInDb != null;
+        }
+
+        protected void LogLastQuery()
+        {
+            var commands = CustomDbProfiler.Current.GetCommands().Split(new[] { $"{Environment.NewLine}{Environment.NewLine}----" }, StringSplitOptions.None);
+
+            var lastQuery = commands.Length == 1 ? CustomDbProfiler.Current.GetCommands() : commands.Last();
+
+            if (_appSettingsService.Environment.IsDev())
+                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | query={lastQuery}");
         }
     }
 }

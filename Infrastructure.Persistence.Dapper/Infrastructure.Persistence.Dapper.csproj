@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="DbConnectionFactory.cs" />
     <Compile Include="IDbConnectionFactory.cs" />
-    <Compile Include="QueryFiller.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ProductTypeRepository.cs" />

@@ -48,5 +48,10 @@ namespace Domain.Aggregates
         {
             if (price <= 0) throw new BusinessRuleException($"{typeof(Product).Name}: price has to be equal or higher than zero");
         }
+
+        public static void ValidateCode(string code)
+        {
+            if (code.Length > 8) throw new BusinessRuleException($"{typeof(Product).Name}: code length can not be higher than 8");
+        }
     }
 }

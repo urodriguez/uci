@@ -28,6 +28,7 @@ namespace Application.BusinessValidators
             var byDistinctIdAndCode = _productPredicateFactory.CreateByDistinctIdAndCode(id, productDto.Code);
             if (_unitOfWork.Products.Get(byDistinctIdAndCode).Any()) throw new BusinessRuleException($"{AggregateRootName}: code={productDto.Code} already exits");
 
+            Product.ValidateCode(productDto.Code);
             Product.ValidatePrice(productDto.Price.Value);
         }
     }
