@@ -10,14 +10,15 @@ using Infrastructure.Crosscutting.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace Infrastructure.Crosscutting.Logging
 {
-    public class LogService : AsyncInfrastractureService, ILogService, ILogDequeueResolver
+    public class LogService : InfrastractureService, ILogService, ILogDequeueResolver
     {
         private readonly IAppSettingsService _appSettingsService;
 
-        private string _correlationId;
+        private readonly string _correlationId;
 
         private static readonly object Locker = new Object();
 
@@ -34,24 +35,24 @@ namespace Infrastructure.Crosscutting.Logging
         public string GetCorrelationId() => _correlationId;
 
         //Very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development
-        public void LogTraceMessage(string messageToLog)
+        public void LogTraceMessageAsync(string messageToLog)
         {
-            LogMessage(messageToLog, LogType.Trace);
+            LogMessageAsync(messageToLog, LogType.Trace);
         }
 
         //Information messages, which are normally enabled in production environment
-        public void LogInfoMessage(string messageToLog)
+        public void LogInfoMessageAsync(string messageToLog)
         {
-            LogMessage(messageToLog, LogType.Info);
+            LogMessageAsync(messageToLog, LogType.Info);
         }
 
         //Error messages - most of the time these are Exceptions
-        public void LogErrorMessage(string messageToLog)
+        public void LogErrorMessageAsync(string messageToLog)
         {
-            LogMessage(messageToLog, LogType.Error);
+            LogMessageAsync(messageToLog, LogType.Error);
         }
 
-        private void LogMessage(string messageToLog, LogType logType)
+        private void LogMessageAsync(string messageToLog, LogType logType)
         {
             var log = new Log(
                 _appSettingsService.InfrastructureCredential,
@@ -63,13 +64,13 @@ namespace Infrastructure.Crosscutting.Logging
                 _appSettingsService.Environment.Name
             );
 
-            ExecuteAsync("logs", log);
+            ExecuteAsync("logs", Method.POST, log);
         }
 
-        public void Log(Log log)
+        public void LogAsync(Log log)
         {
             log.Credential = _appSettingsService.InfrastructureCredential;
-            ExecuteAsync("logs", log);
+            ExecuteAsync("logs", Method.POST, log);
         }
 
         public void DeleteOldLogs()
@@ -77,12 +78,12 @@ namespace Infrastructure.Crosscutting.Logging
             //Remove logs from file system
             try
             {
-                LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FileSystem");
+                LogInfoMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Deleting Old Logs From FileSystem");
 
                 foreach (var fileSystemLogsDirectory in Directory.GetDirectories(_appSettingsService.FileSystemLogsDirectory))
                 {
                     var directoryInfo = new DirectoryInfo(fileSystemLogsDirectory);
-                    LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Processing directory | directory.Name={directoryInfo.Name}");
+                    LogInfoMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Processing directory | directory.Name={directoryInfo.Name}");
 
                     var filesToDelete = directoryInfo.GetFiles("*.txt").Where(f => f.CreationTime < DateTime.Today.AddDays(-7));
                     var filesDeleted = 0;
@@ -92,7 +93,7 @@ namespace Infrastructure.Crosscutting.Logging
                         filesDeleted++;
                     }
 
-                    LogInfoMessage(
+                    LogInfoMessageAsync(
                         filesToDelete.Count() != filesDeleted ?
                             $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Directory processed | status=INCOMPLED - directory.Name={directoryInfo.Name} - filesToDelete={filesToDelete.Count()} - filesDeleted={filesDeleted}"
                             :
@@ -102,13 +103,8 @@ namespace Infrastructure.Crosscutting.Logging
             }
             catch (Exception e)
             {
-                LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | FileSystem Exception | e={e}");
+                LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | FileSystem Exception | e={e}");
             }
-        }
-
-        public void ResetCorrelationId()
-        {
-            _correlationId = Guid.NewGuid().ToString();
         }
 
         public void FileSystemLog(string messageToLog)
@@ -135,7 +131,7 @@ namespace Infrastructure.Crosscutting.Logging
             foreach (var queueItemJsonData in queueItemsJsonData)
             {
                 var log = JsonConvert.DeserializeObject<Log>(queueItemJsonData);
-                Log(log);
+                LogAsync(log);
             }
         }
 

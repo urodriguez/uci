@@ -1,27 +1,27 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
-using System.Threading.Tasks;
-using Infrastructure.Crosscutting.Logging;
+﻿using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Queueing;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using RestSharp;
+using System;
+using System.Diagnostics;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Crosscutting
 {
-    public abstract class AsyncInfrastractureService
+    public abstract class InfrastractureService
     {
         protected ILogService _logService;
         protected IRestClient _restClient;
         private readonly IEnqueueService _queueService;
 
-        protected AsyncInfrastractureService(ILogService logService, IEnqueueService queueService)
+        protected InfrastractureService(ILogService logService, IEnqueueService queueService)
         {
             _logService = logService;
             _queueService = queueService;
         }        
         
-        protected AsyncInfrastractureService(IEnqueueService queueService)
+        protected InfrastractureService(IEnqueueService queueService)
         {
             _queueService = queueService;
         }
@@ -36,36 +36,37 @@ namespace Infrastructure.Crosscutting
             _restClient = new RestClient(baseUrl);
         }
 
-        public void ExecuteAsync(string resource, IQueueable queueable)
+        public void ExecuteAsync(string resource, Method httpMethod = Method.GET, IQueueable queueable = null)
         {
             if (_logService == null || _restClient == null) return;
 
             var childServiceName = GetType().Name; //get name from concrete instanced class
             var childMethodName = new StackTrace().GetFrame(1).GetMethod().Name; //0: current method, 1: previous method
 
-            var task = new Task(() =>
+            Task.Run(() =>
             {
                 try
                 {
                     var request = new RestRequest
                     {
                         Resource = resource,
-                        Method = Method.POST
+                        Method = httpMethod
                     };
-                    request.AddJsonBody(queueable);
+                    if (httpMethod == Method.POST || httpMethod == Method.PUT)
+                        request.AddJsonBody(queueable);
 
                     if (!IsLogService(childServiceName))
-                        _logService.LogInfoMessage($"{childServiceName}.{childMethodName} | Sending data to {childServiceName} Micro-service");
+                        _logService.LogInfoMessageAsync($"{childServiceName}.{childMethodName} | Sending data to {childServiceName} Micro-service");
 
-                    var response = _restClient.Post(request);
+                    var response = _restClient.Execute(request, request.Method);
 
-                    if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.ServiceUnavailable) 
+                    if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.ServiceUnavailable)
                         Enqueue(queueable, childServiceName, childMethodName);
 
                     if (response.IsSuccessful)
                     {
                         if (!IsLogService(childServiceName))
-                            _logService.LogInfoMessage($"{childServiceName}.{childMethodName} | Data sent to {childServiceName} Micro-service | Status=SUCCESSFUL");
+                            _logService.LogInfoMessageAsync($"{childServiceName}.{childMethodName} | Data sent to {childServiceName} Micro-service | Status=SUCCESSFUL");
                     }
                     else
                     {
@@ -73,7 +74,7 @@ namespace Infrastructure.Crosscutting
                         if (IsLogService(childServiceName))
                             _logService.FileSystemLog(notSuccessMsgToLog);//only log on file system when it wasn't successful
                         else
-                            _logService.LogInfoMessage(notSuccessMsgToLog);
+                            _logService.LogInfoMessageAsync(notSuccessMsgToLog);
                     }
                 }
                 catch (Exception ex)
@@ -82,15 +83,14 @@ namespace Infrastructure.Crosscutting
                     if (IsLogService(childServiceName))
                         _logService.FileSystemLog(errorMsgToLog);
                     else
-                        _logService.LogErrorMessage(errorMsgToLog);
+                        _logService.LogErrorMessageAsync(errorMsgToLog);
 
-                    Enqueue(queueable, childServiceName, childMethodName);
+                    if (queueable != null)
+                        Enqueue(queueable, childServiceName, childMethodName);
 
                     //do not throw the exception in order to avoid finish the main request
                 }
             });
-
-            task.Start();
         }
 
         //LogService can't log because it would produce a infinite recursive call
@@ -108,7 +108,7 @@ namespace Infrastructure.Crosscutting
                 if (IsLogService(serviceName))
                     _logService.FileSystemLog(queueErrorMsgToLog);
                 else
-                    _logService.LogErrorMessage(queueErrorMsgToLog);
+                    _logService.LogErrorMessageAsync(queueErrorMsgToLog);
             }
         }
     }

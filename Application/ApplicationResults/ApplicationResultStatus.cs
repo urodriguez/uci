@@ -1,4 +1,4 @@
-﻿namespace Application
+﻿namespace Application.ApplicationResults
 {
     public enum ApplicationResultStatus
     {

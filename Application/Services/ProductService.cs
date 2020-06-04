@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Application.ApplicationResults;
+using Application.Contracts;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
@@ -28,7 +30,8 @@ namespace Application.Services
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
-            IAppSettingsService appSettingsService
+            IAppSettingsService appSettingsService,
+            IInventAppContext inventAppContext
         ) : base(
             roleService,
             factory, 
@@ -37,18 +40,19 @@ namespace Application.Services
             tokenService,
             unitOfWork,
             logService,
-            appSettingsService
+            appSettingsService,
+            inventAppContext
         )
         {
             _productPredicateFactory = productPredicateFactory;
         }
 
-        public IApplicationResult GetCheapest(decimal maxPrice)
+        public async Task<IApplicationResult> GetCheapestAsync(decimal maxPrice)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
                 var byCheapest = _productPredicateFactory.CreateByCheapest(maxPrice);
-                var cheapestProducts = _unitOfWork.Products.Get(byCheapest);
+                var cheapestProducts = await _unitOfWork.Products.GetAsync(byCheapest);
 
                 var cheapestProductsDto = _factory.CreateFromRange(cheapestProducts);
 

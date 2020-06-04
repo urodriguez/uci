@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Application.Contracts;
 
 namespace Application
 {
-    public class InventAppContext
+    public class InventAppContext : IInventAppContext
     {
-        [ThreadStatic]
-        public static string UserName;
-
-        [ThreadStatic]
-        public static string SecurityToken;
+        public string UserName { get; set; }
+        public string SecurityToken { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Attributes;
@@ -21,10 +22,10 @@ namespace Application.BusinessValidators
             AggregateRootName = typeof(TAggregateRoot).Name;
         }
 
-        public void Validate(TDto dto, Guid id = default(Guid)) //default(Guid) == Guid.Empty
+        public async Task ValidateAsync(TDto dto, Guid id = default(Guid)) //default(Guid) == Guid.Empty
         {
             ValidateRequiredFields(dto);
-            ValidateFields(dto, id);
+            await ValidateFieldsAsync(dto, id);
         }
 
         protected void ValidateRequiredFields(TDto dto)
@@ -48,6 +49,6 @@ namespace Application.BusinessValidators
             }
         }
 
-        protected abstract void ValidateFields(TDto dto, Guid id);
+        protected abstract Task ValidateFieldsAsync(TDto dto, Guid id);
     }
 }

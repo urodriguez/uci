@@ -5,10 +5,11 @@ using Infrastructure.Crosscutting.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace Infrastructure.Crosscutting.Auditing
 {
-    public class AuditService : AsyncInfrastractureService, IAuditService, IAuditDequeueResolver
+    public class AuditService : InfrastractureService, IAuditService, IAuditDequeueResolver
     {
         private readonly IAppSettingsService _appSettingsService;
 
@@ -19,10 +20,10 @@ namespace Infrastructure.Crosscutting.Auditing
             UseBaseUrl(appSettingsService.AuditingApiUrlV1);
         }
 
-        public void Audit(Audit audit)
+        public void AuditAsync(Audit audit)
         {
             audit.Credential = _appSettingsService.InfrastructureCredential;
-            ExecuteAsync("audits", audit);
+            ExecuteAsync("audits", Method.POST, audit);
         }
 
         public void ResolveDequeue(IReadOnlyCollection<string> queueItemsJsonData)
@@ -30,7 +31,7 @@ namespace Infrastructure.Crosscutting.Auditing
             foreach (var queueItemJsonData in queueItemsJsonData)
             {
                 var audit = JsonConvert.DeserializeObject<Audit>(queueItemJsonData);
-                Audit(audit);
+                AuditAsync(audit);
             }
         }
 

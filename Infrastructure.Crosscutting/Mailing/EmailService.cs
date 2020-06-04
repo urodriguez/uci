@@ -5,10 +5,11 @@ using Infrastructure.Crosscutting.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace Infrastructure.Crosscutting.Mailing
 {
-    public class EmailService : AsyncInfrastractureService, IEmailService, IEmailDequeueResolver
+    public class EmailService : InfrastractureService, IEmailService, IEmailDequeueResolver
     {
         private readonly IAppSettingsService _appSettingsService;
 
@@ -19,10 +20,10 @@ namespace Infrastructure.Crosscutting.Mailing
             UseBaseUrl(appSettingsService.MailingApiUrlV1);
         }
 
-        public void Send(Email email)
+        public void SendAsync(Email email)
         {
             email.Credential = _appSettingsService.InfrastructureCredential;
-            ExecuteAsync("emails", email);
+            ExecuteAsync("emails", Method.POST, email);
         }
 
         public void ResolveDequeue(IReadOnlyCollection<string> queueItemsJsonData)
@@ -30,7 +31,7 @@ namespace Infrastructure.Crosscutting.Mailing
             foreach (var queueItemJsonData in queueItemsJsonData)
             {
                 var email = JsonConvert.DeserializeObject<Email>(queueItemJsonData);
-                Send(email);
+                SendAsync(email);
             }
         }
 

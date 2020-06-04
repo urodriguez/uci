@@ -1,7 +1,9 @@
-﻿namespace Infrastructure.Crosscutting.Reporting
+﻿using System.Threading.Tasks;
+
+namespace Infrastructure.Crosscutting.Reporting
 {
     public interface IReportInfrastructureService
     {
-        byte[] Create(Report report);
+        Task<byte[]> CreateAsync(Report report);
     }
 }

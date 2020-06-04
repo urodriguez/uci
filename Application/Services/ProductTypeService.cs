@@ -1,4 +1,5 @@
-﻿using Application.Contracts.BusinessValidators;
+﻿using Application.Contracts;
+using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -22,7 +23,8 @@ namespace Application.Services
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
-            IAppSettingsService appSettingsService
+            IAppSettingsService appSettingsService,
+            IInventAppContext inventAppContext
         ) : base(
             roleService,
             factory, 
@@ -31,7 +33,8 @@ namespace Application.Services
             tokenService,
             unitOfWork,
             logService,
-            appSettingsService
+            appSettingsService,
+            inventAppContext
         )
         {
         }

@@ -42,7 +42,7 @@ namespace Infrastructure.Crosscutting.Queueing.Dequeue
 
                 if (dequeueResolver == null)
                 {
-                    _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Dequeue Resolver not found | queueItemType={queueItemType}");
+                    _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Dequeue Resolver not found | queueItemType={queueItemType}");
                     continue;
                 }
 
@@ -58,7 +58,7 @@ namespace Infrastructure.Crosscutting.Queueing.Dequeue
                     }
                     catch (Exception ex)
                     {
-                        _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | An exception has occurred resolving queue items | ex={ex}");
+                        _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | An exception has occurred resolving queue items | ex={ex}");
                     }
                 }
             }

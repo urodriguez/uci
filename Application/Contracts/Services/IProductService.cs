@@ -1,10 +1,11 @@
-﻿using Application.ApplicationResults;
+﻿using System.Threading.Tasks;
+using Application.ApplicationResults;
 using Application.Dtos;
 
 namespace Application.Contracts.Services
 {
     public interface IProductService : ICrudService<ProductDto>
     {
-        IApplicationResult GetCheapest(decimal maxPrice);
+        Task<IApplicationResult> GetCheapestAsync(decimal maxPrice);
     }
 }

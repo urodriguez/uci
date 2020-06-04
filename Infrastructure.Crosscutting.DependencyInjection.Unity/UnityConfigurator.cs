@@ -1,10 +1,14 @@
 ﻿using System.Web.Http;
+using Application;
 using Application.BusinessValidators;
+using Application.Contracts;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
+using Application.Contracts.TemplateServices;
 using Application.Factories;
 using Application.Services;
+using Application.TemplateServices;
 using AutoMapper;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
@@ -55,11 +59,16 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IReportService, ReportService>(new PerResolveLifetimeManager());
             _container.RegisterType<IUserService, UserService>(new PerResolveLifetimeManager());
 
+            //Core Services
+            _container.RegisterType<ITemplateService, TemplateService>(new ContainerControlledLifetimeManager());
+
             //Factories
             _container.RegisterType<IProductFactory, ProductFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IProductTypeFactory, ProductTypeFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ITemplateFactory, TemplateFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IUserFactory, UserFactory>(new ContainerControlledLifetimeManager());
+
+            //Contexts
+            _container.RegisterType<IInventAppContext, InventAppContext>(new ContainerControlledLifetimeManager());
             #endregion
 
             #region DOMAIN

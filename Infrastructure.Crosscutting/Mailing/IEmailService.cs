@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        void Send(Email email);
+        void SendAsync(Email email);
     }
 }

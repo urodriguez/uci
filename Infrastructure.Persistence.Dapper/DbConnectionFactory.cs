@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Threading.Tasks;
 using Infrastructure.Crosscutting.AppSettings;
 using MiniProfiler.Integrations;
 
@@ -13,10 +14,14 @@ namespace Infrastructure.Persistence.Dapper
             _appSettingsService = appSettingsService;
         }
 
-        public IDbConnection GetSqlConnection()
+        public async Task<IDbConnection> GetOpenedSqlConnectionAsync()
         {
             CustomDbProfiler.Current.ProfilerContext.Reset();
-            return ProfiledDbConnectionFactory.New(new SqlServerDbConnectionFactory(_appSettingsService.ConnectionString), CustomDbProfiler.Current);
+
+            var dbConnection = ProfiledDbConnectionFactory.New(new SqlServerDbConnectionFactory(_appSettingsService.ConnectionString), CustomDbProfiler.Current);
+            await dbConnection.OpenAsync();
+
+            return dbConnection;
         }
     }
 }

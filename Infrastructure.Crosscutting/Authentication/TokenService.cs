@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Authentication
 {
-    public class TokenService : DelegatingHandler, ITokenService
+    public class TokenService : ITokenService
     {
         private readonly ILogService _logService;
         private readonly IRestClient _restClient;
@@ -21,7 +21,7 @@ namespace Infrastructure.Crosscutting.Authentication
             _restClient = new RestClient(appSettingsService.AuthenticationApiUrlV1);
         }
 
-        public TokenGenerateResponse Generate(TokenGenerateRequest tokenGenerateRequest)
+        public async Task<TokenGenerateResponse> GenerateAsync(TokenGenerateRequest tokenGenerateRequest)
         {
             try
             {
@@ -33,13 +33,13 @@ namespace Infrastructure.Crosscutting.Authentication
                 tokenGenerateRequest.Credential = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(tokenGenerateRequest);
 
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
+                _logService.LogInfoMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Claims data to Token Micro-service");
 
-                var response = _restClient.Post<TokenGenerateResponse>(request);
+                var response = await _restClient.ExecuteAsync<TokenGenerateResponse>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Unable to connect to Token Micro-service | Status=NOT_FOUND"
                     );
 
@@ -48,7 +48,7 @@ namespace Infrastructure.Crosscutting.Authentication
 
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Claims data to Token Micro-service | Status=UNAUTHORIZED"
                     );
 
@@ -57,14 +57,14 @@ namespace Infrastructure.Crosscutting.Authentication
 
                 if (!response.IsSuccessful)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Claims data to Token Micro-service | Status=FAIL - Reason={response.Content}"
                     );
 
                     return null;
                 }
 
-                _logService.LogInfoMessage(
+                _logService.LogInfoMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Account-Claims data sent to Token Micro-service | Status=OK"
                 );
 
@@ -72,13 +72,13 @@ namespace Infrastructure.Crosscutting.Authentication
             }
             catch (Exception e)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
 
                 return null;
             }
         }
 
-        public TokenValidateResponse Validate(TokenValidateRequest tokenValidateRequest)
+        public async Task<TokenValidateResponse> ValidateAsync(TokenValidateRequest tokenValidateRequest)
         {
             try
             {
@@ -90,13 +90,13 @@ namespace Infrastructure.Crosscutting.Authentication
                 tokenValidateRequest.Credential = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(tokenValidateRequest);
 
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
+                _logService.LogInfoMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending Account-Token data to Token Micro-service");
 
-                var response = _restClient.Post<TokenValidateResponse>(request);
+                var response = await _restClient.ExecuteAsync<TokenValidateResponse>(request);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Unable to connect to Token Micro-service | Status=NOT_FOUND"
                     );
 
@@ -105,7 +105,7 @@ namespace Infrastructure.Crosscutting.Authentication
 
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Token data to Token Micro-service | Status=UNAUTHORIZED"
                     );
 
@@ -114,14 +114,14 @@ namespace Infrastructure.Crosscutting.Authentication
 
                 if (!response.IsSuccessful)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending Account-Token data to Token Micro-service | Status=FAIL - Reason={response.Content}"
                     );
 
                     return null;
                 }
 
-                _logService.LogInfoMessage(
+                _logService.LogInfoMessageAsync(
                     $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Account-Token data sent to Token Micro-service | Status=OK"
                 );
 
@@ -129,7 +129,7 @@ namespace Infrastructure.Crosscutting.Authentication
             }
             catch (Exception e)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
 
                 return null;
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System.Threading.Tasks;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
@@ -15,9 +16,10 @@ namespace Infrastructure.Persistence.Dapper
     {
         private readonly ILogService _logService;
         private readonly IAppSettingsService _appSettingsService;
+        private readonly IDbConnectionFactory _dbConnectionFactory;
 
-        private readonly IDbConnection _connection;
-        private readonly IDbTransaction _transaction;
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
 
         private IDictionary<string, object> _aggregatesRepositories;
 
@@ -25,21 +27,25 @@ namespace Infrastructure.Persistence.Dapper
         {
             _logService = logService;
             _appSettingsService = appSettingsService;
-
-            _connection = dbConnectionFactory.GetSqlConnection();
-            _connection.Open();
-            _transaction = _connection.BeginTransaction();
-
-            InitializeRepositories();
+            _dbConnectionFactory = dbConnectionFactory;
         }
 
         public IProductRepository Products { get; private set; }
         public IUserRepository Users { get; private set; }
 
-        private void InitializeRepositories()
+        public async Task BeginTransactionAsync()
         {
-            Products = new ProductRepository(_logService, _appSettingsService, _transaction);
-            Users = new UserRepository(_logService, _appSettingsService, _transaction);
+            _connection = await _dbConnectionFactory.GetOpenedSqlConnectionAsync();
+
+            _transaction = _connection.BeginTransaction(IsolationLevel.ReadUncommitted);
+
+            InitializeRepositoriesWithTransaction(_transaction);
+        }
+
+        private void InitializeRepositoriesWithTransaction(IDbTransaction transaction)
+        {
+            Products = new ProductRepository(_logService, _appSettingsService, transaction);
+            Users = new UserRepository(_logService, _appSettingsService, transaction);
 
             _aggregatesRepositories = new Dictionary<string, object>();
             foreach (PropertyInfo property in typeof(UnitOfWork).GetProperties())
@@ -53,11 +59,27 @@ namespace Infrastructure.Persistence.Dapper
         {
             try
             {
+                //Commits the database transaction.
+                //makes all data modifications since the start of the transaction a permanent part of the database, frees the transaction's resources
                 _transaction.Commit();
             }
             catch
             {
-                _transaction.Rollback();
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Transaction Commit: an Exception has occurred. See more details at LogError level");
+
+                try
+                {
+                    //Attempt to roll back the transaction.
+                    //undo all data modifications since the start of the transaction deleting changes made in database, frees the transaction's resources
+                    _transaction.Rollback();
+                }
+                catch
+                {
+                    //This catch block will handle any errors that may have occurred on the server that would cause the rollback to fail, 
+                    //such as a closed connection.
+                    _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Transaction Rollback: an Exception has occurred. See more details at LogError level");
+                    throw;
+                }
                 throw;
             }
         }
@@ -75,12 +97,12 @@ namespace Infrastructure.Persistence.Dapper
         public void Dispose()
         {
             if (_transaction != null) 
-                _transaction.Dispose();
+                _transaction.Dispose();//any still running transactions will be rolled back if no Commit was applied
 
             if (_connection != null)
             {
-                //The Close method rolls back any pending transactions.
-                //It then releases the connection to the connection pool, or closes the connection if connection pooling is disabled.
+                //The Close method also will roll back any pending transactions if it wasn't commited
+                //It then releases the connection to the connection pool, or closes the connection if connection pooling is disabled
                 _connection.Close();
                 _connection.Dispose();
             }

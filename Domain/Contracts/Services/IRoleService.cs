@@ -1,7 +1,9 @@
-﻿namespace Domain.Contracts.Services
+﻿using System.Threading.Tasks;
+
+namespace Domain.Contracts.Services
 {
     public interface IRoleService
     {
-        bool IsAdmin(string userName);
+        Task<bool> IsAdmin(string userName);
     }
 }

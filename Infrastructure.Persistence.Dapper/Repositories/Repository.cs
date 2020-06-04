@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
@@ -12,6 +13,7 @@ using Domain.Predicates;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using MiniProfiler.Integrations;
+using StackExchange.Profiling.Data;
 
 namespace Infrastructure.Persistence.Dapper.Repositories
 {
@@ -38,7 +40,7 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         /// Get all elements in repository at least you pass a 'predicate' in order to filter results
         /// </summary>
         /// <param name="inventAppPredicate">Predicate with filter specifications</param>
-        public IEnumerable<TAggregateRoot> Get(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null)
+        public async Task<IEnumerable<TAggregateRoot>> GetAsync(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null)
         {
             IPredicate dapperPredicate = null;
 
@@ -49,11 +51,26 @@ namespace Infrastructure.Persistence.Dapper.Repositories
                     : CreateDapperPredicateIndividual((InventAppPredicateIndividual<TAggregateRoot>) inventAppPredicate);
             }
 
-            var aggregates = _dbConnection.GetList<TAggregateRoot>(dapperPredicate, null, _dbTransaction).ToList();
+            var aggregates = (await _dbConnection.GetListAsync<TAggregateRoot>(dapperPredicate, null, _dbTransaction)).ToList();
 
-            LogLastQuery();
+            if (_appSettingsService.Environment.IsDev())
+                LogLastQuery();
 
             return aggregates;
+        }
+
+        public async Task<TAggregateRoot> GetFirstAsync(IInventAppPredicate<TAggregateRoot> inventAppPredicate)
+        {
+            var aggregate = (await GetAsync(inventAppPredicate)).FirstOrDefault();
+
+            return aggregate;
+        }
+
+        public async Task<bool> AnyAsync(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null)
+        {
+            var thereIsAny = (await GetAsync(inventAppPredicate)).Any();
+
+            return thereIsAny;
         }
 
         private IPredicate CreateDapperPredicateGroup(InventAppPredicateGroup<TAggregateRoot> inventAppPredicate)
@@ -82,50 +99,61 @@ namespace Infrastructure.Persistence.Dapper.Repositories
             );
         }
 
-        public TAggregateRoot GetById(Guid id)
+        public async Task<TAggregateRoot> GetByIdAsync(Guid id)
         {
-            var aggregate = _dbConnection.Get<TAggregateRoot>(id, _dbTransaction);
+            var aggregate = await _dbConnection.GetAsync<TAggregateRoot>(id, _dbTransaction);
 
-            LogLastQuery();
+            if (_appSettingsService.Environment.IsDev())
+                LogLastQuery();
 
             return aggregate;
         }
 
-        public void Update(TAggregateRoot aggregateRoot)
+        public async Task UpdateAsync(TAggregateRoot aggregateRoot)
         {
-            _dbConnection.Update(aggregateRoot, _dbTransaction);
+            await _dbConnection.UpdateAsync(aggregateRoot, _dbTransaction);
 
-            LogLastQuery();
+            if (_appSettingsService.Environment.IsDev())
+                LogLastQuery();
         }
 
-        public void Add(TAggregateRoot aggregate)
+        public async Task AddAsync(TAggregateRoot aggregate)
         {
-            _dbConnection.Insert(aggregate, _dbTransaction);//Insert aggregate in db and assign it an Id
+            await _dbConnection.InsertAsync(aggregate, _dbTransaction);//Insert aggregate in db and assign it an Id
 
-            LogLastQuery();
+            if (_appSettingsService.Environment.IsDev())
+                LogLastQuery();
         }
 
-        public void Delete(TAggregateRoot aggregate)
+        public async Task DeleteAsync(TAggregateRoot aggregate)
         {
-            _dbConnection.Delete(aggregate, _dbTransaction);
+            await _dbConnection.DeleteAsync(aggregate, _dbTransaction);
 
-            LogLastQuery();
+            if (_appSettingsService.Environment.IsDev())
+                LogLastQuery();
         }
 
-        public bool Contains(TAggregateRoot aggregate)
+        public async Task<bool> ContainsAsync(TAggregateRoot aggregate)
         {
-            var aggregateInDb = GetById(aggregate.Id);
+            var aggregateInDb = await GetByIdAsync(aggregate.Id);
             return aggregateInDb != null;
         }
 
         protected void LogLastQuery()
         {
-            var commands = CustomDbProfiler.Current.GetCommands().Split(new[] { $"{Environment.NewLine}{Environment.NewLine}----" }, StringSplitOptions.None);
+            var profiledDbConnection =  (ProfiledDbConnection)_dbConnection;
+            var dbProfiler = (CustomDbProfiler)profiledDbConnection.Profiler;
+            var lastCommand = dbProfiler.ProfilerContext.ExecutedCommands.LastOrDefault();
 
-            var lastQuery = commands.Length == 1 ? CustomDbProfiler.Current.GetCommands() : commands.Last();
+            if (lastCommand == null) return;
 
-            if (_appSettingsService.Environment.IsDev())
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | query={lastQuery}");
+            var lastQuery = lastCommand.CommandText;
+            foreach (var parameter in lastCommand.Parameters.Keys)
+            {
+                lastQuery = lastQuery.Replace($"@{parameter}", $"'{lastCommand.Parameters[parameter]}'");
+            }
+
+            _logService.LogInfoMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | query={lastQuery}");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Predicates;
 
@@ -7,16 +8,20 @@ namespace Domain.Contracts.Infrastructure.Persistence.Repositories
 {
     public interface IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        IEnumerable<TAggregateRoot> Get(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null);
+        Task<IEnumerable<TAggregateRoot>> GetAsync(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null);
+        
+        Task<TAggregateRoot> GetFirstAsync(IInventAppPredicate<TAggregateRoot> inventAppPredicate);
+        
+        Task<bool> AnyAsync(IInventAppPredicate<TAggregateRoot> inventAppPredicate = null);
 
-        TAggregateRoot GetById(Guid id);
+        Task<TAggregateRoot> GetByIdAsync(Guid id);
 
-        void Update(TAggregateRoot dto);
+        Task UpdateAsync(TAggregateRoot dto);
 
-        void Delete(TAggregateRoot aggregate);
+        Task DeleteAsync(TAggregateRoot aggregate);
 
-        void Add(TAggregateRoot aggregate);
+        Task AddAsync(TAggregateRoot aggregate);
 
-        bool Contains(TAggregateRoot aggregate);
+        Task<bool> ContainsAsync(TAggregateRoot aggregate);
     }
 }

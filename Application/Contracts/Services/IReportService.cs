@@ -1,10 +1,11 @@
-﻿using Application.ApplicationResults;
+﻿using System.Threading.Tasks;
+using Application.ApplicationResults;
 using Application.Dtos;
 
 namespace Application.Contracts.Services
 {
     public interface IReportService
     {
-        IApplicationResult CreateForProducts(ReportProductDto reportProductDto);
+        Task<IApplicationResult> CreateForProductsAsync(ReportProductDto reportProductDto);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Dtos;
 
@@ -6,9 +7,9 @@ namespace Application.Contracts.Services
 {
     public interface IUserService : ICrudService<UserDto>
     {
-        IApplicationResult ConfirmEmail(Guid id);
-        IApplicationResult CustomPassword(Guid id, PasswordDto passwordDto);
-        IApplicationResult ForgotPassword(string userName);
-        IApplicationResult Login(CredentialsDto credentialsDto);
+        Task<IApplicationResult> ConfirmEmailAsync(Guid id);
+        Task<IApplicationResult> CustomPasswordAsync(Guid id, PasswordDto passwordDto);
+        Task<IApplicationResult> ForgotPasswordAsync(string userName);
+        Task<IApplicationResult> LoginAsync(CredentialsDto credentialsDto);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Application.Contracts;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Infrastructure.Crosscutting.Logging;
@@ -10,24 +12,24 @@ namespace WebApi.Controllers
     {
         private readonly ICrudService<TDto> _crudService;
 
-        public CrudController(ICrudService<TDto> crudService, ILogService loggerService) : base (loggerService)
+        public CrudController(ICrudService<TDto> crudService, ILogService loggerService, IInventAppContext inventAppContext) : base (loggerService, inventAppContext)
         {
             _crudService = crudService;
         }
 
         [HttpGet]
-        public IHttpActionResult GetAll() => Execute(() => _crudService.GetAll());
+        public async Task<IHttpActionResult> GetAllAsync() => await ExecuteAsync(async () => await _crudService.GetAllAsync());
 
         [HttpGet]
-        public IHttpActionResult Get([FromUri] Guid id) => Execute(() => _crudService.GetById(id));
+        public async Task<IHttpActionResult> GetAsync([FromUri] Guid id) => await ExecuteAsync(async () => await _crudService.GetByIdAsync(id));
 
         [HttpPost]
-        public IHttpActionResult Create([FromBody] TDto dto) => Execute(() => _crudService.Create(dto));
+        public async Task<IHttpActionResult> CreateAsync([FromBody] TDto dto) => await ExecuteAsync(async () => await _crudService.CreateAsync(dto));
 
         [HttpPut]
-        public IHttpActionResult Update([FromUri] Guid id, [FromBody] TDto dto) => Execute(() => _crudService.Update(id, dto));
+        public async Task<IHttpActionResult> UpdateAsync([FromUri] Guid id, [FromBody] TDto dto) => await ExecuteAsync(async () => await _crudService.UpdateAsync(id, dto));
 
         [HttpDelete]
-        public IHttpActionResult Delete([FromUri] Guid id) => Execute(() => _crudService.Delete(id));
+        public async Task<IHttpActionResult> DeleteAsync([FromUri] Guid id) => await ExecuteAsync(async () => await _crudService.DeleteAsync(id));
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Application.Contracts;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Infrastructure.Crosscutting.Logging;
@@ -11,21 +13,21 @@ namespace WebApi.Controllers
     {
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userService, ILogService loggerService) : base(userService, loggerService)
+        public UsersController(IUserService userService, ILogService loggerService, IInventAppContext inventAppContext) : base(userService, loggerService, inventAppContext)
         {
             _userService = userService;
         }
 
         [HttpGet]
         [Route("{id:Guid}/confirmEmail")]
-        public IHttpActionResult ConfirmEmail([FromUri] Guid id) => Execute(() => _userService.ConfirmEmail(id), MediaType.TextHtml);
+        public async Task<IHttpActionResult> ConfirmEmailAsync([FromUri] Guid id) => await ExecuteAsync(async () => await _userService.ConfirmEmailAsync(id), MediaType.TextHtml);
 
         [HttpPatch]
         [Route("{id:Guid}/customPassword")]
-        public IHttpActionResult CustomPassword([FromUri] Guid id, [FromBody] PasswordDto passwordDto) => Execute(() => _userService.CustomPassword(id, passwordDto));
+        public async Task<IHttpActionResult> CustomPasswordAsync([FromUri] Guid id, [FromBody] PasswordDto passwordDto) => await ExecuteAsync(async () => await _userService.CustomPasswordAsync(id, passwordDto));
 
         [HttpGet]
         [Route("{userName}/forgotPassword")]
-        public IHttpActionResult ForgotPassword([FromUri] string userName) => Execute(() => _userService.ForgotPassword(userName));
+        public async Task<IHttpActionResult> ForgotPasswordAsync([FromUri] string userName) => await ExecuteAsync(async () => await _userService.ForgotPasswordAsync(userName));
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IAuditService
     {
-        void Audit(Audit audit);
+        void AuditAsync(Audit audit);
     }
 }

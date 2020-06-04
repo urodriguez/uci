@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using Application.ApplicationResults;
+using Application.Contracts;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
@@ -35,8 +37,9 @@ namespace Application.Services
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
-            IAppSettingsService appSettingsService
-        ) : base (tokenService, unitOfWork, logService)
+            IAppSettingsService appSettingsService,
+            IInventAppContext inventAppContext
+        ) : base (tokenService, unitOfWork, logService, inventAppContext)
         {
             _factory = factory;
             _auditService = auditService;
@@ -45,11 +48,11 @@ namespace Application.Services
             _appSettingsService = appSettingsService;
         }
 
-        public virtual IApplicationResult GetAll()
+        public virtual async Task<IApplicationResult> GetAllAsync()
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                var aggregates = _unitOfWork.GetRepository<TAggregateRoot>().Get();
+                var aggregates = await _unitOfWork.GetRepository<TAggregateRoot>().GetAsync();
 
                 var dtos = _factory.CreateFromRange(aggregates);
 
@@ -60,11 +63,11 @@ namespace Application.Services
             });
         }
 
-        public virtual IApplicationResult GetById(Guid id)
+        public virtual async Task<IApplicationResult> GetByIdAsync(Guid id)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                var aggregate = _unitOfWork.GetRepository<TAggregateRoot>().GetById(id);
+                var aggregate = await _unitOfWork.GetRepository<TAggregateRoot>().GetByIdAsync(id);
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
@@ -77,23 +80,25 @@ namespace Application.Services
             });
         }
 
-        public virtual IApplicationResult Create(TDto dto)
+        public virtual async Task<IApplicationResult> CreateAsync(TDto dto)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                if (!isAdmin) 
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                _businessValidator.Validate(dto);
+                await _businessValidator.ValidateAsync(dto);
 
                 var aggregate = _factory.Create(dto);
 
-                _unitOfWork.GetRepository<TAggregateRoot>().Add(aggregate);
+                await _unitOfWork.GetRepository<TAggregateRoot>().AddAsync(aggregate);
 
-                _auditService.Audit(new Audit
+                _auditService.AuditAsync(new Audit
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = InventAppContext.UserName,
+                    User = _inventAppContext.UserName,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
                     Entity = JsonConvert.SerializeObject(aggregate),
@@ -107,27 +112,29 @@ namespace Application.Services
             });
         }
 
-        public virtual IApplicationResult Update(Guid id, TDto dto)
+        public virtual async Task<IApplicationResult> UpdateAsync(Guid id, TDto dto)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                if (!isAdmin)
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                _businessValidator.Validate(dto, id);
+                await _businessValidator.ValidateAsync(dto, id);
 
-                var aggregate = _unitOfWork.GetRepository<TAggregateRoot>().GetById(id);
+                var aggregate = await _unitOfWork.GetRepository<TAggregateRoot>().GetByIdAsync(id);
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
                 var aggregateUpdated = _factory.CreateFromExisting(dto, aggregate);
 
-                _unitOfWork.GetRepository<TAggregateRoot>().Update(aggregateUpdated);
+                await _unitOfWork.GetRepository<TAggregateRoot>().UpdateAsync(aggregateUpdated);
 
-                _auditService.Audit(new Audit
+                _auditService.AuditAsync(new Audit
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = InventAppContext.UserName,
+                    User = _inventAppContext.UserName,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
                     Entity = JsonConvert.SerializeObject(aggregateUpdated),
@@ -138,23 +145,25 @@ namespace Application.Services
             });
         }
 
-        public virtual IApplicationResult Delete(Guid id)
+        public virtual async Task<IApplicationResult> DeleteAsync(Guid id)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                if (!_roleService.IsAdmin(InventAppContext.UserName)) throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                if (!isAdmin)
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                var aggregate = _unitOfWork.GetRepository<TAggregateRoot>().GetById(id);
+                var aggregate = await _unitOfWork.GetRepository<TAggregateRoot>().GetByIdAsync(id);
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
-                _unitOfWork.GetRepository<TAggregateRoot>().Delete(aggregate);
+                await _unitOfWork.GetRepository<TAggregateRoot>().DeleteAsync(aggregate);
 
-                _auditService.Audit(new Audit
+                _auditService.AuditAsync(new Audit
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = InventAppContext.UserName,
+                    User = _inventAppContext.UserName,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
                     Entity = JsonConvert.SerializeObject(aggregate),

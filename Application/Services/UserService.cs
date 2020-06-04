@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Application.ApplicationResults;
+using Application.Contracts;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
+using Application.Contracts.TemplateServices;
 using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
@@ -26,7 +28,7 @@ namespace Application.Services
     public class UserService : CrudService<UserDto, User>, IUserService
     {
         private readonly IUserPredicateFactory _userPredicateFactory;
-        private readonly ITemplateFactory _templateFactory;
+        private readonly ITemplateService _templateService;
         private readonly IEmailService _emailService;
 
         public UserService(
@@ -38,9 +40,11 @@ namespace Application.Services
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory,
             ILogService logService,
-            ITemplateFactory templateFactory,
+            ITemplateService templateService,
             IEmailService emailService,
-            IAppSettingsService appSettingsService) 
+            IAppSettingsService appSettingsService,
+            IInventAppContext inventAppContext
+        ) 
         : base(
             roleService,
             userFactory, 
@@ -49,22 +53,23 @@ namespace Application.Services
             tokenService,
             unitOfWork,
             logService,
-            appSettingsService
+            appSettingsService,
+            inventAppContext
         )
         {
             _userPredicateFactory = userPredicateFactory;
-            _templateFactory = templateFactory;
+            _templateService = templateService;
             _emailService = emailService;
         }
 
-        public IApplicationResult Login(CredentialsDto credentialsDto)
+        public async Task<IApplicationResult> LoginAsync(CredentialsDto credentialsDto)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
                 if (credentialsDto == null) throw new CredentialNotProvidedException();
 
                 var byName = _userPredicateFactory.CreateByName(credentialsDto.UserName);
-                var user = _unitOfWork.Users.Get(byName).FirstOrDefault();
+                var user = await _unitOfWork.Users.GetFirstAsync(byName);
 
                 if (user == null) throw new ObjectNotFoundException($"User '{credentialsDto.UserName}' not found");
                 
@@ -82,10 +87,10 @@ namespace Application.Services
                 {
                     user.GenerateDefaultPassword();
                     user.ResetAccessFailedCount();
-                    _unitOfWork.Users.Update(user);
+                    await _unitOfWork.Users.UpdateAsync(user);
 
-                    var emailTemplateRendered = _templateFactory.CreateForUserPasswordLost(user);
-                    _emailService.Send(new Email
+                    var emailTemplateRendered = await _templateService.RenderForUserPasswordLostAsync(user);
+                    _emailService.SendAsync(new Email
                     {
                         To = user.Email,
                         Subject = emailTemplateRendered.Subject,
@@ -102,8 +107,12 @@ namespace Application.Services
                 if (!user.PasswordIsValid(credentialsDto.Password))
                 {
                     user.AccessFailedCount++;
-                    _unitOfWork.Users.Update(user);
-                    throw new AuthenticationFailException("Invalid credentials");
+                    await _unitOfWork.Users.UpdateAsync(user);
+
+                    return new OkApplicationResult<LoginDto>
+                    {
+                        Data = new LoginDto { Status = LoginStatus.InvalidPassword }
+                    };
                 }
 
                 if (!user.IsUsingCustomPassword) return new OkApplicationResult<LoginDto>
@@ -113,9 +122,9 @@ namespace Application.Services
 
                 user.LastLoginTime = DateTime.UtcNow;
                 user.ResetAccessFailedCount();
-                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Users.UpdateAsync(user);
 
-                var tokenGenerateRequest = _tokenService.Generate(new TokenGenerateRequest
+                var tokenGenerateRequest = await _tokenService.GenerateAsync(new TokenGenerateRequest
                 {
                     Expires = _appSettingsService.DefaultTokenExpiresTime,
                     Claims = new List<Claim>
@@ -138,34 +147,35 @@ namespace Application.Services
             }, false);
         }
 
-        public override IApplicationResult Create(UserDto userDto)
+        public override async Task<IApplicationResult> CreateAsync(UserDto userDto)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                if (!_roleService.IsAdmin(InventAppContext.UserName)) 
-                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{InventAppContext.UserName}'");
+                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                if (!isAdmin)
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                _businessValidator.Validate(userDto);
+                await _businessValidator.ValidateAsync(userDto);
 
                 var user = _factory.Create(userDto);
                 user.GenerateDefaultPassword();
 
-                _unitOfWork.GetRepository<User>().Add(user);
+                await _unitOfWork.GetRepository<User>().AddAsync(user);
 
-                _auditService.Audit(new Audit
+                _auditService.AuditAsync(new Audit
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = InventAppContext.UserName,
+                    User = _inventAppContext.UserName,
                     EntityId = user.Id.ToString(),
                     EntityName = user.GetType().Name,
                     Entity = JsonConvert.SerializeObject(user),
                     Action = AuditAction.Create
                 });
 
-                var emailTemplateRendered = _templateFactory.CreateForUserCreated(user);
+                var emailTemplateRendered = await _templateService.RenderForUserCreatedAsync(user);
 
-                _emailService.Send(new Email
+                _emailService.SendAsync(new Email
                 {
                     To = user.Email,
                     Subject = emailTemplateRendered.Subject,
@@ -179,19 +189,19 @@ namespace Application.Services
             });
         }
 
-        public IApplicationResult ConfirmEmail(Guid id)
+        public async Task<IApplicationResult> ConfirmEmailAsync(Guid id)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                var user = _unitOfWork.Users.GetById(id);
+                var user = await _unitOfWork.Users.GetByIdAsync(id);
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
                 user.EmailConfirmed = true;
 
-                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Users.UpdateAsync(user);
 
-                var templateRendered = _templateFactory.CreateForUserEmailConfirmed(user);
+                var templateRendered = await _templateService.RenderForUserEmailConfirmedAsync(user);
 
                 return new OkApplicationResult<string>
                 {
@@ -200,11 +210,11 @@ namespace Application.Services
             }, false);
         }
 
-        public IApplicationResult CustomPassword(Guid id, PasswordDto passwordDto)
+        public async Task<IApplicationResult> CustomPasswordAsync(Guid id, PasswordDto passwordDto)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
-                var user = _unitOfWork.Users.GetById(id);
+                var user = await _unitOfWork.Users.GetByIdAsync(id);
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
@@ -224,27 +234,27 @@ namespace Application.Services
 
                 user.Password = passwordDto.Custom;
                 user.IsUsingCustomPassword = true;
-                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Users.UpdateAsync(user);
 
                 return new OkEmptyResult();
             }, false);
         }
         
-        public IApplicationResult ForgotPassword(string userName)
+        public async Task<IApplicationResult> ForgotPasswordAsync(string userName)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
                 var byUserName = _userPredicateFactory.CreateByName(userName);
-                var user = _unitOfWork.Users.Get(byUserName).FirstOrDefault();
+                var user = await _unitOfWork.Users.GetFirstAsync(byUserName);
 
                 if (user == null) throw new ObjectNotFoundException($"User with UserName={userName} not found");
 
                 user.GenerateDefaultPassword();
                 user.ResetAccessFailedCount();
-                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Users.UpdateAsync(user);
 
-                var emailTemplateRendered = _templateFactory.CreateForUserPasswordLost(user);
-                _emailService.Send(new Email
+                var emailTemplateRendered = await _templateService.RenderForUserPasswordLostAsync(user);
+                _emailService.SendAsync(new Email
                 {
                     To = user.Email,
                     Subject = emailTemplateRendered.Subject,

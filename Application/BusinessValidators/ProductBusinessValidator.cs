@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Aggregates;
@@ -18,15 +18,15 @@ namespace Application.BusinessValidators
             _productPredicateFactory = productPredicateFactory;
         }
 
-        protected override void ValidateFields(ProductDto productDto, Guid id)
+        protected override async Task ValidateFieldsAsync(ProductDto productDto, Guid id)
         {
             var byDistinctIdAndName = _productPredicateFactory.CreateByDistinctIdAndName(id, productDto.Name);
-            if (_unitOfWork.Products.Get(byDistinctIdAndName).Any()) throw new BusinessRuleException($"{AggregateRootName}: name={productDto.Name} already exits");
+            if (await _unitOfWork.Products.AnyAsync(byDistinctIdAndName)) throw new BusinessRuleException($"{AggregateRootName}: name={productDto.Name} already exits");
 
             //TODO: if (!_productCodesService.Exists(productDto.Code) throw new Exception($"Product code is invalid"); //product code needs to be validated on external service
 
             var byDistinctIdAndCode = _productPredicateFactory.CreateByDistinctIdAndCode(id, productDto.Code);
-            if (_unitOfWork.Products.Get(byDistinctIdAndCode).Any()) throw new BusinessRuleException($"{AggregateRootName}: code={productDto.Code} already exits");
+            if (await _unitOfWork.Products.AnyAsync(byDistinctIdAndCode)) throw new BusinessRuleException($"{AggregateRootName}: code={productDto.Code} already exits");
 
             Product.ValidateCode(productDto.Code);
             Product.ValidatePrice(productDto.Price.Value);

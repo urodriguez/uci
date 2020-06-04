@@ -3,7 +3,9 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Application.ApplicationResults;
+using Application.Contracts;
 using Application.Exceptions;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Exceptions;
@@ -17,21 +19,26 @@ namespace Application.Services
         protected readonly ITokenService _tokenService;
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly ILogService _logService;
+        protected readonly IInventAppContext _inventAppContext;
 
-        protected ApplicationService(ITokenService tokenService, IUnitOfWork unitOfWork, ILogService logService)
+        protected ApplicationService(ITokenService tokenService, IUnitOfWork unitOfWork, ILogService logService, IInventAppContext inventAppContext)
         {
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
             _logService = logService;
+            _inventAppContext = inventAppContext;
         }
 
-        protected IApplicationResult Execute<TResult>(Func<TResult> service, bool requiresAuthentication = true) where TResult : IApplicationResult
+        protected async Task<IApplicationResult> ExecuteAsync<TResult>(Func<Task<TResult>> appServicePipeline, bool checkAuthentication = true) where TResult : IApplicationResult
         {
             try
             {
-                if (requiresAuthentication) CheckAuthentication();
+                if (checkAuthentication) 
+                    await CheckAuthenticationAsync();
 
-                var serviceResult = service.Invoke();
+                await _unitOfWork.BeginTransactionAsync();
+
+                var serviceResult = await appServicePipeline.Invoke();
                 
                 _unitOfWork.Commit();
 
@@ -39,7 +46,7 @@ namespace Application.Services
             }
             catch (AuthenticationFailException afe)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | AuthenticationFailException");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | AuthenticationFailException");
 
                 return new EmptyResult
                 {
@@ -49,7 +56,7 @@ namespace Application.Services
             }
             catch (UnauthorizedAccessException uae)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | UnauthorizedAccessException | e.Message={uae.Message} - e.StackTrace={uae}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | UnauthorizedAccessException | e.Message={uae.Message} - e.StackTrace={uae}");
 
                 return new EmptyResult
                 {
@@ -59,7 +66,7 @@ namespace Application.Services
             }
             catch (ObjectNotFoundException onfe)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | ObjectNotFoundException | e.Message={onfe.Message} - e.StackTrace={onfe}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | ObjectNotFoundException | e.Message={onfe.Message} - e.StackTrace={onfe}");
 
                 return new EmptyResult
                 {
@@ -69,7 +76,7 @@ namespace Application.Services
             }
             catch (CredentialNotProvidedException cnpe)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | CredentialNotProvidedException | e.Message={cnpe.Message} - e.StackTrace={cnpe}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | CredentialNotProvidedException | e.Message={cnpe.Message} - e.StackTrace={cnpe}");
 
                 return new EmptyResult
                 {
@@ -79,7 +86,7 @@ namespace Application.Services
             }
             catch (BusinessRuleException bre)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | BusinessRuleException | e.Message={bre.Message} - e.StackTrace={bre}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | BusinessRuleException | e.Message={bre.Message} - e.StackTrace={bre}");
 
                 return new EmptyResult
                 {
@@ -89,7 +96,7 @@ namespace Application.Services
             }
             catch (InternalServerException ise)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InternalServerException | e={ise}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | InternalServerException | e={ise}");
 
                 return new EmptyResult
                 {
@@ -99,7 +106,7 @@ namespace Application.Services
             }
             catch (Exception e)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Exception | e={e}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Exception | e={e}");
 
                 return new EmptyResult
                 {
@@ -113,11 +120,11 @@ namespace Application.Services
             }
         }
 
-        protected void CheckAuthentication()
+        protected async Task CheckAuthenticationAsync()
         {
-            var tokenValidation = _tokenService.Validate(new TokenValidateRequest
+            var tokenValidation = await _tokenService.ValidateAsync(new TokenValidateRequest
             {
-                SecurityToken = InventAppContext.SecurityToken
+                SecurityToken = _inventAppContext.SecurityToken
             });
 
             if (tokenValidation.TokenIsInvalid()) throw new AuthenticationFailException("SecurityToken is invalid");
@@ -126,7 +133,7 @@ namespace Application.Services
             var claimName = tokenValidation.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
             if (claimName == null) throw new InternalServerException("Missing claim type 'name'");
 
-            InventAppContext.UserName = claimName.Value;
+            _inventAppContext.UserName = claimName.Value;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"www.ucirod.inventapp-dev.com:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
-                    DefaultTokenExpiresTime = 120;
+                    DefaultTokenExpiresTime = 1440;//24hs - 1 day
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};{integratedSecuritySspi}";
 
                     break;

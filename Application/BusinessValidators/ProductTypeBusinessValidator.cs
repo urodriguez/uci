@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Application.Contracts.BusinessValidators;
 using Application.Dtos;
 using Domain.Aggregates;
@@ -12,7 +13,7 @@ namespace Application.BusinessValidators
         {
         }
 
-        protected override void ValidateFields(ProductTypeDto productDto, Guid id)
+        protected override async Task ValidateFieldsAsync(ProductTypeDto productDto, Guid id)
         {
         }
     }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 using Application.ApplicationResults;
+using Application.Contracts;
 using Application.Contracts.Services;
+using Application.Contracts.TemplateServices;
 using Application.Dtos;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
@@ -24,6 +26,7 @@ namespace Application.Services
         private readonly IProductPredicateFactory _productPredicateFactory;
         private readonly IAppSettingsService _appSettingsService;
         private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly ITemplateService _templateService;
         private readonly IEmailService _emailService;
 
         public ReportService(
@@ -33,32 +36,35 @@ namespace Application.Services
             IReportInfrastructureService reportInfrastructureService,
             IProductPredicateFactory productPredicateFactory,
             IAppSettingsService appSettingsService,
-            IUserPredicateFactory userPredicateFactory, 
-            IEmailService emailService
+            IUserPredicateFactory userPredicateFactory,
+            ITemplateService templateService,
+            IEmailService emailService,
+            IInventAppContext inventAppContext
         ) : base(
             tokenService,
             unitOfWork,
-            logService
+            logService,
+            inventAppContext
         )
         {
             _reportInfrastructureService = reportInfrastructureService;
             _productPredicateFactory = productPredicateFactory;
             _appSettingsService = appSettingsService;
             _userPredicateFactory = userPredicateFactory;
+            _templateService = templateService;
             _emailService = emailService;
 
             Directory.CreateDirectory($"{_appSettingsService.ReportsDirectory}");
         }
 
-        public IApplicationResult CreateForProducts(ReportProductDto reportProductDto)
+        public async Task<IApplicationResult> CreateForProductsAsync(ReportProductDto reportProductDto)
         {
-            return Execute(() =>
+            return await ExecuteAsync(async () =>
             {
                 var byPriceRange = _productPredicateFactory.CreateByPriceRange(reportProductDto.MinPrice, reportProductDto.MaxPrice);
-                var products = _unitOfWork.Products.Get(byPriceRange);
+                var products = await _unitOfWork.Products.GetAsync(byPriceRange);
 
-                var templatePath = $"{_appSettingsService.ReportsTemplatesDirectory}\\product_report.html";
-                var template = File.ReadAllText(templatePath);
+                var productReportTemplate = await _templateService.ReadForProductReportAsync();
 
                 var serializer = new JsonSerializer { ContractResolver = new CamelCasePropertyNamesContractResolver() };
                 var reportJsonData = new JObject();
@@ -67,11 +73,11 @@ namespace Application.Services
 
                 var report = new Report
                 {
-                    Template = template,
+                    Template = productReportTemplate,
                     Data = reportJsonData.ToString()
                 };
 
-                var reportBytes = _reportInfrastructureService.Create(report);
+                var reportBytes = await _reportInfrastructureService.CreateAsync(report);
 
                 if (reportBytes == null)
                 {
@@ -84,19 +90,17 @@ namespace Application.Services
 
                 if (reportProductDto.SendByEmail)
                 {
-                    var byName = _userPredicateFactory.CreateByName(InventAppContext.UserName);
-                    var user = _unitOfWork.Users.Get(byName).Single();
+                    var byName = _userPredicateFactory.CreateByName(_inventAppContext.UserName);
+                    var user = await _unitOfWork.Users.GetFirstAsync(byName);
 
-                    var userRequestReportEmailTemplatePath = $"{_appSettingsService.EmailsTemplatesDirectory}\\user_reportRequested.html";
-                    var userRequestReportEmailTemplate = File.ReadAllText(userRequestReportEmailTemplatePath);
-                    var userRequestReportEmailBody = userRequestReportEmailTemplate.Replace("{{UserName}}", user.FirstName);
+                    var emailTemplateRendered = await _templateService.RenderForUserReportRequestedAsync(user);
 
-                    _emailService.Send(new Email
+                    _emailService.SendAsync(new Email
                     {
                         UseCustomSmtpServer = false,
                         To = user.Email,
-                        Subject = "Products Report",
-                        Body = userRequestReportEmailBody,
+                        Subject = emailTemplateRendered.Subject,
+                        Body = emailTemplateRendered.Body,
                         Attachments = new List<Attachment>
                         {
                             new Attachment

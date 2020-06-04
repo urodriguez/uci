@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using RestSharp;
@@ -20,7 +21,7 @@ namespace Infrastructure.Crosscutting.Reporting
             _restClient = new RestClient(appSettingsService.ReportingApiUrlV1);
         }
 
-        public byte[] Create(Report report)
+        public async Task<byte[]> CreateAsync(Report report)
         {
             try
             {
@@ -32,13 +33,13 @@ namespace Infrastructure.Crosscutting.Reporting
                 report.Credential = _appSettingsService.InfrastructureCredential;
                 request.AddJsonBody(report);
 
-                _logService.LogInfoMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending report to Report Micro-service");
+                _logService.LogInfoMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Sending report to Report Micro-service");
 
-                var response = _restClient.Execute(request);
+                var response = await _restClient.ExecuteAsync(request, request.Method);
 
                 if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == 0)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Unable to connect to Report Micro-service | Status=NOT_FOUND"
                     );
 
@@ -47,7 +48,7 @@ namespace Infrastructure.Crosscutting.Reporting
 
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending report to Report Micro-service | Status=UNAUTHORIZED"
                     );
 
@@ -56,14 +57,14 @@ namespace Infrastructure.Crosscutting.Reporting
 
                 if (!response.IsSuccessful)
                 {
-                    _logService.LogErrorMessage(
+                    _logService.LogErrorMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | Error sending report to Report Micro-service | Status=FAIL - Reason={response.Content}"
                     );
 
                     return null;
                 }
 
-                _logService.LogInfoMessage(
+                _logService.LogInfoMessageAsync(
                         $"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | report sent to Report Micro-service | Status=OK"
                 );
 
@@ -71,7 +72,7 @@ namespace Infrastructure.Crosscutting.Reporting
             }
             catch (Exception e)
             {
-                _logService.LogErrorMessage($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | e.Message={e.Message} - e={e}");
 
                 return null;
             }

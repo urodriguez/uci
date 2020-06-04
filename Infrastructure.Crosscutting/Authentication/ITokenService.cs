@@ -1,8 +1,10 @@
-﻿namespace Infrastructure.Crosscutting.Authentication
+﻿using System.Threading.Tasks;
+
+namespace Infrastructure.Crosscutting.Authentication
 {
     public interface ITokenService
     {
-        TokenGenerateResponse Generate(TokenGenerateRequest tokenGenerateRequest);
-        TokenValidateResponse Validate(TokenValidateRequest tokenValidateRequest);
+        Task<TokenGenerateResponse> GenerateAsync(TokenGenerateRequest tokenGenerateRequest);
+        Task<TokenValidateResponse> ValidateAsync(TokenValidateRequest tokenValidateRequest);
     }
 }

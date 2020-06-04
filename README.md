@@ -18,8 +18,8 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 {username: "urodriguez-admin", password: "admin-1990"}
 
 {
-  "code": "P00",
-  "name": "local_name00",
+  "code": "p_code08",
+  "name": "p_name08",
   "category": "C",
   "price": 13
 }
@@ -56,7 +56,12 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * use Docker
 * use PusherServer/WebSockets to notify UI on server changes
 * implement integration events with NServiceBus
-* implement caching
+* implement database caching
+* implement HTTP Caching — Provide a Cache-Control header on your API responses. If they’re not cacheable, “Cache-Control: no-cache” will make sure proxies and browsers understand that. If they are cacheable, there are a variety of factors to consider, such as whether the cache can be shared by a proxy, or how long a resource is “fresh”.
+* implement HTTP Compression — HTTP compression can be used both for response bodies (Accept-Encoding: gzip) and for request bodies (Content-Encoding: gzip) to improve the network performance of an HTTP API
+* implement Cache Validation — If you have cacheable API hits, you should provide Last-Modified or ETag headers on your responses, and then support If-Modified-Since or If-None-Match request headers for conditional requests. This will allow clients to check if their cached copy is still valid, and prevent a complete resource download when not required. If implemented properly, you can make your conditional requests more efficient than usual requests, and also save some server-side load.
+* implement Conditional Modifications — ETag headers can also be used to enable conditional modifications of your resources. By supplying an ETag header on your GETs, later POST, PATCH or DELETE requests can supply an If-Match header to check whether they’re updating or deleting the resource in the same state they last saw it in.
+* implement Chunked Transfer Encoding — If you have large content responses, Transfer-Encoding: Chunked is a great way to stream responses to your client. It will reduce the memory usage requirements (especially for implementing HTTP Compression) of your server and intermediate servers, as well as provide for a faster time-to-first-byte response.
 
 ## DONE list
 * automapper
@@ -131,6 +136,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * send reset password email on locked account
 * implement unityOfWork
 * fix services instantiation on UnityConfigurator
+* make blocking methods (database, external webservices, I/O) async => spread to controllers, app services, repositories, etc
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide
