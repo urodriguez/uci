@@ -11,8 +11,7 @@ http://www.ucirod.inventapp-dev.com:8080/WebApi/hangfire
 http://152.171.94.90:8080
 http://152.171.94.90:8080/WebApi
 http://152.171.94.90:8080/WebApi/swagger
-http://127.0.0.1:8083/WebApi/hangfire/recurring -> only allow local request (dashboard visible only on TEST server), allow external request on TODO list
-http://152.171.94.90:8080/WebApi/hangfire -> TODO
+http://152.171.94.90:8080/WebApi/hangfire -> use cookie = { Name = "inventApp_hf_dashboard_cookie", Value = "1nv3nt4pp_h4ngf1r3_d4shb0rd" }
 
 id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 {username: "urodriguez-admin", password: "admin-1990"}
@@ -25,7 +24,8 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 }
 
 ## TODO list
-* expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
+* rename product/pruductType to invention/inventionType at code and db level
+* create script to configure sites on IIS
 * delete old client application
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
@@ -41,18 +41,16 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
   * CRUD invention
   * CRUD sponsor
   * CRUD sponsor/invention
+  * CRUD inventor
   * CRUD site 
     * site1 -> manually
     * site2 -> excel (using Excel library)
     * site3 -> rest GET
     * site4 -> soap
     * site5 -> rest POST (notification on new one + recurrent db updates)
-  * CRUD innovator
-  * CRUD customer
   * CRUD registration reason
   * CRUD registration status
 * deploy app to cloud - PROD env
-* create script to configure sites on IIS
 * use Docker
 * use PusherServer/WebSockets to notify UI on server changes
 * implement integration events with NServiceBus
@@ -137,6 +135,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * implement unityOfWork
 * fix services instantiation on UnityConfigurator
 * make blocking methods (database, external webservices, I/O) async => spread to controllers, app services, repositories, etc
+* expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

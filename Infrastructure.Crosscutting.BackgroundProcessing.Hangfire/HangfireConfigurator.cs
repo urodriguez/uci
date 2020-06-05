@@ -37,7 +37,19 @@ namespace Infrastructure.Crosscutting.BackgroundProcessing.Hangfire
             httpConfiguration.UseActivator(new ContainerJobActivator(container));
 
             app.UseHangfireAspNet(GetHangfireServers);
-            app.UseHangfireDashboard();
+            
+            if (AppSettingsService.Environment.IsDev())
+            {
+                // If we are in Dev, always allow Hangfire access.
+                app.UseHangfireDashboard("/hangfire");
+            }
+            else
+            {
+                app.UseHangfireDashboard("/hangfire", new DashboardOptions
+                {
+                    Authorization = new[] { new InventAppHangfireDashboardAuthorizationFilter() }
+                });
+            }
         }
     }
 }
