@@ -7,7 +7,7 @@ namespace Domain.Contracts.Infrastructure.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
-        IProductRepository Products { get; }
+        IInventionRepository Inventions { get; }
         IUserRepository Users { get; }
 
         Task BeginTransactionAsync();

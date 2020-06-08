@@ -17,19 +17,18 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 {username: "urodriguez-admin", password: "admin-1990"}
 
 {
-  "code": "p_code08",
-  "name": "p_name08",
+  "code": "i_code00",
+  "name": "i_name00",
   "category": "C",
   "price": 13
 }
 
 ## TODO list
-* rename product/pruductType to invention/inventionType at code and db level
 * create script to configure sites on IIS
 * delete old client application
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
-  * products module
+  * inventions module
   * users module
 * expose client application to external (no localhost) URL via public ip for TEST env
 * Reporting: integration - using hangfire recurrent job
@@ -136,6 +135,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * fix services instantiation on UnityConfigurator
 * make blocking methods (database, external webservices, I/O) async => spread to controllers, app services, repositories, etc
 * expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
+* rename product/pruductType to invention/inventionType at code and db level
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

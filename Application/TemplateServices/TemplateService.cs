@@ -68,14 +68,14 @@ namespace Application.TemplateServices
 
             return new EmailTemplateRendered
             {
-                Subject = "InventApp - Products Report",
+                Subject = "InventApp - Inventions Report",
                 Body = bodyTemplateRendered
             };
         }
 
-        public async Task<string> ReadForProductReportAsync()
+        public async Task<string> ReadForInventionReportAsync()
         {
-            var templatePath = $"{_appSettingsService.ReportsTemplatesDirectory}\\product_report.html";
+            var templatePath = $"{_appSettingsService.ReportsTemplatesDirectory}\\invention_report.html";
             var template = await ReadFileAsync(templatePath);
 
             return template;

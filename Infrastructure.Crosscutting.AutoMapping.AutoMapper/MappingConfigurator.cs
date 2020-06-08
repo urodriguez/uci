@@ -8,7 +8,7 @@ namespace Infrastructure.Crosscutting.AutoMapping.AutoMapper
         public static MapperConfiguration GetConfiguredMapper()
         {
             return new MapperConfiguration(cfg => {
-                cfg.AddProfile<ProductProfile>();
+                cfg.AddProfile<InventionProfile>();
                 cfg.AddProfile<UserProfile>();
             });
         }

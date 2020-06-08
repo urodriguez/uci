@@ -49,6 +49,6 @@ namespace Application.BusinessValidators
             }
         }
 
-        protected abstract Task ValidateFieldsAsync(TDto dto, Guid id);
+        protected abstract Task ValidateFieldsAsync(TDto inventionDto, Guid id);
     }
 }

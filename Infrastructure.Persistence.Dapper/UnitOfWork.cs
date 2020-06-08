@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence.Dapper
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public IProductRepository Products { get; private set; }
+        public IInventionRepository Inventions { get; private set; }
         public IUserRepository Users { get; private set; }
 
         public async Task BeginTransactionAsync()
@@ -44,7 +44,7 @@ namespace Infrastructure.Persistence.Dapper
 
         private void InitializeRepositoriesWithTransaction(IDbTransaction transaction)
         {
-            Products = new ProductRepository(_logService, _appSettingsService, transaction);
+            Inventions = new InventionRepository(_logService, _appSettingsService, transaction);
             Users = new UserRepository(_logService, _appSettingsService, transaction);
 
             _aggregatesRepositories = new Dictionary<string, object>();

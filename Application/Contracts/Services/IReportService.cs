@@ -6,6 +6,6 @@ namespace Application.Contracts.Services
 {
     public interface IReportService
     {
-        Task<IApplicationResult> CreateForProductsAsync(ReportProductDto reportProductDto);
+        Task<IApplicationResult> CreateForInventionsAsync(ReportInventionDto reportInventionDto);
     }
 }

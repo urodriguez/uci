@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="MappingConfigurator.cs" />
     <Compile Include="Profiles\AggregateProfile.cs" />
-    <Compile Include="Profiles\ProductProfile.cs" />
+    <Compile Include="Profiles\InventionProfile.cs" />
     <Compile Include="Profiles\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

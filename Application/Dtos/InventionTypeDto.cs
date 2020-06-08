@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos
 {
-    public class ProductTypeDto : IDto
+    public class InventionTypeDto : IDto
     {
         public string Code { get; set; }
         public string Description { get; set; }

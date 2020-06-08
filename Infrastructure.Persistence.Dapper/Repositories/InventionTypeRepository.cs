@@ -6,9 +6,9 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace Infrastructure.Persistence.Dapper.Repositories
 {
-    public class ProductRepository : Repository<Product>, IProductRepository
+    public class InventionTypeRepository: Repository<InventionType>, IInventionTypeRepository
     {
-        public ProductRepository(ILogService logService, IAppSettingsService appSettingsService, IDbTransaction transaction) : base(logService, appSettingsService,transaction)
+        public InventionTypeRepository(ILogService logService, IAppSettingsService appSettingsService, IDbTransaction transaction) : base(logService, appSettingsService, transaction)
         {
         }
     }

@@ -28,6 +28,23 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 		[IsUsingCustomPassword] bit NOT NULL
 	)
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Invention')
+	CREATE TABLE [dbo].[Invention](
+		[Id] [uniqueidentifier] NOT NULL,
+		[Code] [varchar](8) NOT NULL,
+		[Name] [varchar](64) NOT NULL,
+		[Category] [char](1) NOT NULL,
+		[Price] [decimal](8, 2) NOT NULL
+	)	
+
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'InventionType')
+	CREATE TABLE [dbo].[InventionType](
+		[Id] [uniqueidentifier] NOT NULL,
+		[Code] [varchar](8) NOT NULL,
+		[Name] [varchar](64) NOT NULL,
+		[Description] [varchar](128) NOT NULL
+	)
+
 IF @isDevEnv = 1
 begin
 	IF DB_ID('UciRod.Inventapp.Hangfire') IS NULL 

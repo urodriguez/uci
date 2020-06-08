@@ -10,6 +10,6 @@ namespace Application.Contracts.TemplateServices
         Task<string> RenderForUserEmailConfirmedAsync(User user);
         Task<EmailTemplateRendered> RenderForUserPasswordLostAsync(User user);
         Task<EmailTemplateRendered> RenderForUserReportRequestedAsync(User user);
-        Task<string> ReadForProductReportAsync();
+        Task<string> ReadForInventionReportAsync();
     }
 }

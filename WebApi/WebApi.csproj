@@ -145,7 +145,7 @@
     <Compile Include="Controllers\InventAppApiController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\InventionsController.cs" />
     <Compile Include="Controllers\TokensController.cs" />
     <Compile Include="MediaType.cs" />
     <Compile Include="Formatters\BrowserJsonFormatter.cs" />

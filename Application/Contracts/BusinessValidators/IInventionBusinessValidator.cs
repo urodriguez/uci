@@ -2,7 +2,7 @@
 
 namespace Application.Contracts.BusinessValidators
 {
-    public interface IProductBusinessValidator : IBusinessValidator<ProductDto>
+    public interface IInventionBusinessValidator : IBusinessValidator<InventionDto>
     {
     }
 }

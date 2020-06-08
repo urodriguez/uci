@@ -17,16 +17,16 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace Application.Services
 {
-    public class ProductService : CrudService<ProductDto, Product>, IProductService
+    public class InventionService : CrudService<InventionDto, Invention>, IInventionService
     {
-        private readonly IProductPredicateFactory _productPredicateFactory;
+        private readonly IInventionPredicateFactory _inventionPredicateFactory;
 
-        public ProductService(
+        public InventionService(
             IRoleService roleService,
-            IProductFactory factory, 
+            IInventionFactory factory, 
             IAuditService auditService,
-            IProductBusinessValidator productBusinessValidator, 
-            IProductPredicateFactory productPredicateFactory,
+            IInventionBusinessValidator inventionBusinessValidator, 
+            IInventionPredicateFactory inventionPredicateFactory,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
@@ -36,7 +36,7 @@ namespace Application.Services
             roleService,
             factory, 
             auditService, 
-            productBusinessValidator,
+            inventionBusinessValidator,
             tokenService,
             unitOfWork,
             logService,
@@ -44,21 +44,21 @@ namespace Application.Services
             inventAppContext
         )
         {
-            _productPredicateFactory = productPredicateFactory;
+            _inventionPredicateFactory = inventionPredicateFactory;
         }
 
         public async Task<IApplicationResult> GetCheapestAsync(decimal maxPrice)
         {
             return await ExecuteAsync(async () =>
             {
-                var byCheapest = _productPredicateFactory.CreateByCheapest(maxPrice);
-                var cheapestProducts = await _unitOfWork.Products.GetAsync(byCheapest);
+                var byCheapest = _inventionPredicateFactory.CreateByCheapest(maxPrice);
+                var cheapestInventions = await _unitOfWork.Inventions.GetAsync(byCheapest);
 
-                var cheapestProductsDto = _factory.CreateFromRange(cheapestProducts);
+                var cheapestInventionsDto = _factory.CreateFromRange(cheapestInventions);
 
-                return new OkApplicationResult<IEnumerable<ProductDto>>
+                return new OkApplicationResult<IEnumerable<InventionDto>>
                 {
-                    Data = cheapestProductsDto
+                    Data = cheapestInventionsDto
                 };
             });
         }

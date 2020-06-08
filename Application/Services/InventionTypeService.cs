@@ -13,13 +13,13 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace Application.Services
 {
-    public class ProductTypeService : CrudService<ProductTypeDto, ProductType>, IProductTypeService
+    public class InventionTypeService : CrudService<InventionTypeDto, InventionType>, IInventionTypeService
     {
-        public ProductTypeService(
+        public InventionTypeService(
             IRoleService roleService,
-            IProductTypeFactory factory, 
+            IInventionTypeFactory factory, 
             IAuditService auditService,
-            IProductTypeBusinessValidator productTypeBusinessValidator,
+            IInventionTypeBusinessValidator inventionTypeBusinessValidator,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
@@ -29,7 +29,7 @@ namespace Application.Services
             roleService,
             factory, 
             auditService, 
-            productTypeBusinessValidator,
+            inventionTypeBusinessValidator,
             tokenService,
             unitOfWork,
             logService,

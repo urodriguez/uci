@@ -5,9 +5,9 @@ using Domain.Aggregates;
 
 namespace Application.Factories
 {
-    public class ProductTypeFactory : Factory<ProductTypeDto, ProductType>,  IProductTypeFactory
+    public class InventionTypeFactory : Factory<InventionTypeDto, InventionType>,  IInventionTypeFactory
     {
-        public ProductTypeFactory(IMapper mapper) : base(mapper)
+        public InventionTypeFactory(IMapper mapper) : base(mapper)
         {
         }
     }

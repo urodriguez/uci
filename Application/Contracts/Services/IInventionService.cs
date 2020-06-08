@@ -4,7 +4,7 @@ using Application.Dtos;
 
 namespace Application.Contracts.Services
 {
-    public interface IProductService : ICrudService<ProductDto>
+    public interface IInventionService : ICrudService<InventionDto>
     {
         Task<IApplicationResult> GetCheapestAsync(decimal maxPrice);
     }

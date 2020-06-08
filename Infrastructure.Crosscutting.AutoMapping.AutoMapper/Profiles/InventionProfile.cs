@@ -3,9 +3,9 @@ using Domain.Aggregates;
 
 namespace Infrastructure.Crosscutting.AutoMapping.AutoMapper.Profiles
 {
-    public class ProductProfile : AggregateProfile<ProductDto, Product>
+    public class InventionProfile : AggregateProfile<InventionDto, Invention>
     {
-        public ProductProfile()
+        public InventionProfile()
         {
             //Add more custom mappings
         }

@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("products")]
-        public async Task<IHttpActionResult> CreateForProductsAsync([FromBody] ReportProductDto reportProductDto) => await ExecuteAsync(async () => await _reportService.CreateForProductsAsync(reportProductDto));
+        [Route("inventions")]
+        public async Task<IHttpActionResult> CreateForInventionsAsync([FromBody] ReportInventionDto reportInventionDto) => await ExecuteAsync(async () => await _reportService.CreateForInventionsAsync(reportInventionDto));
     }
 }

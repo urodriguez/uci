@@ -2,7 +2,7 @@
 
 namespace Application.Contracts.Services
 {
-    public interface IProductTypeService : ICrudService<ProductTypeDto>
+    public interface IInventionTypeService : ICrudService<InventionTypeDto>
     {
         
     }

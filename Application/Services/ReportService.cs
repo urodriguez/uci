@@ -23,7 +23,7 @@ namespace Application.Services
     public class ReportService : ApplicationService, IReportService
     {
         private readonly IReportInfrastructureService _reportInfrastructureService;
-        private readonly IProductPredicateFactory _productPredicateFactory;
+        private readonly IInventionPredicateFactory _inventionPredicateFactory;
         private readonly IAppSettingsService _appSettingsService;
         private readonly IUserPredicateFactory _userPredicateFactory;
         private readonly ITemplateService _templateService;
@@ -34,7 +34,7 @@ namespace Application.Services
             IUnitOfWork unitOfWork,
             ILogService logService, 
             IReportInfrastructureService reportInfrastructureService,
-            IProductPredicateFactory productPredicateFactory,
+            IInventionPredicateFactory inventionPredicateFactory,
             IAppSettingsService appSettingsService,
             IUserPredicateFactory userPredicateFactory,
             ITemplateService templateService,
@@ -48,7 +48,7 @@ namespace Application.Services
         )
         {
             _reportInfrastructureService = reportInfrastructureService;
-            _productPredicateFactory = productPredicateFactory;
+            _inventionPredicateFactory = inventionPredicateFactory;
             _appSettingsService = appSettingsService;
             _userPredicateFactory = userPredicateFactory;
             _templateService = templateService;
@@ -57,23 +57,23 @@ namespace Application.Services
             Directory.CreateDirectory($"{_appSettingsService.ReportsDirectory}");
         }
 
-        public async Task<IApplicationResult> CreateForProductsAsync(ReportProductDto reportProductDto)
+        public async Task<IApplicationResult> CreateForInventionsAsync(ReportInventionDto reportInventionDto)
         {
             return await ExecuteAsync(async () =>
             {
-                var byPriceRange = _productPredicateFactory.CreateByPriceRange(reportProductDto.MinPrice, reportProductDto.MaxPrice);
-                var products = await _unitOfWork.Products.GetAsync(byPriceRange);
+                var byPriceRange = _inventionPredicateFactory.CreateByPriceRange(reportInventionDto.MinPrice, reportInventionDto.MaxPrice);
+                var inventions = await _unitOfWork.Inventions.GetAsync(byPriceRange);
 
-                var productReportTemplate = await _templateService.ReadForProductReportAsync();
+                var inventionReportTemplate = await _templateService.ReadForInventionReportAsync();
 
                 var serializer = new JsonSerializer { ContractResolver = new CamelCasePropertyNamesContractResolver() };
                 var reportJsonData = new JObject();
-                var productsJArray = (JArray)JToken.FromObject(products, serializer);
-                reportJsonData["products"] = productsJArray;
+                var inventionsJArray = (JArray)JToken.FromObject(inventions, serializer);
+                reportJsonData["inventions"] = inventionsJArray;
 
                 var report = new Report
                 {
-                    Template = productReportTemplate,
+                    Template = inventionReportTemplate,
                     Data = reportJsonData.ToString()
                 };
 
@@ -88,7 +88,7 @@ namespace Application.Services
                     };
                 }
 
-                if (reportProductDto.SendByEmail)
+                if (reportInventionDto.SendByEmail)
                 {
                     var byName = _userPredicateFactory.CreateByName(_inventAppContext.UserName);
                     var user = await _unitOfWork.Users.GetFirstAsync(byName);
@@ -106,14 +106,14 @@ namespace Application.Services
                             new Attachment
                             {
                                 FileContent = reportBytes,
-                                FileName = $"products_{Guid.NewGuid()}.pdf"
+                                FileName = $"inventions_{Guid.NewGuid()}.pdf"
                             }
                         }
                     });
                 }
 
                 //TODO: return to UI
-                File.WriteAllBytes($"{_appSettingsService.ReportsDirectory}\\products_{Guid.NewGuid()}.pdf", reportBytes);
+                File.WriteAllBytes($"{_appSettingsService.ReportsDirectory}\\inventions_{Guid.NewGuid()}.pdf", reportBytes);
 
                 return new OkEmptyResult();
             });

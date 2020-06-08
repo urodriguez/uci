@@ -2,7 +2,7 @@
 
 namespace Application.Dtos
 {
-    public class ProductDto : IDto
+    public class InventionDto : IDto
     {
         public Guid? Id { get; set; }
         public string Code { get; set; }
