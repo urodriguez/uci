@@ -5,10 +5,8 @@ using Application.Contracts;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
-using Application.Contracts.TemplateServices;
 using Application.Factories;
 using Application.Services;
-using Application.TemplateServices;
 using AutoMapper;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
@@ -24,7 +22,7 @@ using Infrastructure.Crosscutting.Mailing;
 using Infrastructure.Crosscutting.Queueing.Dequeue;
 using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
-using Infrastructure.Crosscutting.Reporting;
+using Infrastructure.Crosscutting.Renderting;
 using Infrastructure.Persistence.Dapper;
 using Unity;
 using Unity.Lifetime;
@@ -59,13 +57,12 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IReportService, ReportService>(new PerResolveLifetimeManager());
             _container.RegisterType<IUserService, UserService>(new PerResolveLifetimeManager());
 
-            //Core Services
-            _container.RegisterType<ITemplateService, TemplateService>(new ContainerControlledLifetimeManager());
-
             //Factories
+            _container.RegisterType<IEmailFactory, EmailFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IInventionFactory, InventionFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IInventionTypeFactory, InventionTypeFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IUserFactory, UserFactory>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ITemplateFactory, TemplateFactory>(new ContainerControlledLifetimeManager());
 
             //Contexts
             _container.RegisterType<IInventAppContext, InventAppContext>(new ContainerControlledLifetimeManager());
@@ -97,7 +94,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<ILogDequeueResolver, LogService>(new PerResolveLifetimeManager());
             _container.RegisterType<ILogService, LogService>(new PerResolveLifetimeManager());
             _container.RegisterInstance<IMapper>(MapperFactory.GetConfiguredMapper().CreateMapper());//RegisterInstance always registers Singleton
-            _container.RegisterType<IReportInfrastructureService, ReportInfrastructureService>(new PerResolveLifetimeManager());
+            _container.RegisterType<ITemplateService, TemplateService>(new PerResolveLifetimeManager());
             _container.RegisterType<ITokenService, TokenService>(new PerResolveLifetimeManager());
 
             //Persistence

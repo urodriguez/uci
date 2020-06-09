@@ -16,7 +16,7 @@
         InfrastructureCredential InfrastructureCredential { get; }
         string LoggingApiUrlV1 { get; }
         string MailingApiUrlV1 { get; }
-        string ReportingApiUrlV1 { get; }
+        string RenderingApiUrlV1 { get; }
         string ReportsDirectory { get; }
         string ReportsTemplatesDirectory { get; }
         string TemplatesDirectory { get; }

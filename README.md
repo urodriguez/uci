@@ -50,7 +50,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
   * CRUD registration reason
   * CRUD registration status
 * deploy app to cloud - PROD env
-* use Docker
+* use Docker - SqlServerInstance
 * use PusherServer/WebSockets to notify UI on server changes
 * implement integration events with NServiceBus
 * implement database caching
@@ -136,6 +136,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * make blocking methods (database, external webservices, I/O) async => spread to controllers, app services, repositories, etc
 * expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
 * rename product/pruductType to invention/inventionType at code and db level
+* Migrate templates and reports to Rendering
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide

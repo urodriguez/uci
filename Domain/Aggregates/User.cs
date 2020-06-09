@@ -31,7 +31,7 @@ namespace Domain.Aggregates
         public string LastName { get; set; }
 
         [Required]
-        public UserRol RoleId { get; set; }
+        public UserRole Role { get; set; }
 
         public bool EmailConfirmed { get; set; }
 
@@ -49,7 +49,7 @@ namespace Domain.Aggregates
 
         public bool PasswordIsValid(string password) => Password == password;
 
-        public bool IsAdmin() => RoleId == UserRol.Admin;
+        public bool IsAdmin() => Role == UserRole.Admin;
 
         public static bool EmailIsValid(string email)
         {

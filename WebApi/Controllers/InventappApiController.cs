@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Application;
 using Application.ApplicationResults;
 using Application.Contracts;
 using Infrastructure.Crosscutting.Logging;

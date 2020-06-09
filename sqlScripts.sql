@@ -19,7 +19,7 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 		[MiddleName] nvarchar(50) NULL,
 		[LastName] nvarchar(20) NOT NULL,
 		[Email] nvarchar(70) NOT NULL,
-		[RoleId] int NOT NULL,
+		[Role] int NOT NULL,
 		[DateCreated] datetime NOT NULL,
 		[LastLoginTime] datetime NULL,
 		[Activate] bit NOT NULL,

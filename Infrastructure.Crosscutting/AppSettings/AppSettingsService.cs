@@ -106,7 +106,7 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public string MailingApiUrlV1 => $"http://{_baseInfrastructureApiUrl}/mailing/api/v1.0";
 
-        public string ReportingApiUrlV1 => $"http://{_baseInfrastructureApiUrl}/reporting/api/v1.0";
+        public string RenderingApiUrlV1 => $"http://{_baseInfrastructureApiUrl}/rendering/api/v1.0";
 
         public string ReportsDirectory => $"{InventAppDirectory}\\Reports";
         

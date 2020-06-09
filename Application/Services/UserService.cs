@@ -8,7 +8,6 @@ using Application.Contracts;
 using Application.Contracts.BusinessValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
-using Application.Contracts.TemplateServices;
 using Application.Dtos;
 using Application.Exceptions;
 using Domain.Aggregates;
@@ -20,6 +19,7 @@ using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
+using Infrastructure.Crosscutting.Renderting;
 using Newtonsoft.Json;
 using Claim = Infrastructure.Crosscutting.Authentication.Claim;
 
@@ -28,7 +28,9 @@ namespace Application.Services
     public class UserService : CrudService<UserDto, User>, IUserService
     {
         private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly ITemplateFactory _templateFactory;
         private readonly ITemplateService _templateService;
+        private readonly IEmailFactory _emailFactory;
         private readonly IEmailService _emailService;
 
         public UserService(
@@ -40,11 +42,12 @@ namespace Application.Services
             IUserBusinessValidator userBusinessValidator, 
             IUserPredicateFactory userPredicateFactory,
             ILogService logService,
+            ITemplateFactory templateFactory,
             ITemplateService templateService,
+            IEmailFactory emailFactory,
             IEmailService emailService,
             IAppSettingsService appSettingsService,
-            IInventAppContext inventAppContext
-        ) 
+            IInventAppContext inventAppContext) 
         : base(
             roleService,
             userFactory, 
@@ -58,7 +61,9 @@ namespace Application.Services
         )
         {
             _userPredicateFactory = userPredicateFactory;
+            _templateFactory = templateFactory;
             _templateService = templateService;
+            _emailFactory = emailFactory;
             _emailService = emailService;
         }
 
@@ -89,13 +94,8 @@ namespace Application.Services
                     user.ResetAccessFailedCount();
                     await _unitOfWork.Users.UpdateAsync(user);
 
-                    var emailTemplateRendered = await _templateService.RenderForUserPasswordLostAsync(user);
-                    _emailService.SendAsync(new Email
-                    {
-                        To = user.Email,
-                        Subject = emailTemplateRendered.Subject,
-                        Body = emailTemplateRendered.Body
-                    });
+                    var email = await _emailFactory.CreateForUserPasswordLostAsync(user);
+                    _emailService.SendAsync(email);
 
                     return new OkApplicationResult<LoginDto>
                     {
@@ -173,14 +173,8 @@ namespace Application.Services
                     Action = AuditAction.Create
                 });
 
-                var emailTemplateRendered = await _templateService.RenderForUserCreatedAsync(user);
-
-                _emailService.SendAsync(new Email
-                {
-                    To = user.Email,
-                    Subject = emailTemplateRendered.Subject,
-                    Body = emailTemplateRendered.Body
-                });
+                var email = await _emailFactory.CreateForUserCreatedAsync(user);
+                _emailService.SendAsync(email);
 
                 return new OkApplicationResult<Guid>
                 {
@@ -201,7 +195,8 @@ namespace Application.Services
 
                 await _unitOfWork.Users.UpdateAsync(user);
 
-                var templateRendered = await _templateService.RenderForUserEmailConfirmedAsync(user);
+                var template = await _templateFactory.CreateForUserEmailConfirmedAsync(user);
+                var templateRendered = await _templateService.RenderAsync<string>(template);
 
                 return new OkApplicationResult<string>
                 {
@@ -253,13 +248,8 @@ namespace Application.Services
                 user.ResetAccessFailedCount();
                 await _unitOfWork.Users.UpdateAsync(user);
 
-                var emailTemplateRendered = await _templateService.RenderForUserPasswordLostAsync(user);
-                _emailService.SendAsync(new Email
-                {
-                    To = user.Email,
-                    Subject = emailTemplateRendered.Subject,
-                    Body = emailTemplateRendered.Body
-                });
+                var email = await _emailFactory.CreateForUserPasswordLostAsync(user);
+                _emailService.SendAsync(email);
 
                 return new OkEmptyResult();
             }, false);

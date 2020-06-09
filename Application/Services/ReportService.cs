@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Contracts;
+using Application.Contracts.Factories;
 using Application.Contracts.Services;
-using Application.Contracts.TemplateServices;
 using Application.Dtos;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
@@ -13,31 +12,30 @@ using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Reporting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
+using Infrastructure.Crosscutting.Renderting;
 
 namespace Application.Services
 {
     public class ReportService : ApplicationService, IReportService
     {
-        private readonly IReportInfrastructureService _reportInfrastructureService;
         private readonly IInventionPredicateFactory _inventionPredicateFactory;
         private readonly IAppSettingsService _appSettingsService;
         private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly ITemplateFactory _templateFactory;
         private readonly ITemplateService _templateService;
+        private readonly IEmailFactory _emailFactory;
         private readonly IEmailService _emailService;
 
         public ReportService(
             ITokenService tokenService, 
             IUnitOfWork unitOfWork,
             ILogService logService, 
-            IReportInfrastructureService reportInfrastructureService,
             IInventionPredicateFactory inventionPredicateFactory,
             IAppSettingsService appSettingsService,
             IUserPredicateFactory userPredicateFactory,
+            ITemplateFactory templateFactory,
             ITemplateService templateService,
+            IEmailFactory emailFactory,
             IEmailService emailService,
             IInventAppContext inventAppContext
         ) : base(
@@ -47,11 +45,12 @@ namespace Application.Services
             inventAppContext
         )
         {
-            _reportInfrastructureService = reportInfrastructureService;
             _inventionPredicateFactory = inventionPredicateFactory;
             _appSettingsService = appSettingsService;
             _userPredicateFactory = userPredicateFactory;
+            _templateFactory = templateFactory;
             _templateService = templateService;
+            _emailFactory = emailFactory;
             _emailService = emailService;
 
             Directory.CreateDirectory($"{_appSettingsService.ReportsDirectory}");
@@ -64,22 +63,10 @@ namespace Application.Services
                 var byPriceRange = _inventionPredicateFactory.CreateByPriceRange(reportInventionDto.MinPrice, reportInventionDto.MaxPrice);
                 var inventions = await _unitOfWork.Inventions.GetAsync(byPriceRange);
 
-                var inventionReportTemplate = await _templateService.ReadForInventionReportAsync();
+                var reportTemplate = await _templateFactory.CreateForInventionReportAsync(inventions);
+                var reportTemplateRendered = await _templateService.RenderAsync<byte[]>(reportTemplate);
 
-                var serializer = new JsonSerializer { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-                var reportJsonData = new JObject();
-                var inventionsJArray = (JArray)JToken.FromObject(inventions, serializer);
-                reportJsonData["inventions"] = inventionsJArray;
-
-                var report = new Report
-                {
-                    Template = inventionReportTemplate,
-                    Data = reportJsonData.ToString()
-                };
-
-                var reportBytes = await _reportInfrastructureService.CreateAsync(report);
-
-                if (reportBytes == null)
+                if (reportTemplateRendered == null)
                 {
                     return new EmptyResult
                     {
@@ -93,27 +80,13 @@ namespace Application.Services
                     var byName = _userPredicateFactory.CreateByName(_inventAppContext.UserName);
                     var user = await _unitOfWork.Users.GetFirstAsync(byName);
 
-                    var emailTemplateRendered = await _templateService.RenderForUserReportRequestedAsync(user);
+                    var email = await _emailFactory.CreateForUserReportRequestedAsync(user, reportTemplateRendered);
 
-                    _emailService.SendAsync(new Email
-                    {
-                        UseCustomSmtpServer = false,
-                        To = user.Email,
-                        Subject = emailTemplateRendered.Subject,
-                        Body = emailTemplateRendered.Body,
-                        Attachments = new List<Attachment>
-                        {
-                            new Attachment
-                            {
-                                FileContent = reportBytes,
-                                FileName = $"inventions_{Guid.NewGuid()}.pdf"
-                            }
-                        }
-                    });
+                    _emailService.SendAsync(email);
                 }
 
                 //TODO: return to UI
-                File.WriteAllBytes($"{_appSettingsService.ReportsDirectory}\\inventions_{Guid.NewGuid()}.pdf", reportBytes);
+                File.WriteAllBytes($"{_appSettingsService.ReportsDirectory}\\inventions_{Guid.NewGuid()}.pdf", reportTemplateRendered);
 
                 return new OkEmptyResult();
             });

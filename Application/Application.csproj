@@ -69,7 +69,8 @@
     <Compile Include="ApplicationResults\ApplicationResultStatus.cs" />
     <Compile Include="ApplicationResults\OkApplicationResult.cs" />
     <Compile Include="ApplicationResults\OkEmptyResult.cs" />
-    <Compile Include="Contracts\TemplateServices\ITemplateService.cs" />
+    <Compile Include="Contracts\Factories\IEmailFactory.cs" />
+    <Compile Include="Contracts\Factories\ITemplateFactory.cs" />
     <Compile Include="Contracts\IInventAppContext.cs" />
     <Compile Include="Contracts\Services\IReportService.cs" />
     <Compile Include="Dtos\EmailTemplateRendered.cs" />
@@ -80,7 +81,8 @@
     <Compile Include="Exceptions\AuthenticationFailException.cs" />
     <Compile Include="Exceptions\CredentialNotProvidedException.cs" />
     <Compile Include="Exceptions\InternalServerException.cs" />
-    <Compile Include="TemplateServices\TemplateService.cs" />
+    <Compile Include="Factories\EmailFactory.cs" />
+    <Compile Include="Factories\TemplateFactory.cs" />
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\InventionFactory.cs" />

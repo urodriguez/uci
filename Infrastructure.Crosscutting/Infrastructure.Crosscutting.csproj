@@ -100,9 +100,11 @@
     <Compile Include="Queueing\QueueContext.cs" />
     <Compile Include="Queueing\QueueItemType.cs" />
     <Compile Include="Queueing\Enqueue\EnqueueService.cs" />
-    <Compile Include="Reporting\IReportInfrastructureService.cs" />
-    <Compile Include="Reporting\Report.cs" />
-    <Compile Include="Reporting\ReportInfrastructureService.cs" />
+    <Compile Include="Renderting\ITemplateService.cs" />
+    <Compile Include="Renderting\RenderAs.cs" />
+    <Compile Include="Renderting\TemplateType.cs" />
+    <Compile Include="Renderting\Template.cs" />
+    <Compile Include="Renderting\TemplateService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
