@@ -50,18 +50,20 @@ $userName = "ENDAVA\URodriguez"
 $secureIdentityPassword = Read-Host "Enter a Password for user identity '$userName'" -AsSecureString
 $credential = New-Object System.Management.Automation.PSCredential($userName, $secureIdentityPassword)
 
-$projectPath = Read-Host "Enter the full path where your project is hosted. Example: C:\Users\userName\UciRod\ProjectName"
-
 #Initialize Application Pools
 Write-Host "Initializing Application Pools" -ForegroundColor Cyan
 CreateAppPool -name "UciRod.Inventapp" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 CreateAppPool -name "UciRod.Inventapp.WebApi" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 Write-Host "Application Pools initialized" -ForegroundColor Green
 
+$projectPath = Read-Host "Enter the full path where your project is hosted. Example: C:\Users\userName\UciRod\ProjectName"
+$ipAddress = Read-Host "Enter the ip address. For localhost: 127.0.0.1"
+[UInt32]$port = Read-Host "Enter the port. Example: 8080"
+
 #Initialize Web Sites
 Write-Host "-------***-------" -ForegroundColor Cyan
 Write-Host "Initializing Web Sites" -ForegroundColor Cyan
-CreateWebSite -name "UciRod.InventApp" -appPool "UciRod.Inventapp" -physicalPath $projectPath -ipAddress "127.0.0.1" -port 9000
+CreateWebSite -name "UciRod.InventApp" -appPool "UciRod.Inventapp" -physicalPath $projectPath -ipAddress $ipAddress -port $port
 Write-Host "Web Sites initialized" -ForegroundColor Green
 
 #Initialize Web Applications
