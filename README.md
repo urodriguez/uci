@@ -24,7 +24,6 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 }
 
 ## TODO list
-* create script to configure sites on IIS
 * delete old client application
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
@@ -137,6 +136,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * expose hangfire dashboard to allow external request - https://docs.hangfire.io/en/latest/configuration/using-dashboard.html#configuring-authorization
 * rename product/pruductType to invention/inventionType at code and db level
 * Migrate templates and reports to Rendering
+* create script to configure sites on IIS
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide
