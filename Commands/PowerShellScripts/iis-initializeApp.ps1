@@ -55,20 +55,22 @@ $userName = "ENDAVA\URodriguez"
 $secureIdentityPassword = Read-Host "Enter a Password for user identity '$userName'" -AsSecureString
 $credential = New-Object System.Management.Automation.PSCredential($userName, $secureIdentityPassword)
 
+$baseProjectName = "UciRod.InventApp"
+
 #Initialize Application Pools
 Write-Host "Initializing Application Pools" -ForegroundColor Cyan
-CreateAppPool -name "UciRod.InventApp" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
-CreateAppPool -name "UciRod.InventApp.WebApi" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name $baseProjectName -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name "$baseProjectName.WebApi" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 Write-Host "Application Pools initialized" -ForegroundColor Green
 
 #Initialize Web Sites
 Write-Host "-------***-------" -ForegroundColor Cyan
 Write-Host "Initializing Web Site" -ForegroundColor Cyan
-CreateAppWebSite -name "UciRod.InventApp"
+CreateAppWebSite -name $baseProjectName
 Write-Host "Web Site initialized" -ForegroundColor Green
 
 #Initialize Web Applications
 Write-Host "-------***-------" -ForegroundColor Cyan
 Write-Host "Initializing Web Applications" -ForegroundColor Cyan
-AddWebApplicationToWebSite -webSite "UciRod.InventApp" -name "WebApi"
+AddWebApplicationToWebSite -webSite $baseProjectName -name "WebApi"
 Write-Host "Web Applications initialized" -ForegroundColor Green
