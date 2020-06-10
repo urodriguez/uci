@@ -18,14 +18,18 @@ function CreateAppPool {
     }
 }
 
-function CreateWebSite {
-    Param([string] $name, [string] $appPool, [string] $physicalPath, [string] $ipAddress, [UInt32] $port)
+function CreateAppWebSite {
+    Param([string] $name)
 
-    if(Test-Path ("IIS:\Sites\" + $name)) {
-        Write-Host "The Web Site '$name' already exists. It creation has been skipped." -ForegroundColor Yellow
+    if(Test-Path ("IIS:\Sites\$name")) {
+        Write-Host "$name Web Site already exists. It creation has been skipped." -ForegroundColor Yellow
     } else {
-        Write-Host "Creating Web Site '$name'" -ForegroundColor Cyan
-        New-WebSite -Name $name -ApplicationPool $appPool -PhysicalPath $physicalPath -IPAddress $ipAddress -Port $port -Force
+        $webSitePhysicalPath = Read-Host "Enter the full path where your '$name' project is hosted. Example: C:\Users\myUserName\UciRod\$name"
+        $ipAddress = Read-Host "Enter the ip address. For localhost: 127.0.0.1"
+        [UInt32]$port = Read-Host "Enter the port. Example: 8080"
+
+        Write-Host "Creating $name Web Site" -ForegroundColor Cyan
+        New-WebSite -Name $name -ApplicationPool $name -PhysicalPath $webSitePhysicalPath -IPAddress $ipAddress -Port $port -Force
     }
 }
 
@@ -35,13 +39,14 @@ function WebSiteContainsWebApplication {
 }
 
 function AddWebApplicationToWebSite {
-    Param([string] $webSite, [string] $name, [string] $appPool, [string] $physicalPath)
+    Param([string] $webSite, [string] $name)
 
     if(WebSiteContainsWebApplication -webSite $webSite -name $name) {
-        Write-Host "The Web Site '$webSite' already contains Web Application '$name'. It adding has been skipped." -ForegroundColor Yellow
+        Write-Host "$webSite Web Site already contains Web Application '$name'. It adding has been skipped." -ForegroundColor Yellow
     } else {
-        Write-Host "Adding Web Application '$name' to Web Site '$webSite'" -ForegroundColor Cyan
-        New-WebApplication -Site $webSite -Name $name -ApplicationPool $appPool -PhysicalPath $physicalPath -Force
+        Write-Host "Adding Web Application '$name' to $webSite Web Site" -ForegroundColor Cyan
+        $webSitePhysicalPath = Get-Website $webSite | Select-Object -expa physicalPath
+        New-WebApplication -Site $webSite -Name $name -ApplicationPool "$webSite.$name" -PhysicalPath "$webSitePhysicalPath\$name" -Force
     }
 }
 #FUNCIONS DECLARATION - END
@@ -52,22 +57,18 @@ $credential = New-Object System.Management.Automation.PSCredential($userName, $s
 
 #Initialize Application Pools
 Write-Host "Initializing Application Pools" -ForegroundColor Cyan
-CreateAppPool -name "UciRod.Inventapp" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
-CreateAppPool -name "UciRod.Inventapp.WebApi" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name "UciRod.InventApp" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name "UciRod.InventApp.WebApi" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 Write-Host "Application Pools initialized" -ForegroundColor Green
-
-$projectPath = Read-Host "Enter the full path where your project is hosted. Example: C:\Users\userName\UciRod\ProjectName"
-$ipAddress = Read-Host "Enter the ip address. For localhost: 127.0.0.1"
-[UInt32]$port = Read-Host "Enter the port. Example: 8080"
 
 #Initialize Web Sites
 Write-Host "-------***-------" -ForegroundColor Cyan
-Write-Host "Initializing Web Sites" -ForegroundColor Cyan
-CreateWebSite -name "UciRod.InventApp" -appPool "UciRod.Inventapp" -physicalPath $projectPath -ipAddress $ipAddress -port $port
-Write-Host "Web Sites initialized" -ForegroundColor Green
+Write-Host "Initializing Web Site" -ForegroundColor Cyan
+CreateAppWebSite -name "UciRod.InventApp"
+Write-Host "Web Site initialized" -ForegroundColor Green
 
 #Initialize Web Applications
 Write-Host "-------***-------" -ForegroundColor Cyan
 Write-Host "Initializing Web Applications" -ForegroundColor Cyan
-AddWebApplicationToWebSite -webSite "UciRod.Inventapp" -name "WebApi" -appPool "UciRod.Inventapp.WebApi" -physicalPath "$projectPath\WebApi"
+AddWebApplicationToWebSite -webSite "UciRod.InventApp" -name "WebApi"
 Write-Host "Web Applications initialized" -ForegroundColor Green
