@@ -26,6 +26,19 @@ namespace Infrastructure.Crosscutting.Mailing
             ExecuteAsync("emails", Method.POST, email);
         }
 
+        public bool EmailIsValid(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void ResolveDequeue(IReadOnlyCollection<string> queueItemsJsonData)
         {
             foreach (var queueItemJsonData in queueItemsJsonData)

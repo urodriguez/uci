@@ -11,14 +11,15 @@ SET QUOTED_IDENTIFIER ON
 BEGIN TRANSACTION
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
+begin
 	CREATE TABLE [dbo].[User](
 		[Id] uniqueidentifier NOT NULL,
-		[Name] nvarchar(20) NOT NULL,
-		[Password] nvarchar(max) NULL,
-		[FirstName] nvarchar(20) NOT NULL,
-		[MiddleName] nvarchar(50) NULL,
-		[LastName] nvarchar(20) NOT NULL,
-		[Email] nvarchar(70) NOT NULL,
+		[Name] nvarchar(32) NOT NULL,
+		[Password] nvarchar(8) NULL,
+		[FirstName] nvarchar(32) NOT NULL,
+		[MiddleName] nvarchar(32) NULL,
+		[LastName] nvarchar(32) NOT NULL,
+		[Email] nvarchar(64) NOT NULL,
 		[Role] int NOT NULL,
 		[DateCreated] datetime NOT NULL,
 		[LastLoginTime] datetime NULL,
@@ -28,11 +29,15 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 		[IsUsingCustomPassword] bit NOT NULL
 	)
 
+	INSERT INTO [dbo].[User]
+	VALUES ('6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3', 'inventApp-admin', 'Pa$$w0rd', 'Invent', '', 'App', 'inventApp@gmail.com', 1, GETDATE(), null, 1, 1, 0, 1)
+end
+
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Invention')
 	CREATE TABLE [dbo].[Invention](
 		[Id] [uniqueidentifier] NOT NULL,
-		[Code] [varchar](8) NOT NULL,
-		[Name] [varchar](64) NOT NULL,
+		[Code] [nvarchar](8) NOT NULL,
+		[Name] [nvarchar](32) NOT NULL,
 		[Category] [char](1) NOT NULL,
 		[Price] [decimal](8, 2) NOT NULL
 	)	

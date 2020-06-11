@@ -21,25 +21,27 @@ namespace Domain.Aggregates
 
         public void SetCode(string code)
         {
-            if (string.IsNullOrEmpty(code)) throw new BusinessRuleException($"{base.EntityName}: code can not be null or empty");
+            if (string.IsNullOrEmpty(code)) throw new BusinessRuleException($"{EntityName}: code can not be null or empty");
+            if (code.Length != 8) throw new BusinessRuleException($"{EntityName}: code length must be 8");
             Code = code;
         }
 
         public void SetName(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new BusinessRuleException($"{base.EntityName}: name can not be null or empty");
+            if (string.IsNullOrEmpty(name)) throw new BusinessRuleException($"{EntityName}: name can not be null or empty");
+            if (name.Length >= 32) throw new BusinessRuleException($"{EntityName}: name length can not be greater than 32");
             Name = name;
         }
 
         public void SetCategory(string category)
         {
-            if (string.IsNullOrEmpty(category)) throw new BusinessRuleException($"{base.EntityName}: category can not be null or empty");
+            if (string.IsNullOrEmpty(category)) throw new BusinessRuleException($"{EntityName}: category can not be null or empty");
             Category = category;
         }
 
         public void SetPrice(decimal price)
         {
-            if (price <= 0) throw new BusinessRuleException($"{base.EntityName}: price has to be equal or higher than zero");
+            if (price <= 0) throw new BusinessRuleException($"{EntityName}: price can not be less or equal than zero");
             Price = price;
         }
 

@@ -8,16 +8,16 @@ namespace Domain.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserPredicateFactory _userPredicateFactory;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RoleService(IUnitOfWork unitOfWork, IUserPredicateFactory userPredicateFactory)
+        public RoleService(IUserPredicateFactory userPredicateFactory, IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
             _userPredicateFactory = userPredicateFactory;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> IsAdmin(string userName)
+        public async Task<bool> IsAdminAsync(string userName)
         {
             var byName = _userPredicateFactory.CreateByName(userName);
             var user = await _unitOfWork.Users.GetFirstAsync(byName);

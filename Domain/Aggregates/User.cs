@@ -4,6 +4,7 @@ using Domain.Attributes;
 using Domain.Contracts.Aggregates;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Domain.Aggregates
 {
@@ -15,23 +16,68 @@ namespace Domain.Aggregates
         }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; private set; }
+        public void SetName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) throw new BusinessRuleException($"{EntityName}: name can not be null or empty");
+            if (name.Length >= 32) throw new BusinessRuleException($"{EntityName}: name length can not be greater than 32");
+            Name = name;
+        }
 
-        public string Password { get; set; }
+        public virtual string Password { get; private set; }
+        public void SetPassword(string password)
+        {
+            if (!PasswordSatisfyComplexity(password)) throw new BusinessRuleException($"{EntityName}: password does not satisfy the complexity");
+            Password = password;
+        }
+        private static bool PasswordSatisfyComplexity(string password)
+        {
+            return !string.IsNullOrEmpty(password) && password.Length == 8; //TODO: improve complexity
+        }
 
         [Required]
-        public string Email { get; set; }
+        public string Email { get; private set; }
+        public void SetEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email)) throw new BusinessRuleException($"{EntityName}: email can not be null or empty");
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                Email = addr.Address;
+            }
+            catch
+            {
+                throw new BusinessRuleException($"{EntityName}: email format is invalid ");
+            }
+        }
 
         [Required]
-        public string FirstName { get; set; }
+        public string FirstName { get; private set; }
+        public void SetFirstName(string firstName)
+        {
+            if (string.IsNullOrEmpty(firstName)) throw new BusinessRuleException($"{EntityName}: firstName can not be null or empty");
+            if (firstName.Length >= 32) throw new BusinessRuleException($"{EntityName}: firstName length can not be greater than 32");
+            FirstName = firstName;
+        }
 
         public string MiddleName { get; set; }
 
         [Required]
-        public string LastName { get; set; }
+        public string LastName { get; private set; }
+        public void SetLastName(string lastName)
+        {
+            if (string.IsNullOrEmpty(lastName)) throw new BusinessRuleException($"{EntityName}: lastName can not be null or empty");
+            if (lastName.Length >= 32) throw new BusinessRuleException($"{EntityName}: lastName length can not be greater than 32");
+            LastName = lastName;
+        }
 
         [Required]
-        public UserRole Role { get; set; }
+        public virtual UserRole Role { get; private set; }
+        public void SetRole(UserRole role)
+        {
+            if (!Enum.IsDefined(typeof(UserRole), role)) throw new BusinessRuleException($"{EntityName}: role is not defined");
+            Role = role;
+        }
 
         public bool EmailConfirmed { get; set; }
 
@@ -47,22 +93,9 @@ namespace Domain.Aggregates
 
         public bool IsLocked() => AccessFailedCount == 3;
 
-        public bool PasswordIsValid(string password) => Password == password;
+        public bool HasPassword(string password) => Password == password;
 
-        public bool IsAdmin() => Role == UserRole.Admin;
-
-        public static bool EmailIsValid(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        public virtual bool IsAdmin() => Role == UserRole.Admin;
 
         public void GenerateDefaultPassword()
         {
@@ -73,11 +106,6 @@ namespace Domain.Aggregates
 
             const int passwordLength = 10;
             Password = new string(Enumerable.Repeat(chars, passwordLength).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        public bool PasswordSatisfyComplexity(string password)
-        {
-            return password.Length == 10; //TODO: improve complexity
         }
 
         public void ResetAccessFailedCount()

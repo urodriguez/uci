@@ -4,6 +4,6 @@ namespace Domain.Contracts.Services
 {
     public interface IRoleService
     {
-        Task<bool> IsAdmin(string userName);
+        Task<bool> IsAdminAsync(string userName);
     }
 }

@@ -24,7 +24,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 }
 
 ## TODO list
-* unit test - Domain Layer
+* Jenkins: after build (and before deploy) run unit test
 * Reporting: integration - using hangfire recurrent job
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
@@ -138,15 +138,4 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * Migrate templates and reports to Rendering
 * create script to configure sites on IIS
 * delete old client application
-
-## Angular architercure styleguide
-https://angular.io/guide/styleguide
-
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+* unit test - Domain Layer

@@ -84,7 +84,7 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
                 if (!isAdmin) 
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
@@ -116,7 +116,7 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
                 if (!isAdmin)
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
@@ -149,7 +149,7 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
                 if (!isAdmin)
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 

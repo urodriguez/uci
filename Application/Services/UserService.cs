@@ -104,7 +104,7 @@ namespace Application.Services
                 }
 
                 //TODO use encrypted password
-                if (!user.PasswordIsValid(credentialsDto.Password))
+                if (!user.HasPassword(credentialsDto.Password))
                 {
                     user.AccessFailedCount++;
                     await _unitOfWork.Users.UpdateAsync(user);
@@ -151,7 +151,7 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdmin(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
                 if (!isAdmin)
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
@@ -213,7 +213,7 @@ namespace Application.Services
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
 
-                if (!user.PasswordIsValid(passwordDto.Default)) throw new AuthenticationFailException("Invalid credentials");
+                if (!user.HasPassword(passwordDto.Default)) throw new AuthenticationFailException("Invalid credentials");
 
                 if (user.Password == passwordDto.Custom) return new EmptyResult
                 {
@@ -221,13 +221,7 @@ namespace Application.Services
                     Message = "Default and Custom password can not be equals"
                 };
 
-                if (!user.PasswordSatisfyComplexity(passwordDto.Custom)) return new EmptyResult
-                {
-                    Status = ApplicationResultStatus.BadRequest,
-                    Message = "Custom password does not satisfy the complexity"
-                };
-
-                user.Password = passwordDto.Custom;
+                user.SetPassword(passwordDto.Custom);
                 user.IsUsingCustomPassword = true;
                 await _unitOfWork.Users.UpdateAsync(user);
 
