@@ -10,8 +10,6 @@ publish/
 
 packages
 
-node_modules
-
 /.vs
 
 Web.Debug.config
