@@ -56,11 +56,12 @@ $secureIdentityPassword = Read-Host "Enter a Password for user identity '$userNa
 $credential = New-Object System.Management.Automation.PSCredential($userName, $secureIdentityPassword)
 
 $baseProjectName = "UciRod.InventApp"
+$runtimeVersion = "v4.0"
 
 #Initialize Application Pools
 Write-Host "Initializing Application Pools" -ForegroundColor Cyan
-CreateAppPool -name $baseProjectName -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
-CreateAppPool -name "$baseProjectName.WebApi" -runtimeVersion "v4.0" -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name $baseProjectName -runtimeVersion $runtimeVersion -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name "$baseProjectName.WebApi" -runtimeVersion $runtimeVersion -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 Write-Host "Application Pools initialized" -ForegroundColor Green
 
 #Initialize Web Sites
