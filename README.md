@@ -13,8 +13,8 @@ http://152.171.94.90:8080/WebApi
 http://152.171.94.90:8080/WebApi/swagger
 http://152.171.94.90:8080/WebApi/hangfire -> use cookie = { Name = "inventApp_hf_dashboard_cookie", Value = "1nv3nt4pp_h4ngf1r3_d4shb0rd" }
 
-id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
-{username: "urodriguez-admin", password: "admin-1990"}
+id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
+{username: "uciel-admin", password: "admin123"}
 
 {
   "code": "i_code00",

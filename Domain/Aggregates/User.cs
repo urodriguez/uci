@@ -104,8 +104,9 @@ namespace Domain.Aggregates
             var random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-            const int passwordLength = 10;
-            Password = new string(Enumerable.Repeat(chars, passwordLength).Select(s => s[random.Next(s.Length)]).ToArray());
+            const int passwordLength = 8;
+            var password = new string(Enumerable.Repeat(chars, passwordLength).Select(s => s[random.Next(s.Length)]).ToArray());
+            SetPassword(password);
         }
 
         public void ResetAccessFailedCount()
