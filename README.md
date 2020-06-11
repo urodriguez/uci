@@ -24,15 +24,15 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 }
 
 ## TODO list
-* delete old client application
+* unit test - Domain Layer
+* Reporting: integration - using hangfire recurrent job
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
   * inventions module
   * users module
 * expose client application to external (no localhost) URL via public ip for TEST env
-* Reporting: integration - using hangfire recurrent job
-* unit test
-* Automation: API test
+* unit test - Application Layer
+* Automation: WebAPI test
 * create index in db tables
 * create all necessary elements to create registration
   * CRUD invention type
@@ -137,6 +137,7 @@ id: 6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3
 * rename product/pruductType to invention/inventionType at code and db level
 * Migrate templates and reports to Rendering
 * create script to configure sites on IIS
+* delete old client application
 
 ## Angular architercure styleguide
 https://angular.io/guide/styleguide
