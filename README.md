@@ -24,14 +24,15 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
+* move BussinesValidators logic to Aggregates on it ctros + add DuplicateValidators
+* unit test - Application Layer
+* Jenkins: test coverage
 * Reporting: integration - using hangfire recurrent job
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
   * inventions module
   * users module
 * expose client application to external (no localhost) URL via public ip for TEST env
-* unit test - Application Layer
-* Automation: WebAPI test
 * create index in db tables
 * create all necessary elements to create registration
   * CRUD invention type
@@ -47,11 +48,13 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
     * site5 -> rest POST (notification on new one + recurrent db updates)
   * CRUD registration reason
   * CRUD registration status
-* deploy app to cloud - PROD env
+* implement database caching
+* unit test - WebApi
+* Automation
 * use Docker - SqlServerInstance
+* deploy app to cloud - PROD env
 * use PusherServer/WebSockets to notify UI on server changes
 * implement integration events with NServiceBus
-* implement database caching
 * implement HTTP Caching — Provide a Cache-Control header on your API responses. If they’re not cacheable, “Cache-Control: no-cache” will make sure proxies and browsers understand that. If they are cacheable, there are a variety of factors to consider, such as whether the cache can be shared by a proxy, or how long a resource is “fresh”.
 * implement HTTP Compression — HTTP compression can be used both for response bodies (Accept-Encoding: gzip) and for request bodies (Content-Encoding: gzip) to improve the network performance of an HTTP API
 * implement Cache Validation — If you have cacheable API hits, you should provide Last-Modified or ETag headers on your responses, and then support If-Modified-Since or If-None-Match request headers for conditional requests. This will allow clients to check if their cached copy is still valid, and prevent a complete resource download when not required. If implemented properly, you can make your conditional requests more efficient than usual requests, and also save some server-side load.
