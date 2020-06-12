@@ -8,8 +8,10 @@ if %errorLevel% == 0 (
     goto :end
 )
 
-@echo on
-start chrome http://localhost:8082
+REM "Open a delayed chrome windows after 8 seconds"
+start "" /b cmd /c "timeout /nobreak 8 >nul & start "" chrome http://localhost:8082"
+
+REM "Start Jenkins process"
 java -jar "C:\Program Files (x86)\Jenkins\jenkins.war" --httpPort=8082
 
 :end

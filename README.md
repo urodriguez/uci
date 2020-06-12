@@ -24,7 +24,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* Jenkins: after build (and before deploy) run unit test
 * Reporting: integration - using hangfire recurrent job
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
@@ -139,3 +138,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * create script to configure sites on IIS
 * delete old client application
 * unit test - Domain Layer
+* Jenkins: after build any InventApp project (and before deploy) run unit test
