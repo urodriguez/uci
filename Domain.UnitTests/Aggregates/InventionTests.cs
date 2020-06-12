@@ -18,7 +18,7 @@ namespace Domain.UnitTests.Aggregates
             invention.SetName("test");
 
             //Assert
-            Assert.IsTrue(invention.Name == "testFail");
+            Assert.IsTrue(invention.Name == "test");
         }
 
         [TestCase(null)]
