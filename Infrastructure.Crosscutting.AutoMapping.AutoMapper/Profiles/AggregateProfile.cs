@@ -26,7 +26,7 @@ namespace Infrastructure.Crosscutting.AutoMapping.AutoMapper.Profiles
                         var sourceGuidType = new Guid(sourceValue.ToString());
                         if (sourceGuidType == Guid.Empty) return false;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         // ignored
                     }
