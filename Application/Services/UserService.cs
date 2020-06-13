@@ -5,7 +5,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Contracts;
-using Application.Contracts.BusinessValidators;
+using Application.Contracts.AggregateUpdaters;
+using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -35,11 +36,12 @@ namespace Application.Services
 
         public UserService(
             IUnitOfWork unitOfWork, 
-            IUserFactory userFactory, 
+            IUserFactory userFactory,
+            IUserUpdater updater,
             IAuditService auditService, 
             ITokenService tokenService, 
             IRoleService roleService, 
-            IUserBusinessValidator userBusinessValidator, 
+            IUserDuplicateValidator userDuplicateValidator, 
             IUserPredicateFactory userPredicateFactory,
             ILogService logService,
             ITemplateFactory templateFactory,
@@ -51,8 +53,9 @@ namespace Application.Services
         : base(
             roleService,
             userFactory, 
+            updater,
             auditService, 
-            userBusinessValidator,
+            userDuplicateValidator,
             tokenService,
             unitOfWork,
             logService,
@@ -155,10 +158,9 @@ namespace Application.Services
                 if (!isAdmin)
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                await _businessValidator.ValidateAsync(userDto);
+                await _duplicateValidator.ValidateAsync(userDto);
 
                 var user = _factory.Create(userDto);
-                user.GenerateDefaultPassword();
 
                 await _unitOfWork.GetRepository<User>().AddAsync(user);
 

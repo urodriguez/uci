@@ -4,7 +4,8 @@ using System.Data;
 using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Contracts;
-using Application.Contracts.BusinessValidators;
+using Application.Contracts.AggregateUpdaters;
+using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -21,19 +22,21 @@ namespace Application.Services
 {
     public abstract class CrudService<TDto, TAggregateRoot> : ApplicationService, ICrudService<TDto> 
         where TAggregateRoot : class, IAggregateRoot 
-        where TDto : IDto
+        where TDto : ICrudDto
     {
         protected readonly IRoleService _roleService;
         protected readonly IFactory<TDto, TAggregateRoot> _factory;
+        protected readonly IAggregateUpdater<TDto, TAggregateRoot> _aggregateUpdater;
         protected readonly IAuditService _auditService;
-        protected readonly IBusinessValidator<TDto> _businessValidator;
+        protected readonly IDuplicateValidator<TDto> _duplicateValidator;
         protected readonly IAppSettingsService _appSettingsService;
 
         protected CrudService(
             IRoleService roleService,
-            IFactory<TDto, TAggregateRoot> factory, 
+            IFactory<TDto, TAggregateRoot> factory,
+            IAggregateUpdater<TDto, TAggregateRoot> aggregateUpdater, 
             IAuditService auditService, 
-            IBusinessValidator<TDto> businessValidator, 
+            IDuplicateValidator<TDto> duplicateValidator, 
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
@@ -42,8 +45,9 @@ namespace Application.Services
         ) : base (tokenService, unitOfWork, logService, inventAppContext)
         {
             _factory = factory;
+            _aggregateUpdater = aggregateUpdater;
             _auditService = auditService;
-            _businessValidator = businessValidator;
+            _duplicateValidator = duplicateValidator;
             _roleService = roleService;
             _appSettingsService = appSettingsService;
         }
@@ -88,7 +92,7 @@ namespace Application.Services
                 if (!isAdmin) 
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                await _businessValidator.ValidateAsync(dto);
+                await _duplicateValidator.ValidateAsync(dto);
 
                 var aggregate = _factory.Create(dto);
 
@@ -112,7 +116,7 @@ namespace Application.Services
             });
         }
 
-        public virtual async Task<IApplicationResult> UpdateAsync(Guid id, TDto dto)
+        public virtual async Task<IApplicationResult> UpdateAsync(TDto dto)
         {
             return await ExecuteAsync(async () =>
             {
@@ -120,15 +124,15 @@ namespace Application.Services
                 if (!isAdmin)
                     throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
 
-                await _businessValidator.ValidateAsync(dto, id);
+                await _duplicateValidator.ValidateAsync(dto);
 
-                var aggregate = await _unitOfWork.GetRepository<TAggregateRoot>().GetByIdAsync(id);
+                var aggregate = await _unitOfWork.GetRepository<TAggregateRoot>().GetByIdAsync(dto.Id);
 
-                if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
+                if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={dto.Id} not found");
 
-                var aggregateUpdated = _factory.CreateFromExisting(dto, aggregate);
+                _aggregateUpdater.Update(aggregate, dto);
 
-                await _unitOfWork.GetRepository<TAggregateRoot>().UpdateAsync(aggregateUpdated);
+                await _unitOfWork.GetRepository<TAggregateRoot>().UpdateAsync(aggregate);
 
                 _auditService.AuditAsync(new Audit
                 {
@@ -137,7 +141,7 @@ namespace Application.Services
                     User = _inventAppContext.UserName,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
-                    Entity = JsonConvert.SerializeObject(aggregateUpdated),
+                    Entity = JsonConvert.SerializeObject(aggregate),
                     Action = AuditAction.Update
                 });
 

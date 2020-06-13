@@ -10,5 +10,15 @@ namespace Application.Factories
         public InventionFactory(IMapper mapper) : base(mapper)
         {
         }
+
+        public override Invention Create(InventionDto dto)
+        {
+            return new Invention(
+                dto.Code,
+                dto.Name,
+                dto.Category,
+                dto.Price
+            );
+        }
     }
 }

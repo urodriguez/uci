@@ -31,14 +31,7 @@ namespace Application.Factories
         /// <summary>
         /// Creates new aggregate based on Dto information
         /// </summary>
-        public TAggregateRoot Create(TDto dto)
-        {
-            var aggregate = _mapper.Map<TDto, TAggregateRoot>(dto);
-            
-            //CompleteInternalFields(aggregate);
-
-            return aggregate;
-        }
+        public abstract TAggregateRoot Create(TDto dto);
 
         /// <summary>
         /// Creates new aggregate based on Dto information and existing aggregate
@@ -46,12 +39,8 @@ namespace Application.Factories
         public TAggregateRoot CreateFromExisting(TDto dto, TAggregateRoot existingAggregate)
         {
             var aggregate = _mapper.Map<TDto, TAggregateRoot>(dto, existingAggregate);
-
-            //CompleteInternalFields(aggregate);
-
             return aggregate;
         }
 
-        //protected abstract void CompleteInternalFields(TAggregateRoot aggregate);
     }
 }

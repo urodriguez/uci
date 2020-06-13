@@ -14,12 +14,12 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 begin
 	CREATE TABLE [dbo].[User](
 		[Id] uniqueidentifier NOT NULL,
-		[Name] nvarchar(32) NOT NULL,
-		[Password] nvarchar(8) NULL,
-		[FirstName] nvarchar(32) NOT NULL,
-		[MiddleName] nvarchar(32) NULL,
-		[LastName] nvarchar(32) NOT NULL,
-		[Email] nvarchar(64) NOT NULL,
+		[Name] varchar(32) NOT NULL,
+		[Password] varchar(8) NULL,
+		[FirstName] varchar(32) NOT NULL,
+		[MiddleName] varchar(32) NULL,
+		[LastName] varchar(32) NOT NULL,
+		[Email] varchar(64) NOT NULL,
 		[Role] int NOT NULL,
 		[DateCreated] datetime NOT NULL,
 		[LastLoginTime] datetime NULL,
@@ -35,19 +35,19 @@ end
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Invention')
 	CREATE TABLE [dbo].[Invention](
-		[Id] [uniqueidentifier] NOT NULL,
-		[Code] [nvarchar](8) NOT NULL,
-		[Name] [nvarchar](32) NOT NULL,
-		[Category] [char](1) NOT NULL,
-		[Price] [decimal](8, 2) NOT NULL
+		[Id] uniqueidentifier NOT NULL,
+		[Code] varchar(8) NOT NULL,
+		[Name] varchar(32) NOT NULL,
+		[Category] char(1) NOT NULL,
+		[Price] decimal(8, 2) NOT NULL
 	)	
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'InventionType')
 	CREATE TABLE [dbo].[InventionType](
-		[Id] [uniqueidentifier] NOT NULL,
-		[Code] [varchar](8) NOT NULL,
-		[Name] [varchar](64) NOT NULL,
-		[Description] [varchar](128) NOT NULL
+		[Id] uniqueidentifier NOT NULL,
+		[Code] varchar(8) NOT NULL,
+		[Name] varchar(32) NOT NULL,
+		[Description] varchar(128) NOT NULL
 	)
 
 IF @isDevEnv = 1
@@ -63,12 +63,12 @@ end
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'QueueItem')
 BEGIN
-	CREATE TABLE dbo.QueueItem
+	CREATE TABLE [dbo].[QueueItem]
 	(
-		Id uniqueidentifier NOT NULL,
-		Type int NOT NULL,
-		Data nvarchar(max) NOT NULL,
-		QueueDate datetime NOT NULL
+		[Id] uniqueidentifier NOT NULL,
+		[Type] int NOT NULL,
+		[Data] varchar(max) NOT NULL,
+		[QueueDate] datetime NOT NULL
 	)
 END
 

@@ -1,10 +1,12 @@
 ﻿using System.Web.Http;
 using Application;
-using Application.BusinessValidators;
+using Application.AggregateUpdaters;
 using Application.Contracts;
-using Application.Contracts.BusinessValidators;
+using Application.Contracts.AggregateUpdaters;
+using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
+using Application.DuplicateValidators;
 using Application.Factories;
 using Application.Services;
 using AutoMapper;
@@ -64,16 +66,21 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IUserFactory, UserFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITemplateFactory, TemplateFactory>(new ContainerControlledLifetimeManager());
 
+            //DuplicateValidators
+            _container.RegisterType<IInventionDuplicateValidator, InventionDuplicateValidator>(new PerResolveLifetimeManager());
+            _container.RegisterType<IInventionTypeDuplicateValidator, InventionTypeDuplicateValidator>(new PerResolveLifetimeManager());
+            _container.RegisterType<IUserDuplicateValidator, UserDuplicateValidator>(new PerResolveLifetimeManager());
+
+            //AggregateUpdaters
+            _container.RegisterType<IInventionUpdater, InventionUpdater>(new PerResolveLifetimeManager());
+            _container.RegisterType<IInventionTypeUpdater, InventionTypeUpdater>(new PerResolveLifetimeManager());
+            _container.RegisterType<IUserUpdater, UserUpdater>(new PerResolveLifetimeManager());
+
             //Contexts
             _container.RegisterType<IInventAppContext, InventAppContext>(new ContainerControlledLifetimeManager());
             #endregion
 
             #region DOMAIN
-            //BusinessValidators
-            _container.RegisterType<IInventionBusinessValidator, InventionBusinessValidator>(new PerResolveLifetimeManager());
-            _container.RegisterType<IInventionTypeBusinessValidator, InventionTypeBusinessValidator>(new PerResolveLifetimeManager());
-            _container.RegisterType<IUserBusinessValidator, UserBusinessValidator>(new PerResolveLifetimeManager());
-
             //PredicateFactories
             _container.RegisterType<IInventionPredicateFactory, InventionPredicateFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IUserPredicateFactory, UserPredicateFactory>(new ContainerControlledLifetimeManager());

@@ -48,9 +48,9 @@
     <Compile Include="Aggregates\Invention.cs" />
     <Compile Include="Aggregates\InventionType.cs" />
     <Compile Include="Aggregates\User.cs" />
-    <Compile Include="Attributes\Required.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
     <Compile Include="Contracts\Infrastructure\Persistence\IUnitOfWork.cs" />
+    <Compile Include="Contracts\Predicates\Factories\IInventionTypePredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IInventionPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IUserPredicateFactory.cs" />
@@ -65,6 +65,7 @@
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Contracts\Predicates\IInventAppPredicate.cs" />
     <Compile Include="Exceptions\BusinessRuleException.cs" />
+    <Compile Include="Predicates\Factories\InventionTypePredicateFactory.cs" />
     <Compile Include="Predicates\Factories\InventionPredicateFactory.cs" />
     <Compile Include="Predicates\Factories\UserPredicateFactory.cs" />
     <Compile Include="Predicates\InventAppPredicateIndividual.cs" />

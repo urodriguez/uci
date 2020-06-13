@@ -24,7 +24,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* move BussinesValidators logic to Aggregates on it ctros + add DuplicateValidators
 * unit test - Application Layer
 * Jenkins: test coverage
 * Reporting: integration - using hangfire recurrent job
@@ -142,3 +141,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * delete old client application
 * unit test - Domain Layer
 * Jenkins: after build any InventApp project (and before deploy) run unit test
+* move BusinessValidators logic to Aggregates on it contructors + add DuplicateValidators

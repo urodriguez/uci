@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Contracts;
-using Application.Contracts.BusinessValidators;
+using Application.Contracts.AggregateUpdaters;
+using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -23,9 +24,10 @@ namespace Application.Services
 
         public InventionService(
             IRoleService roleService,
-            IInventionFactory factory, 
+            IInventionFactory factory,
+            IInventionUpdater updater,
             IAuditService auditService,
-            IInventionBusinessValidator inventionBusinessValidator, 
+            IInventionDuplicateValidator inventionDuplicateValidator, 
             IInventionPredicateFactory inventionPredicateFactory,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
@@ -34,9 +36,10 @@ namespace Application.Services
             IInventAppContext inventAppContext
         ) : base(
             roleService,
-            factory, 
+            factory,
+            updater,
             auditService, 
-            inventionBusinessValidator,
+            inventionDuplicateValidator,
             tokenService,
             unitOfWork,
             logService,

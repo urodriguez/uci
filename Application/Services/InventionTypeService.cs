@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
-using Application.Contracts.BusinessValidators;
+using Application.Contracts.AggregateUpdaters;
+using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
 using Application.Contracts.Services;
 using Application.Dtos;
@@ -18,8 +19,9 @@ namespace Application.Services
         public InventionTypeService(
             IRoleService roleService,
             IInventionTypeFactory factory, 
+            IInventionTypeUpdater updater, 
             IAuditService auditService,
-            IInventionTypeBusinessValidator inventionTypeBusinessValidator,
+            IInventionTypeDuplicateValidator inventionTypeDuplicateValidator,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
@@ -27,9 +29,10 @@ namespace Application.Services
             IInventAppContext inventAppContext
         ) : base(
             roleService,
-            factory, 
+            factory,
+            updater,
             auditService, 
-            inventionTypeBusinessValidator,
+            inventionTypeDuplicateValidator,
             tokenService,
             unitOfWork,
             logService,

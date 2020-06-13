@@ -8,7 +8,7 @@ using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {
-    public class CrudController<TDto> : InventAppApiController where TDto : IDto
+    public class CrudController<TDto> : InventAppApiController where TDto : ICrudDto
     {
         private readonly ICrudService<TDto> _crudService;
 
@@ -27,7 +27,11 @@ namespace WebApi.Controllers
         public async Task<IHttpActionResult> CreateAsync([FromBody] TDto dto) => await ExecuteAsync(async () => await _crudService.CreateAsync(dto));
 
         [HttpPut]
-        public async Task<IHttpActionResult> UpdateAsync([FromUri] Guid id, [FromBody] TDto dto) => await ExecuteAsync(async () => await _crudService.UpdateAsync(id, dto));
+        public async Task<IHttpActionResult> UpdateAsync([FromUri] Guid id, [FromBody] TDto dto) => await ExecuteAsync(async () =>
+        {
+            dto.Id = id;
+            return await _crudService.UpdateAsync(dto);
+        });
 
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteAsync([FromUri] Guid id) => await ExecuteAsync(async () => await _crudService.DeleteAsync(id));

@@ -11,18 +11,16 @@ namespace Application.Factories
         {
         }
 
-        //public override User Create(UserDto userDto, User existingUser = default(User))
-        //{
-        //    var user = existingUser != null ? _mapper.Map<UserDto, User>(userDto, existingUser) : _mapper.Map<UserDto, User>(userDto);
-
-        //    user.Id = Guid.NewGuid();
-
-        //    return user;
-        //}
-
-        //protected override void CompleteInternalFields(User user)
-        //{
-        //    user.DateCreated = DateTime.Now;
-        //}
+        public override User Create(UserDto dto)
+        {
+            return new User(
+                dto.Name,
+                dto.Email,
+                dto.FirstName,
+                dto.MiddleName,
+                dto.LastName,
+                dto.Role
+            );
+        }
     }
 }
