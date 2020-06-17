@@ -1,14 +1,25 @@
-DECLARE @isDevEnv bit = 1
-
-IF @isDevEnv = 1
-	USE [UciRod.Inventapp]
-ELSE
-	USE [UciRod.Inventapp-Test]
-
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 
+IF DB_ID('UciRod.Inventapp') IS NULL 
+	CREATE DATABASE [UciRod.Inventapp]
+GO
+
+IF DB_ID('UciRod.Inventapp.Hangfire') IS NULL 
+	CREATE DATABASE [UciRod.Inventapp.Hangfire]
+GO
+
+USE [UciRod.Inventapp]
+
 BEGIN TRANSACTION
+
+IF NOT EXISTS(SELECT 1 FROM sys.server_principals WHERE name = 'ucirod-inventapp')
+begin
+	CREATE LOGIN [ucirod-inventapp] WITH PASSWORD=N'Uc1R0d-1nv3nt4pp', DEFAULT_DATABASE=[UciRod.Inventapp], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+	CREATE USER [ucirod-inventapp] FOR LOGIN [ucirod-inventapp]
+	ALTER USER [ucirod-inventapp] WITH DEFAULT_SCHEMA=[dbo]
+	ALTER ROLE [db_owner] ADD MEMBER [ucirod-inventapp]
+end
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 begin
@@ -50,19 +61,7 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'InventionType')
 		[Description] varchar(128) NOT NULL
 	)
 
-IF @isDevEnv = 1
-begin
-	IF DB_ID('UciRod.Inventapp.Hangfire') IS NULL 
-		CREATE DATABASE [UciRod.Inventapp.Hangfire]
-end
-ELSE 
-begin
-	IF DB_ID('UciRod.Inventapp.Hangfire-Test') IS NULL 
-		CREATE DATABASE [UciRod.Inventapp.Hangfire-Test]
-end
-
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'QueueItem')
-BEGIN
 	CREATE TABLE [dbo].[QueueItem]
 	(
 		[Id] uniqueidentifier NOT NULL,
@@ -70,6 +69,5 @@ BEGIN
 		[Data] varchar(max) NOT NULL,
 		[QueueDate] datetime NOT NULL
 	)
-END
 
 COMMIT TRANSACTION

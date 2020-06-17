@@ -24,6 +24,8 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
+* Docker - Jenkins
+* expose Jenkins URL
 * unit test - Application Layer
 * Jenkins: test coverage
 * Reporting: integration - using hangfire recurrent job
@@ -50,7 +52,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * implement database caching
 * unit test - WebApi
 * Automation
-* use Docker - SqlServerInstance
 * deploy app to cloud - PROD env
 * use PusherServer/WebSockets to notify UI on server changes
 * implement integration events with NServiceBus
@@ -142,3 +143,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * unit test - Domain Layer
 * Jenkins: after build any InventApp project (and before deploy) run unit test
 * move BusinessValidators logic to Aggregates on it contructors + add DuplicateValidators
+* use Docker - SqlServer

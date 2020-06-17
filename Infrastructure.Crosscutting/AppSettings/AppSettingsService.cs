@@ -18,7 +18,7 @@ namespace Infrastructure.Crosscutting.AppSettings
             const string sqlServerInventAppDatabase = "UciRod.Inventapp";
             string sqlServerHangfireDatabase = $"{sqlServerInventAppDatabase}.Hangfire";
 
-            const string sqlServerUser = "inventappUser";
+            const string sqlServerUser = "ucirod-inventapp";
             const string sqlServerPassword = "Uc1R0d-1nv3nt4pp";
 
             const string multipleActiveResultSetsTrue = "MultipleActiveResultSets=True";
