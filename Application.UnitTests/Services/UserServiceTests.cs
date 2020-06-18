@@ -21,7 +21,7 @@ using Infrastructure.Crosscutting.Renderting;
 using Moq;
 using NUnit.Framework;
 
-namespace Application.UnitTests
+namespace Application.UnitTests.Services
 {
     [TestFixture]
     public class UserServiceTests
