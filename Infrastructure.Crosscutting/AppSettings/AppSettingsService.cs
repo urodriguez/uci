@@ -40,7 +40,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                 
                 case "TEST":
                 {
-                    const string sqlServerInstance = "localhost";
+                    const string sqlServerInstance = "localhost,8083";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"152.171.94.90:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";

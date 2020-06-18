@@ -15,7 +15,11 @@ BEGIN TRANSACTION
 
 IF NOT EXISTS(SELECT 1 FROM sys.server_principals WHERE name = 'ucirod-inventapp')
 begin
-	CREATE LOGIN [ucirod-inventapp] WITH PASSWORD=N'Uc1R0d-1nv3nt4pp', DEFAULT_DATABASE=[UciRod.Inventapp], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+	CREATE LOGIN [ucirod-inventapp] WITH PASSWORD=N'Uc1R0d-1nv3nt4pp', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+end
+
+IF NOT EXISTS(SELECT 1 FROM sys.database_principals WHERE name = 'ucirod-inventapp')
+begin
 	CREATE USER [ucirod-inventapp] FOR LOGIN [ucirod-inventapp]
 	ALTER USER [ucirod-inventapp] WITH DEFAULT_SCHEMA=[dbo]
 	ALTER ROLE [db_owner] ADD MEMBER [ucirod-inventapp]
