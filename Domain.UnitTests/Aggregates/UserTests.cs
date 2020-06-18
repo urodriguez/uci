@@ -146,7 +146,7 @@ namespace Domain.UnitTests.Aggregates
         public void HasPassword_PasswordProvidedMatchWithUserPassword_ReturnsTrue()
         {
             //Arrange
-            var userMock = new Mock<User>();
+            var userMock = new Mock<User> { CallBase = true };
             userMock.SetupGet(u => u.Password).Returns("admin-9999");
 
             //Act
