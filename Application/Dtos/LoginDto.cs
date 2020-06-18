@@ -3,6 +3,6 @@
     public class LoginDto
     {
         public LoginStatus Status { get; set; }
-        public string SecurityToken { get; set; }
+        public SecurityTokenDto SecurityToken { get; set; }
     }
 }

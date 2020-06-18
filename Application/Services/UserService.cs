@@ -35,6 +35,7 @@ namespace Application.Services
         private readonly IEmailService _emailService;
 
         public UserService(
+            IUserPredicateFactory userPredicateFactory,
             IUnitOfWork unitOfWork, 
             IUserFactory userFactory,
             IUserUpdater updater,
@@ -42,7 +43,6 @@ namespace Application.Services
             ITokenService tokenService, 
             IRoleService roleService, 
             IUserDuplicateValidator userDuplicateValidator, 
-            IUserPredicateFactory userPredicateFactory,
             ILogService logService,
             ITemplateFactory templateFactory,
             ITemplateService templateService,
@@ -70,16 +70,16 @@ namespace Application.Services
             _emailService = emailService;
         }
 
-        public async Task<IApplicationResult> LoginAsync(CredentialsDto credentialsDto)
+        public async Task<IApplicationResult> LoginAsync(UserCredentialDto userCredential)
         {
             return await ExecuteAsync(async () =>
             {
-                if (credentialsDto == null) throw new CredentialNotProvidedException();
+                if (userCredential == null) throw new ArgumentNullException(nameof(userCredential));
 
-                var byName = _userPredicateFactory.CreateByName(credentialsDto.UserName);
+                var byName = _userPredicateFactory.CreateByName(userCredential.UserName);
                 var user = await _unitOfWork.Users.GetFirstAsync(byName);
 
-                if (user == null) throw new ObjectNotFoundException($"User '{credentialsDto.UserName}' not found");
+                if (user == null) throw new ObjectNotFoundException($"User '{userCredential.UserName}' not found");
                 
                 if (!user.EmailConfirmed) return new OkApplicationResult<LoginDto>
                 {
@@ -107,7 +107,7 @@ namespace Application.Services
                 }
 
                 //TODO use encrypted password
-                if (!user.HasPassword(credentialsDto.Password))
+                if (!user.HasPassword(userCredential.Password))
                 {
                     user.AccessFailedCount++;
                     await _unitOfWork.Users.UpdateAsync(user);
@@ -127,24 +127,28 @@ namespace Application.Services
                 user.ResetAccessFailedCount();
                 await _unitOfWork.Users.UpdateAsync(user);
 
-                var tokenGenerateRequest = await _tokenService.GenerateAsync(new TokenGenerateRequest
+                var tokenGenerateResponse = await _tokenService.GenerateAsync(new TokenGenerateRequest
                 {
                     Expires = _appSettingsService.DefaultTokenExpiresTime,
                     Claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, credentialsDto.UserName),
+                        new Claim(ClaimTypes.Name, userCredential.UserName),
                         new Claim(ClaimTypes.Email, user.Email)
                     }
                 });
 
-                if (tokenGenerateRequest == null) throw new InternalServerException("SecurityToken could not be generated");
+                if (tokenGenerateResponse == null) throw new InternalServerException("SecurityToken could not be generated");
 
                 return new OkApplicationResult<LoginDto>
                 {
                     Data = new LoginDto
                     {
                         Status = LoginStatus.Success,
-                        SecurityToken = tokenGenerateRequest.SecurityToken
+                        SecurityToken = new SecurityTokenDto
+                        {
+                            Token = tokenGenerateResponse.SecurityToken,
+                            Expires = tokenGenerateResponse.Expires
+                        }
                     }
                 };
             }, false);

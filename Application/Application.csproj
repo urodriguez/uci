@@ -86,8 +86,8 @@
     <Compile Include="Dtos\LoginStatus.cs" />
     <Compile Include="Dtos\PasswordDto.cs" />
     <Compile Include="Dtos\ReportInventionDto.cs" />
+    <Compile Include="Dtos\SecurityTokenDto.cs" />
     <Compile Include="Exceptions\AuthenticationFailException.cs" />
-    <Compile Include="Exceptions\CredentialNotProvidedException.cs" />
     <Compile Include="Exceptions\InternalServerException.cs" />
     <Compile Include="Factories\EmailFactory.cs" />
     <Compile Include="Factories\TemplateFactory.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Contracts\Services\IUserService.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\UserDto.cs" />
-    <Compile Include="Dtos\CredentialsDto.cs" />
+    <Compile Include="Dtos\UserCredentialDto.cs" />
     <Compile Include="Dtos\InventionDto.cs" />
     <Compile Include="Dtos\InventionTypeDto.cs" />
     <Compile Include="ApplicationResults\IApplicationResult.cs" />

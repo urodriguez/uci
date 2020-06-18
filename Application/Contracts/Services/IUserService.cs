@@ -10,6 +10,6 @@ namespace Application.Contracts.Services
         Task<IApplicationResult> ConfirmEmailAsync(Guid id);
         Task<IApplicationResult> CustomPasswordAsync(Guid id, PasswordDto passwordDto);
         Task<IApplicationResult> ForgotPasswordAsync(string userName);
-        Task<IApplicationResult> LoginAsync(CredentialsDto credentialsDto);
+        Task<IApplicationResult> LoginAsync(UserCredentialDto userCredential);
     }
 }

@@ -24,9 +24,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* Docker - Jenkins
-* expose Jenkins URL
-* unit test - Application Layer
 * Jenkins: test coverage
 * Reporting: integration - using hangfire recurrent job
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
@@ -49,6 +46,8 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
     * site5 -> rest POST (notification on new one + recurrent db updates)
   * CRUD registration reason
   * CRUD registration status
+* Docker - IIS
+* Docker - Jenkins
 * implement database caching
 * unit test - WebApi
 * Automation
@@ -144,3 +143,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * Jenkins: after build any InventApp project (and before deploy) run unit test
 * move BusinessValidators logic to Aggregates on it contructors + add DuplicateValidators
 * use Docker - SqlServer
+* unit test - Application Layer

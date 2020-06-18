@@ -35,7 +35,7 @@ namespace Domain.Aggregates
             IsUsingCustomPassword = false;
         }
 
-        public string Name { get; private set; }
+        public virtual string Name { get; private set; }
         public void SetName(string name)
         {
             if (string.IsNullOrEmpty(name)) throw new BusinessRuleException($"{EntityName}: ${PropertyName} can not be null or empty");
@@ -94,7 +94,7 @@ namespace Domain.Aggregates
             Role = role;
         }
 
-        public bool EmailConfirmed { get; set; }
+        public virtual bool EmailConfirmed { get; set; }
 
         public int AccessFailedCount { get; set; }
 
@@ -102,17 +102,17 @@ namespace Domain.Aggregates
 
         public DateTime? LastLoginTime { get; set; }
 
-        public bool Activate { get; set; }
+        public virtual bool Activate { get; set; }
 
-        public bool IsUsingCustomPassword { get; set; }
+        public virtual bool IsUsingCustomPassword { get; set; }
 
-        public bool IsLocked() => AccessFailedCount == 3;
+        public virtual bool IsLocked() => AccessFailedCount == 3;
 
-        public bool HasPassword(string password) => Password == password;
+        public virtual bool HasPassword(string password) => Password == password;
 
         public virtual bool IsAdmin() => Role == UserRole.Admin;
 
-        public void GenerateDefaultPassword()
+        public virtual void GenerateDefaultPassword()
         {
             IsUsingCustomPassword = false;
 
@@ -124,7 +124,7 @@ namespace Domain.Aggregates
             SetPassword(password);
         }
 
-        public void ResetAccessFailedCount()
+        public virtual void ResetAccessFailedCount()
         {
             AccessFailedCount = 0;
         }

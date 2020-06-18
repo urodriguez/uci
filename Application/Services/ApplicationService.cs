@@ -74,14 +74,14 @@ namespace Application.Services
                     Message = onfe.Message
                 };
             }
-            catch (CredentialNotProvidedException cnpe)
+            catch (ArgumentNullException ane)
             {
-                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | CredentialNotProvidedException | e.Message={cnpe.Message} - e.StackTrace={cnpe}");
+                _logService.LogErrorMessageAsync($"{GetType().Name}.{MethodBase.GetCurrentMethod().Name} | ArgumentNullException | e.Message={ane.Message} - e.StackTrace={ane}");
 
                 return new EmptyResult
                 {
                     Status = ApplicationResultStatus.BadRequest,
-                    Message = cnpe.Message
+                    Message = ane.Message
                 };
             }
             catch (BusinessRuleException bre)
