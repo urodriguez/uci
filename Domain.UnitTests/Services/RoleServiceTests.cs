@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Data;
+using System.Threading.Tasks;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates;
@@ -12,6 +13,26 @@ namespace Domain.UnitTests.Services
     [TestFixture]
     public class RoleServiceTests
     {
+        [Test]
+        public void IsAdminAsync_UserNotExists_ThrowsObjectNotFoundException()
+        {
+            //Arrange
+            var userPredicateFactory = new UserPredicateFactory();
+
+            var unityOfWorkMock = new Mock<IUnitOfWork>();
+            unityOfWorkMock.Setup(uow => uow.Users.GetFirstAsync(It.IsAny<IInventAppPredicate<User>>())).Returns(
+                Task.FromResult<User>(null)
+            );
+
+            var roleService = new RoleService(userPredicateFactory, unityOfWorkMock.Object);
+
+            //Act
+            AsyncTestDelegate testDelegate = () => roleService.IsAdminAsync(It.IsAny<string>());
+
+            //Assert
+            Assert.ThrowsAsync<ObjectNotFoundException>(testDelegate);
+        }
+
         [Test]
         public async Task IsAdminAsync_UserRoleIsAdmin_ReturnsTrue()
         {

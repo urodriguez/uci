@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Crosscutting.Renderting
+﻿namespace Infrastructure.Crosscutting.Rendering
 {
     public enum RenderAs
     {

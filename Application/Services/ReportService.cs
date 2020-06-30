@@ -12,7 +12,7 @@ using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Renderting;
+using Infrastructure.Crosscutting.Rendering;
 
 namespace Application.Services
 {

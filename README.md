@@ -24,12 +24,12 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* Jenkins: test coverage
-* Reporting: integration - using hangfire recurrent job
 * create V2 client application (using ngx-admin https://akveo.github.io/nebular)
   * user login
   * inventions module
   * users module
+* Jenkins: test coverage process report
+* Reporting: integration - using hangfire recurrent job
 * expose client application to external (no localhost) URL via public ip for TEST env
 * create index in db tables
 * create all necessary elements to create registration
@@ -144,3 +144,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * move BusinessValidators logic to Aggregates on it contructors + add DuplicateValidators
 * use Docker - SqlServer
 * unit test - Application Layer
+* test coverage integration on Dev using VS

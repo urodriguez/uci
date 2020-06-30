@@ -6,7 +6,7 @@ using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
 using RestSharp;
 
-namespace Infrastructure.Crosscutting.Renderting
+namespace Infrastructure.Crosscutting.Rendering
 {
     public class TemplateService : ITemplateService
     {

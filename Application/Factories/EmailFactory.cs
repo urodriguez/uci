@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Application.Contracts.Factories;
 using Domain.Aggregates;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Renderting;
+using Infrastructure.Crosscutting.Rendering;
 
 namespace Application.Factories
 {

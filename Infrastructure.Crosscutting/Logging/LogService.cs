@@ -7,7 +7,7 @@ using System.Text;
 using System.Web.Compilation;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Queueing;
-using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
+using Infrastructure.Crosscutting.Queueing.Dequeue.Resolvers;
 using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
 using RestSharp;

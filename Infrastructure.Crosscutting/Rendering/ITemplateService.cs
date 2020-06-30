@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Infrastructure.Crosscutting.Renderting
+namespace Infrastructure.Crosscutting.Rendering
 {
     public interface ITemplateService
     {

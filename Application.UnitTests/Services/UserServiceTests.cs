@@ -17,7 +17,7 @@ using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Renderting;
+using Infrastructure.Crosscutting.Rendering;
 using Moq;
 using NUnit.Framework;
 

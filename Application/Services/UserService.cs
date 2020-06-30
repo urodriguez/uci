@@ -20,7 +20,7 @@ using Infrastructure.Crosscutting.Auditing;
 using Infrastructure.Crosscutting.Authentication;
 using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Renderting;
+using Infrastructure.Crosscutting.Rendering;
 using Newtonsoft.Json;
 using Claim = Infrastructure.Crosscutting.Authentication.Claim;
 

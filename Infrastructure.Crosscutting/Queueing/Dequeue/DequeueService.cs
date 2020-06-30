@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Infrastructure.Crosscutting.AppSettings;
 using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Queueing.Dequeue.DequeueResolvers;
+using Infrastructure.Crosscutting.Queueing.Dequeue.Resolvers;
 
 namespace Infrastructure.Crosscutting.Queueing.Dequeue
 {

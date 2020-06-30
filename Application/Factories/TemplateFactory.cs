@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Application.Contracts.Factories;
 using Domain.Aggregates;
 using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Renderting;
+using Infrastructure.Crosscutting.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
