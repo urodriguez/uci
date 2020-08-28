@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
 import { LayoutService } from '../../../@core/utils';

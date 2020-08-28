@@ -12,7 +12,7 @@ export class InventionCategoriesComponent {
 
   constructor(private readonly inventionCategoryService: InventionCategoryService) {
     this.settings = this.getTableSettings();
-    this.source = inventionCategoryService.getAll();
+    this.source = this.inventionCategoryService.getAll();
   }
 
   getTableSettings(): any {

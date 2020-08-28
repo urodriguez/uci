@@ -2,8 +2,6 @@ import {Component, Inject} from '@angular/core';
 import {NB_AUTH_OPTIONS, NbRequestPasswordComponent} from '@nebular/auth';
 import {Router} from '@angular/router';
 import {UserService} from '../../pages/users/shared/user.service';
-import {AppContext} from '../../app-context';
-import {ResetPassword} from '../reset-password/reset-password.model';
 
 @Component({
   selector: 'ngx-forgot-password',
@@ -13,8 +11,7 @@ import {ResetPassword} from '../reset-password/reset-password.model';
 export class ForgotPasswordComponent extends NbRequestPasswordComponent {
   constructor(@Inject(NB_AUTH_OPTIONS) options = {},
               router: Router,
-              private readonly userService: UserService,
-              private readonly appContext: AppContext) {
+              private readonly userService: UserService) {
     super(null, options, null, router);
   }
 

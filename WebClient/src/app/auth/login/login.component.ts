@@ -4,8 +4,6 @@ import {LoginStatus} from './login-status.enum';
 import {Router} from '@angular/router';
 import {AuthService} from '../shared/auth.service';
 import {UserCredential} from './user-credential.model';
-import {AppContext} from '../../app-context';
-import {UserService} from '../../pages/users/shared/user.service';
 
 @Component({
   selector: 'ngx-login',
