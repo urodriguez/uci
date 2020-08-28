@@ -1,0 +1,17 @@
+<nb-card>
+  <nb-card-header>
+    Users
+  </nb-card-header>
+
+  <nb-card-body>
+    <button nbButton hero shape="round" status="primary" (click)="orchestrateUserCreateRequested()">
+      Create
+    </button>
+
+    <ngx-user-table
+      [users]="users"
+      (userEditRequested)="orchestrateUserEditRequested($event)"
+      (userDeleteRequested)="orchestrateUserDeleteRequested($event)">
+    </ngx-user-table>
+  </nb-card-body>
+</nb-card>

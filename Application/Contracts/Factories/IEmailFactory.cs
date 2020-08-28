@@ -8,6 +8,6 @@ namespace Application.Contracts.Factories
     {
         Task<Email> CreateForUserReportRequestedAsync(User user, byte[] report);
         Task<Email> CreateForUserCreatedAsync(User user);
-        Task<Email> CreateForUserPasswordLostAsync(User user);
+        Task<Email> CreateForUserForgotPasswordAsync(User user);
     }
 }

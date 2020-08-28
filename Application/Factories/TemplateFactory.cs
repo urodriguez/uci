@@ -29,7 +29,7 @@ namespace Application.Factories
 
             var dataBound = new JObject
             {
-                ["userName"] = user.Name
+                ["userFullName"] = $"{user.FirstName} {user.LastName}"
             }.ToString();
 
             return new Template
@@ -47,7 +47,7 @@ namespace Application.Factories
 
             var dataBound = new JObject
             {
-                ["userName"] = user.Name,
+                ["userFullName"] = $"{user.FirstName} {user.LastName}",
                 ["inventAppClientUrl"] = _appSettingsService.ClientUrl
             }.ToString();
 
@@ -84,10 +84,9 @@ namespace Application.Factories
 
             var dataBound = new JObject
             {
-                ["confirmEmailUrl"] = $"{_appSettingsService.WebApiUrl}/users/{user.Id}/confirmEmail",
+                ["confirmEmailUrl"] = $"{_appSettingsService.WebApiUrl}/v1.0/users/{user.Id}/confirmEmail",
                 ["userFirstName"] = user.FirstName,
                 ["userLastName"] = user.LastName,
-                ["userName"] = user.Name,
                 ["userPassword"] = user.Password,
                 ["userRole"] = user.Role.ToString()
             }.ToString();
@@ -100,14 +99,14 @@ namespace Application.Factories
             };
         }
 
-        public async Task<Template> CreateForUserPasswordLostAsync(User user)
+        public async Task<Template> CreateForUserForgotPasswordAsync(User user)
         {
-            var templateFilePath = $"{_appSettingsService.EmailsTemplatesDirectory}\\user_passwordLost.html";
+            var templateFilePath = $"{_appSettingsService.EmailsTemplatesDirectory}\\user_forgotPassword.html";
             var templateFileContent = await ReadFileAsync(templateFilePath);
 
             var dataBound = new JObject
             {
-                ["userName"] = user.Name,
+                ["userFullName"] = $"{user.GetFullName()}",
                 ["userPassword"] = user.Password,
                 ["inventAppClientUrl"] = _appSettingsService.ClientUrl
             }.ToString();

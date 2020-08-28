@@ -88,9 +88,9 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserEmail);
                 if (!isAdmin) 
-                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserEmail}'");
 
                 await _duplicateValidator.ValidateAsync(dto);
 
@@ -102,7 +102,7 @@ namespace Application.Services
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = _inventAppContext.UserName,
+                    User = _inventAppContext.UserEmail,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
                     Entity = JsonConvert.SerializeObject(aggregate),
@@ -120,9 +120,9 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserEmail);
                 if (!isAdmin)
-                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserEmail}'");
 
                 await _duplicateValidator.ValidateAsync(dto);
 
@@ -138,7 +138,7 @@ namespace Application.Services
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = _inventAppContext.UserName,
+                    User = _inventAppContext.UserEmail,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
                     Entity = JsonConvert.SerializeObject(aggregate),
@@ -153,9 +153,9 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserEmail);
                 if (!isAdmin)
-                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserEmail}'");
 
                 var aggregate = await _unitOfWork.GetRepository<TAggregateRoot>().GetByIdAsync(id);
 
@@ -167,7 +167,7 @@ namespace Application.Services
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = _inventAppContext.UserName,
+                    User = _inventAppContext.UserEmail,
                     EntityId = aggregate.Id.ToString(),
                     EntityName = aggregate.GetType().Name,
                     Entity = JsonConvert.SerializeObject(aggregate),

@@ -17,6 +17,8 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> CreateAsync([FromBody] UserCredentialDto userCredential) => await ExecuteAsync(async () => await _userService.LoginAsync(userCredential));
+        public async Task<IHttpActionResult> CreateAsync([FromBody] UserCredentialDto userCredential) => await ExecuteAsync(
+            async () => await _userService.LoginAsync(userCredential)
+        );
     }
 }

@@ -122,18 +122,24 @@ namespace Application.Services
 
         protected async Task CheckAuthenticationAsync()
         {
-            var tokenValidation = await _tokenService.ValidateAsync(new TokenValidateRequest
+            if (string.IsNullOrEmpty(_inventAppContext.SecurityToken)) throw new AuthenticationFailException("SecurityToken is invalid");
+
+            var tokenValidateResponse = await _tokenService.ValidateAsync(new TokenValidateRequest
             {
                 SecurityToken = _inventAppContext.SecurityToken
             });
 
-            if (tokenValidation.TokenIsInvalid()) throw new AuthenticationFailException("SecurityToken is invalid");
-            if (tokenValidation.TokenIsExpired()) throw new AuthenticationFailException("SecurityToken is expired");
+            if (tokenValidateResponse.TokenIsInvalid()) throw new AuthenticationFailException("SecurityToken is invalid");
+            if (tokenValidateResponse.TokenIsExpired()) throw new AuthenticationFailException("SecurityToken is expired");
 
-            var claimName = tokenValidation.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
-            if (claimName == null) throw new InternalServerException("Missing claim type 'name'");
+            var idClaim = tokenValidateResponse.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var emailClaim = tokenValidateResponse.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
 
-            _inventAppContext.UserName = claimName.Value;
+            if (idClaim == null || emailClaim == null) 
+                throw new InternalServerException("Not all claims could be extracted");
+
+            _inventAppContext.UserId = Guid.Parse(idClaim.Value);
+            _inventAppContext.UserEmail = emailClaim.Value;
         }
     }
 }

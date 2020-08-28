@@ -19,11 +19,11 @@ namespace Infrastructure.Persistence.Dapper.Repositories
 {
     public class Repository<TAggregateRoot> : IRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        private readonly ILogService _logService;
-        private readonly IAppSettingsService _appSettingsService;
+        protected readonly ILogService _logService;
+        protected readonly IAppSettingsService _appSettingsService;
 
-        private readonly IDbTransaction _dbTransaction;
-        private readonly IDbConnection _dbConnection;
+        protected readonly IDbTransaction _dbTransaction;
+        protected readonly IDbConnection _dbConnection;
 
         public Repository(ILogService logService, IAppSettingsService appSettingsService, IDbTransaction dbTransaction)
         {

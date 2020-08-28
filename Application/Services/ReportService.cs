@@ -77,7 +77,7 @@ namespace Application.Services
 
                 if (reportInventionDto.SendByEmail)
                 {
-                    var byName = _userPredicateFactory.CreateByName(_inventAppContext.UserName);
+                    var byName = _userPredicateFactory.CreateByEmail(_inventAppContext.UserEmail);
                     var user = await _unitOfWork.Users.GetFirstAsync(byName);
 
                     var email = await _emailFactory.CreateForUserReportRequestedAsync(user, reportTemplateRendered);

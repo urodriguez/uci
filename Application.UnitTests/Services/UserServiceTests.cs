@@ -33,10 +33,9 @@ namespace Application.UnitTests.Services
             var userPredicateFactoryMock = new Mock<IUserPredicateFactory>();
 
             var userMock = new Mock<User>();
-            userMock.SetupGet(u => u.Name).Returns("test");
             userMock.SetupGet(u => u.Password).Returns("Pa$$word");
             userMock.SetupGet(u => u.EmailConfirmed).Returns(true);
-            userMock.SetupGet(u => u.Activate).Returns(true);
+            userMock.SetupGet(u => u.Active).Returns(true);
             userMock.Setup(u => u.IsLocked()).Returns(false);
             userMock.Setup(u => u.HasPassword(It.IsAny<string>())).Returns(true);
             userMock.SetupGet(u => u.IsUsingCustomPassword).Returns(true);
@@ -79,9 +78,9 @@ namespace Application.UnitTests.Services
             );
 
             //Act
-            var appResult = (ApplicationResult<LoginDto>) await userService.LoginAsync(new UserCredentialDto
+            var appResult = (ApplicationResult<LoginResultDto>) await userService.LoginAsync(new UserCredentialDto
             {
-                UserName = "test",
+                Email = "test@test.com",
                 Password = "Pa$$word"
             });
 
@@ -93,7 +92,7 @@ namespace Application.UnitTests.Services
         }
         
         [Test]
-        public async Task LoginAsync_NotPassingUserCredential_ReturnsEmptyResultWithStatusBadRequestAndInfoMessage()
+        public async Task LoginAsync_NotPassingUserCredential_ReturnsApplicationResultWithStatusUnauthenticatedAndLoginStatusInvalidEmailOrPassword()
         {
             //Arrange
             var unityOfWorkMock = new Mock<IUnitOfWork>();
@@ -119,15 +118,15 @@ namespace Application.UnitTests.Services
             );
 
             //Act
-            var appResult = await userService.LoginAsync(null);
+            var appResult = (ApplicationResult<LoginResultDto>) await userService.LoginAsync(null);
 
             //Assert
-            Assert.IsTrue(appResult.Status == ApplicationResultStatus.BadRequest);
-            Assert.IsTrue(appResult.Message == $"Value cannot be null.{Environment.NewLine}Parameter name: userCredential");
+            Assert.IsTrue(appResult.Status == ApplicationResultStatus.Unauthenticated);
+            Assert.IsTrue(appResult.Data.Status == LoginStatus.InvalidEmailOrPassword);
         }
 
         [Test]
-        public async Task LoginAsync_NotExistingUserName_ReturnsEmptyResultWithStatusNotFoundAndInfoMessage()
+        public async Task LoginAsync_NotExistingUserEmail_ReturnsApplicationResultWithStatusUnauthenticatedAndLoginStatusInvalidEmailOrPassword()
         {
             //Arrange
             var userPredicateFactoryMock = new Mock<IUserPredicateFactory>();
@@ -158,14 +157,14 @@ namespace Application.UnitTests.Services
             );
 
             //Act
-            var appResult = await userService.LoginAsync(new UserCredentialDto
+            var appResult = (ApplicationResult<LoginResultDto>) await userService.LoginAsync(new UserCredentialDto
             {
-                UserName = "test"
+                Email = "notexists@test.com"
             });
 
             //Assert
-            Assert.IsTrue(appResult.Status == ApplicationResultStatus.NotFound);
-            Assert.IsTrue(appResult.Message == "User 'test' not found");
+            Assert.IsTrue(appResult.Status == ApplicationResultStatus.Unauthenticated);
+            Assert.IsTrue(appResult.Data.Status == LoginStatus.InvalidEmailOrPassword);
         }
 
         [Test]
@@ -203,7 +202,7 @@ namespace Application.UnitTests.Services
             );
 
             //Act
-            var appResult = (ApplicationResult<LoginDto>) await userService.LoginAsync(new UserCredentialDto());
+            var appResult = (ApplicationResult<LoginResultDto>) await userService.LoginAsync(new UserCredentialDto());
 
             //Assert
             Assert.IsTrue(appResult.Status == ApplicationResultStatus.Ok);
@@ -218,7 +217,7 @@ namespace Application.UnitTests.Services
 
             var userMock = new Mock<User>();
             userMock.SetupGet(u => u.EmailConfirmed).Returns(true);
-            userMock.SetupGet(u => u.Activate).Returns(false);
+            userMock.SetupGet(u => u.Active).Returns(false);
 
             var unityOfWorkMock = new Mock<IUnitOfWork>();
             unityOfWorkMock.Setup(uow => uow.Users.GetFirstAsync(It.IsAny<IInventAppPredicate<User>>())).Returns(
@@ -246,7 +245,7 @@ namespace Application.UnitTests.Services
             );
 
             //Act
-            var appResult = (ApplicationResult<LoginDto>) await userService.LoginAsync(new UserCredentialDto());
+            var appResult = (ApplicationResult<LoginResultDto>) await userService.LoginAsync(new UserCredentialDto());
 
             //Assert
             Assert.IsTrue(appResult.Status == ApplicationResultStatus.Ok);
@@ -261,7 +260,7 @@ namespace Application.UnitTests.Services
 
             var userMock = new Mock<User>();
             userMock.SetupGet(u => u.EmailConfirmed).Returns(true);
-            userMock.SetupGet(u => u.Activate).Returns(true);
+            userMock.SetupGet(u => u.Active).Returns(true);
             userMock.Setup(u => u.IsLocked()).Returns(true);
             userMock.Setup(u => u.GenerateDefaultPassword());
             userMock.Setup(u => u.ResetAccessFailedCount());
@@ -296,7 +295,7 @@ namespace Application.UnitTests.Services
             );
 
             //Act
-            var appResult = (ApplicationResult<LoginDto>) await userService.LoginAsync(new UserCredentialDto());
+            var appResult = (ApplicationResult<LoginResultDto>) await userService.LoginAsync(new UserCredentialDto());
 
             //Assert
             Assert.IsTrue(appResult.Status == ApplicationResultStatus.Ok);

@@ -24,10 +24,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* create V2 client application (using ngx-admin https://akveo.github.io/nebular)
-  * user login
-  * inventions module
-  * users module
 * Jenkins: test coverage process report
 * Reporting: integration - using hangfire recurrent job
 * expose client application to external (no localhost) URL via public ip for TEST env
@@ -51,6 +47,7 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * implement database caching
 * unit test - WebApi
 * Automation
+* encrypt passwords
 * deploy app to cloud - PROD env
 * use PusherServer/WebSockets to notify UI on server changes
 * implement integration events with NServiceBus
@@ -145,3 +142,7 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * use Docker - SqlServer
 * unit test - Application Layer
 * test coverage integration on Dev using VS
+* create V2 client application (using ngx-admin https://akveo.github.io/nebular)
+  * user login
+  * inventions module
+  * users module

@@ -11,6 +11,6 @@ namespace Application.Contracts.Factories
         Task<Template> CreateForUserEmailConfirmedAsync(User user);
         Task<Template> CreateForInventionReportAsync(IEnumerable<Invention> inventions);
         Task<Template> CreateForUserCreatedAsync(User user);
-        Task<Template> CreateForUserPasswordLostAsync(User user);
+        Task<Template> CreateForUserForgotPasswordAsync(User user);
     }
 }

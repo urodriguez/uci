@@ -1,9 +1,12 @@
-﻿namespace Application.Contracts
+﻿using System;
+
+namespace Application.Contracts
 {
     public interface IInventAppContext
     {
-        string UserName { get; set; }
-
         string SecurityToken { get; set; }
+
+        Guid UserId { get; set; }
+        string UserEmail { get; set; }
     }
 }

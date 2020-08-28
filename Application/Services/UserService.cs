@@ -74,21 +74,29 @@ namespace Application.Services
         {
             return await ExecuteAsync(async () =>
             {
-                if (userCredential == null) throw new ArgumentNullException(nameof(userCredential));
-
-                var byName = _userPredicateFactory.CreateByName(userCredential.UserName);
-                var user = await _unitOfWork.Users.GetFirstAsync(byName);
-
-                if (user == null) throw new ObjectNotFoundException($"User '{userCredential.UserName}' not found");
-                
-                if (!user.EmailConfirmed) return new OkApplicationResult<LoginDto>
+                if (userCredential == null) return new ApplicationResult<LoginResultDto>
                 {
-                    Data = new LoginDto { Status = LoginStatus.UnconfirmedEmail }
+                    Status = ApplicationResultStatus.Unauthenticated,
+                    Data = new LoginResultDto { Status = LoginStatus.InvalidEmailOrPassword }
                 };
 
-                if (!user.Activate) return new OkApplicationResult<LoginDto>
+                var byEmail = _userPredicateFactory.CreateByEmail(userCredential.Email);
+                var user = await _unitOfWork.Users.GetFirstAsync(byEmail);
+
+                if (user == null) return new ApplicationResult<LoginResultDto>
                 {
-                    Data = new LoginDto { Status = LoginStatus.Inactive }
+                    Status = ApplicationResultStatus.Unauthenticated,
+                    Data = new LoginResultDto { Status = LoginStatus.InvalidEmailOrPassword }
+                };
+
+                if (!user.EmailConfirmed) return new OkApplicationResult<LoginResultDto>
+                {
+                    Data = new LoginResultDto { Status = LoginStatus.UnconfirmedEmail }
+                };
+
+                if (!user.Active) return new OkApplicationResult<LoginResultDto>
+                {
+                    Data = new LoginResultDto { Status = LoginStatus.Inactive }
                 };
 
                 if (user.IsLocked())
@@ -97,12 +105,12 @@ namespace Application.Services
                     user.ResetAccessFailedCount();
                     await _unitOfWork.Users.UpdateAsync(user);
 
-                    var email = await _emailFactory.CreateForUserPasswordLostAsync(user);
+                    var email = await _emailFactory.CreateForUserForgotPasswordAsync(user);
                     _emailService.SendAsync(email);
 
-                    return new OkApplicationResult<LoginDto>
+                    return new OkApplicationResult<LoginResultDto>
                     {
-                        Data = new LoginDto { Status = LoginStatus.Locked }
+                        Data = new LoginResultDto { Status = LoginStatus.Locked }
                     };
                 }
 
@@ -112,16 +120,11 @@ namespace Application.Services
                     user.AccessFailedCount++;
                     await _unitOfWork.Users.UpdateAsync(user);
 
-                    return new OkApplicationResult<LoginDto>
+                    return new OkApplicationResult<LoginResultDto>
                     {
-                        Data = new LoginDto { Status = LoginStatus.InvalidPassword }
+                        Data = new LoginResultDto { Status = LoginStatus.InvalidEmailOrPassword }
                     };
                 }
-
-                if (!user.IsUsingCustomPassword) return new OkApplicationResult<LoginDto>
-                {
-                    Data = new LoginDto { Status = LoginStatus.NonCustomPassword }
-                };
 
                 user.LastLoginTime = DateTime.UtcNow;
                 user.ResetAccessFailedCount();
@@ -132,18 +135,20 @@ namespace Application.Services
                     Expires = _appSettingsService.DefaultTokenExpiresTime,
                     Claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, userCredential.UserName),
-                        new Claim(ClaimTypes.Email, user.Email)
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.GivenName, user.FirstName),
+                        new Claim(ClaimTypes.Surname, user.GetSurname())
                     }
                 });
 
                 if (tokenGenerateResponse == null) throw new InternalServerException("SecurityToken could not be generated");
 
-                return new OkApplicationResult<LoginDto>
+                return new OkApplicationResult<LoginResultDto>
                 {
-                    Data = new LoginDto
+                    Data = new LoginResultDto
                     {
-                        Status = LoginStatus.Success,
+                        Status = user.IsUsingCustomPassword ? LoginStatus.Success : LoginStatus.NonCustomPassword,
                         SecurityToken = new SecurityTokenDto
                         {
                             Token = tokenGenerateResponse.SecurityToken,
@@ -154,13 +159,30 @@ namespace Application.Services
             }, false);
         }
 
+        public async Task<IApplicationResult> GetLoggedAsync()
+        {
+            return await ExecuteAsync(async () =>
+            {
+                var user = await _unitOfWork.Users.GetByIdAsync(_inventAppContext.UserId);
+
+                if (user == null) throw new ObjectNotFoundException($"User with Id={_inventAppContext.UserId} not found");
+
+                var userDto = _factory.Create(user);
+
+                return new OkApplicationResult<UserDto>
+                {
+                    Data = userDto
+                };
+            });
+        }
+
         public override async Task<IApplicationResult> CreateAsync(UserDto userDto)
         {
             return await ExecuteAsync(async () =>
             {
-                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserName);
+                var isAdmin = await _roleService.IsAdminAsync(_inventAppContext.UserEmail);
                 if (!isAdmin)
-                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserName}'");
+                    throw new UnauthorizedAccessException($"Access Denied. Check permissions for User '{_inventAppContext.UserEmail}'");
 
                 await _duplicateValidator.ValidateAsync(userDto);
 
@@ -172,7 +194,7 @@ namespace Application.Services
                 {
                     Application = "InventApp",
                     Environment = _appSettingsService.Environment.Name,
-                    User = _inventAppContext.UserName,
+                    User = _inventAppContext.UserEmail,
                     EntityId = user.Id.ToString(),
                     EntityName = user.GetType().Name,
                     Entity = JsonConvert.SerializeObject(user),
@@ -211,45 +233,45 @@ namespace Application.Services
             }, false);
         }
 
-        public async Task<IApplicationResult> CustomPasswordAsync(Guid id, PasswordDto passwordDto)
+        public async Task<IApplicationResult> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
             return await ExecuteAsync(async () =>
             {
-                var user = await _unitOfWork.Users.GetByIdAsync(id);
+                var user = await _unitOfWork.Users.GetByIdAsync(_inventAppContext.UserId);
 
-                if (user == null) throw new ObjectNotFoundException($"User with Id={id} not found");
+                if (user == null) throw new ObjectNotFoundException($"User with Id={_inventAppContext.UserId} not found");
 
-                if (!user.HasPassword(passwordDto.Default)) throw new AuthenticationFailException("Invalid credentials");
+                if (!user.HasPassword(resetPasswordDto.OldPassword)) throw new AuthenticationFailException("Invalid OldPassword");
 
-                if (user.Password == passwordDto.Custom) return new EmptyResult
+                if (user.Password == resetPasswordDto.NewPassword) return new EmptyResult
                 {
                     Status = ApplicationResultStatus.BadRequest,
-                    Message = "Default and Custom password can not be equals"
+                    Message = "Old and New password can not be equals"
                 };
 
-                user.SetPassword(passwordDto.Custom);
+                user.SetPassword(resetPasswordDto.NewPassword);
                 user.IsUsingCustomPassword = true;
                 await _unitOfWork.Users.UpdateAsync(user);
 
                 return new OkEmptyResult();
-            }, false);
+            });
         }
         
-        public async Task<IApplicationResult> ForgotPasswordAsync(string userName)
+        public async Task<IApplicationResult> ForgotPasswordAsync(string email)
         {
             return await ExecuteAsync(async () =>
             {
-                var byUserName = _userPredicateFactory.CreateByName(userName);
-                var user = await _unitOfWork.Users.GetFirstAsync(byUserName);
+                var byEmail = _userPredicateFactory.CreateByEmail(email);
+                var user = await _unitOfWork.Users.GetFirstAsync(byEmail);
 
-                if (user == null) throw new ObjectNotFoundException($"User with UserName={userName} not found");
+                if (user == null) throw new ObjectNotFoundException($"User with Email={email} not found");
 
                 user.GenerateDefaultPassword();
                 user.ResetAccessFailedCount();
                 await _unitOfWork.Users.UpdateAsync(user);
 
-                var email = await _emailFactory.CreateForUserPasswordLostAsync(user);
-                _emailService.SendAsync(email);
+                var sendEmailData = await _emailFactory.CreateForUserForgotPasswordAsync(user);
+                _emailService.SendAsync(sendEmailData);
 
                 return new OkEmptyResult();
             }, false);

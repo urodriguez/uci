@@ -84,7 +84,7 @@ namespace Infrastructure.Crosscutting.AppSettings
 
         public string AuthenticationApiUrlV1 => $"http://{_baseInfrastructureApiUrl}/authentication/api/v1.0";
 
-        public string ClientUrl => $"http://{_baseInventAppApiUrl}/webapi/swagger";
+        public string ClientUrl => $"http://localhost:4200";
 
         public string ConnectionString { get; }
 

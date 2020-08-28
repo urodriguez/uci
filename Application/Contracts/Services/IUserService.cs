@@ -8,8 +8,9 @@ namespace Application.Contracts.Services
     public interface IUserService : ICrudService<UserDto>
     {
         Task<IApplicationResult> ConfirmEmailAsync(Guid id);
-        Task<IApplicationResult> CustomPasswordAsync(Guid id, PasswordDto passwordDto);
-        Task<IApplicationResult> ForgotPasswordAsync(string userName);
+        Task<IApplicationResult> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+        Task<IApplicationResult> ForgotPasswordAsync(string email);
         Task<IApplicationResult> LoginAsync(UserCredentialDto userCredential);
+        Task<IApplicationResult> GetLoggedAsync();
     }
 }

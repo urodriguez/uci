@@ -54,15 +54,15 @@ namespace Application.Factories
             };
         }
 
-        public async Task<Email> CreateForUserPasswordLostAsync(User user)
+        public async Task<Email> CreateForUserForgotPasswordAsync(User user)
         {
-            var emailBodytemplate = await _templateFactory.CreateForUserPasswordLostAsync(user);
+            var emailBodytemplate = await _templateFactory.CreateForUserForgotPasswordAsync(user);
             var emailBodyTemplateRendered = await _templateService.RenderAsync<string>(emailBodytemplate);
 
             return new Email
             {
                 To = user.Email,
-                Subject = "InventApp - Reset Password",
+                Subject = "InventApp - Forgot Password",
                 Body = emailBodyTemplateRendered
             };
         }

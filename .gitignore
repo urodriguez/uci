@@ -1,3 +1,4 @@
+################### WEB API - START ######################
 # User-specific files
 *.user
 
@@ -22,3 +23,50 @@ Reports
 
 # Avoid ignore template reports from previous ignore match
 !Assets/Templates/Reports/
+################### WEB API - START ######################
+
+##########################################################
+
+################### WEB CLIENT - START ###################
+# compiled output
+WebClient/dist
+WebClient/tmp
+WebClient/out-tsc
+
+# dependencies
+WebClient/node_modules
+
+# IDEs and editors
+WebClient/.idea
+WebClient/.project
+WebClient/.classpath
+WebClient/.c9/
+WebClient/*.launch
+WebClient/.settings/
+WebClient/*.sublime-workspace
+
+# IDE - VSCode
+WebClient/.vscode/*
+!WebClient/.vscode/settings.json
+!WebClient/.vscode/tasks.json
+!WebClient/.vscode/launch.json
+!WebClient/.vscode/extensions.json
+
+# misc
+WebClient/.sass-cache
+WebClient/connect.lock
+WebClient/coverage
+WebClient/libpeerconnection.log
+WebClient/npm-debug.log
+WebClient/testem.log
+WebClient/typings
+WebClient/docs
+
+# e2e
+WebClient/e2e/*.js
+WebClient/e2e/*.map
+
+# System Files
+WebClient/.DS_Store
+WebClient/Thumbs.db
+################### WEB CLIENT - END ###################

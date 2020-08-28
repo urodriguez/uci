@@ -1,0 +1,39 @@
+<nb-layout>
+  <nb-layout-column></nb-layout-column>
+  <nb-layout-column class="colored-column-warning">
+    <nb-card status="success">
+      <nb-card-header>User</nb-card-header>
+
+      <nb-card-body>
+        <div class="form-group">
+          <label for="first-name" class="label">First Name</label>
+          <input type="text" nbInput fullWidth id="first-name" placeholder="First Name" [(ngModel)]="user.firstName">
+        </div>
+
+        <div class="form-group">
+          <label for="middle-name" class="label">Middle Name</label>
+          <input type="text" nbInput fullWidth id="middle-name" placeholder="Middle Name" [(ngModel)]="user.middleName">
+        </div>
+
+        <div class="form-group">
+          <label for="last-name" class="label">Last Name</label>
+          <input type="text" nbInput fullWidth id="last-name" placeholder="Last Name" [(ngModel)]="user.lastName">
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="label">Email</label>
+          <input type="email" nbInput fullWidth id="email" placeholder="Email" disabled [ngModel]="user.email">
+        </div>
+
+      </nb-card-body>
+
+      <nb-card-footer>
+        <div class="text-center">
+          <button nbButton status="success" (click)="save()">Save</button>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </nb-layout-column>
+  <nb-layout-column></nb-layout-column>
+</nb-layout>
+

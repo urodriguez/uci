@@ -4,27 +4,45 @@
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <style>
+    .inventapp-table {
+      background-color: #FFF8C9 !important;
+      border-spacing: 0 !important; 
+      border: 1px solid black !important;
+    }
+    .inventapp-table-head {
+      border: 1px dashed #BBB !important;
+      font-size: 1.5em !important;
+    }
+    .inventapp-table-data {
+      border: 1px dashed #BBB !important;
+      font-size: 1.5em !important;
+    }
+    .inventapp-table-text {
+      margin-left: 8px !important;
+      margin-right: 8px !important;
+    }
+  </style>
 </head>
 <body>
   <h2>Welcome To 'InventApp' platform!</h2>
   <p style="font-size: 1.5em;">You must confirm your email in order to have access and enjoy our features.</p>
   <p style="font-size: 1.5em;">To confirm <a href="{{:confirmEmailUrl}}" target="_blank" rel="noopener">Click here</a></p>
   <p style="font-size: 1.5em;">Here is some basic information about your account:</p>
-  <table style="background-color: #FFF8C9; border-spacing: 0; border: 1px solid black;">
+  <table class="inventapp-table">
     <tbody>
       <tr>
-        <th style="border: 1px dashed #BBB;"><strong>FirstName</strong></th>
-        <th style="border: 1px dashed #BBB;"><strong>LastName</strong></th>
-        <th style="border: 1px dashed #BBB;"><strong>UserName</strong></th>
-        <th style="border: 1px dashed #BBB;"><strong>Password</strong></th>
-        <th style="border: 1px dashed #BBB;"><strong>Role</strong></th>
+        <th class="inventapp-table-head"><div class="inventapp-table-text">FirstName</div></th>
+        <th class="inventapp-table-head"><div class="inventapp-table-text">LastName</div></th>
+        <th class="inventapp-table-head"><div class="inventapp-table-text">Password</div></th>
+        <th class="inventapp-table-head"><div class="inventapp-table-text">Role</div></th>
       </tr>
       <tr>
-        <td style="border: 1px dashed #BBB;">{{:userFirstName}}</td>
-        <td style="border: 1px dashed #BBB;">{{:userLastName}}</td> 
-        <td style="border: 1px dashed #BBB;">{{:userName}}</td> 
-        <td style="border: 1px dashed #BBB;">{{:userPassword}}</td> 
-        <td style="border: 1px dashed #BBB;">{{:userRole}}</td>
+        <td class="inventapp-table-data"><div class="inventapp-table-text">{{:userFirstName}}</div></td>
+        <td class="inventapp-table-data"><div class="inventapp-table-text">{{:userLastName}}</div></td> 
+        <td class="inventapp-table-data"><div class="inventapp-table-text">{{:userPassword}}</div></td> 
+        <td class="inventapp-table-data"><div class="inventapp-table-text">{{:userRole}}</div></td>
       </tr>
     </tbody>
   </table>

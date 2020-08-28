@@ -23,9 +23,6 @@ namespace Application.DuplicateValidators
 
         public async Task ValidateAsync(UserDto inventionTypeDto)
         {
-            var byDistinctIdAndName = _userPredicateFactory.CreateByDistinctIdAndName(inventionTypeDto.Id, inventionTypeDto.Name);
-            if (await _unitOfWork.Users.AnyAsync(byDistinctIdAndName)) throw new BusinessRuleException($"{_aggregateRootName}: name={inventionTypeDto.Name} already exits");
-
             var byDistinctIdAndEmail = _userPredicateFactory.CreateByDistinctIdAndEmail(inventionTypeDto.Id, inventionTypeDto.Email);
             if (await _unitOfWork.Users.AnyAsync(byDistinctIdAndEmail)) throw new BusinessRuleException($"{_aggregateRootName}: email={inventionTypeDto.Email} already exits");
         }

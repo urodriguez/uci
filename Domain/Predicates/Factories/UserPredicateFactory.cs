@@ -21,21 +21,9 @@ namespace Domain.Predicates.Factories
             );
         }
 
-        public IInventAppPredicate<User> CreateByDistinctIdAndName(Guid id, string name)
+        public IInventAppPredicate<User> CreateByEmail(string email)
         {
-            return new InventAppPredicateGroup<User>(
-                new List<IInventAppPredicate<User>>
-                {
-                    new InventAppPredicateIndividual<User>(u => u.Id, InventAppPredicateOperator.NotEq, id),
-                    new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, name)
-                },
-                InventAppPredicateOperatorGroup.And
-            );
-        }
-
-        public IInventAppPredicate<User> CreateByName(string name)
-        {
-            return new InventAppPredicateIndividual<User>(u => u.Name, InventAppPredicateOperator.Eq, name);
+            return new InventAppPredicateIndividual<User>(u => u.Email, InventAppPredicateOperator.Eq, email);
         }
     }
 }

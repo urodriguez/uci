@@ -29,23 +29,22 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'User')
 begin
 	CREATE TABLE [dbo].[User](
 		[Id] uniqueidentifier NOT NULL,
-		[Name] varchar(32) NOT NULL,
+		[Email] varchar(64) NOT NULL,
 		[Password] varchar(8) NULL,
 		[FirstName] varchar(32) NOT NULL,
 		[MiddleName] varchar(32) NULL,
 		[LastName] varchar(32) NOT NULL,
-		[Email] varchar(64) NOT NULL,
 		[Role] int NOT NULL,
 		[DateCreated] datetime NOT NULL,
 		[LastLoginTime] datetime NULL,
-		[Activate] bit NOT NULL,
+		[Active] bit NOT NULL,
 		[EmailConfirmed] bit NOT NULL,
 		[AccessFailedCount] int NOT NULL,
 		[IsUsingCustomPassword] bit NOT NULL
 	)
 
 	INSERT INTO [dbo].[User]
-	VALUES ('6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3', 'inventApp-admin', 'Pa$$w0rd', 'Invent', '', 'App', 'inventApp@gmail.com', 1, GETDATE(), null, 1, 1, 0, 1)
+	VALUES ('6fe0ddd8-81b3-42fe-bf0d-455422e0b7a3', 'inventApp@gmail.com', 'Pa$$w0rd', 'Invent', '', 'App', 1, GETDATE(), null, 1, 1, 0, 1)
 end
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Invention')

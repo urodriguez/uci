@@ -3,7 +3,7 @@
     public enum LoginStatus
     {
         Success = 0,
-        InvalidPassword = 1,
+        InvalidEmailOrPassword = 1,
         NonCustomPassword = 2,
         UnconfirmedEmail = 3,
         Locked = 4,

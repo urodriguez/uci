@@ -11,34 +11,6 @@ namespace Domain.UnitTests.Aggregates
     public class UserTests
     {
         [Test]
-        public void SetName_UsingValidName_SetsNameToUser()
-        {
-            //Arrange
-            var user = new User();
-
-            //Act
-            user.SetName("test");
-
-            //Assert
-            Assert.IsTrue(user.Name == "test");
-        }            
-        
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("test012345678901234567890123456789")]
-        public void SetName_UsingInvalidName_ThrowsBusinessRuleException(string name)
-        {
-            //Arrange
-            var user = new User();
-
-            //Act
-            TestDelegate testDelegate = () => user.SetName(name);
-
-            //Assert
-            Assert.Throws<BusinessRuleException>(testDelegate);
-        }
-
-        [Test]
         public void SetEmail_UsingValidEmail_SetsEmailToUser()
         {
             //Arrange

@@ -6,7 +6,7 @@ namespace Domain.Entities
     public abstract class Entity
     {
         public Guid Id { get; set; }
-        protected string EntityName => $"{GetType().BaseType.Name}";
+        protected string EntityName => $"{GetType().Name}";
 
         protected string PropertyName
         {

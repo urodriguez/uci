@@ -14,7 +14,6 @@ namespace Application.Factories
         public override User Create(UserDto dto)
         {
             return new User(
-                dto.Name,
                 dto.Email,
                 dto.FirstName,
                 dto.MiddleName,

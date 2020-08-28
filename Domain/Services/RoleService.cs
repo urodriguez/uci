@@ -17,12 +17,12 @@ namespace Domain.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> IsAdminAsync(string userName)
+        public async Task<bool> IsAdminAsync(string email)
         {
-            var byName = _userPredicateFactory.CreateByName(userName);
+            var byName = _userPredicateFactory.CreateByEmail(email);
             var user = await _unitOfWork.Users.GetFirstAsync(byName);
 
-            if (user == null) throw new ObjectNotFoundException($"UserName={userName} not exists in database");
+            if (user == null) throw new ObjectNotFoundException($"User Email={email} not exists in database");
 
             return user.IsAdmin();
         }
