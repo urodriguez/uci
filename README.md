@@ -24,10 +24,10 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* Jenkins: WebClient job
+* Jenkins: Angular WebClient App with Docker
 * Jenkins: test coverage process report
 * Reporting: integration - using hangfire recurrent job
-* expose client application to external (no localhost) URL via public ip for TEST env
+* expose web client application to external (no localhost) URL via public ip for TEST env
 * create index in db tables
 * create all necessary elements to create registration
   * CRUD invention type
@@ -44,6 +44,8 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
   * CRUD registration reason
   * CRUD registration status
 * implement database caching
+* implement elastic search (https://github.com/elastic/elasticsearch-net)
+* implement graphql (https://github.com/JacekKosciesza/StarWars)
 * unit test - WebApi
 * Automation
 * encrypt passwords
