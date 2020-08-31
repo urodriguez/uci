@@ -24,6 +24,7 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
+* Jenkins: WebClient job
 * Jenkins: test coverage process report
 * Reporting: integration - using hangfire recurrent job
 * expose client application to external (no localhost) URL via public ip for TEST env
@@ -42,8 +43,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
     * site5 -> rest POST (notification on new one + recurrent db updates)
   * CRUD registration reason
   * CRUD registration status
-* Docker - IIS
-* Docker - Jenkins
 * implement database caching
 * unit test - WebApi
 * Automation
@@ -146,3 +145,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
   * user login
   * inventions module
   * users module
+* Jenkins: update git remote on jobs
