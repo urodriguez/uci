@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Queueing;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Mailing;
+using Application.Contracts.Infrastructure.Queueing.Enqueue;
+using Application.Infrastructure.Mailing;
+using Application.Infrastructure.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.Resolvers;
-using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -20,7 +22,7 @@ namespace Infrastructure.Crosscutting.Mailing
             UseBaseUrl(appSettingsService.MailingApiUrlV1);
         }
 
-        public void SendAsync(Email email)
+        public void SendAsync(IEmail email)
         {
             email.Credential = _appSettingsService.InfrastructureCredential;
             ExecuteAsync("emails", Method.POST, email);

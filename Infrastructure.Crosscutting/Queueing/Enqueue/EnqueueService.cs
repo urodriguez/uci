@@ -1,4 +1,7 @@
-﻿using Infrastructure.Crosscutting.AppSettings;
+﻿using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Queueing;
+using Application.Contracts.Infrastructure.Queueing.Enqueue;
+using Application.Infrastructure.Queueing;
 using Newtonsoft.Json;
 
 namespace Infrastructure.Crosscutting.Queueing.Enqueue

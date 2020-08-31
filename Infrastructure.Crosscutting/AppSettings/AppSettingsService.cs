@@ -2,6 +2,9 @@
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Infrastructure;
+using Application.Infrastructure.AppSettings;
 
 namespace Infrastructure.Crosscutting.AppSettings
 {

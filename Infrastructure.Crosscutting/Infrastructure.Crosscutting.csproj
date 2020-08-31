@@ -60,50 +60,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InfrastractureService.cs" />
-    <Compile Include="Auditing\AuditAction.cs" />
-    <Compile Include="Auditing\IAuditService.cs" />
-    <Compile Include="Authentication\TokenValidateRequest.cs" />
-    <Compile Include="InfrastructureCredential.cs" />
     <Compile Include="AppSettings\AppSettingsService.cs" />
-    <Compile Include="AppSettings\IAppSettingsService.cs" />
-    <Compile Include="AppSettings\InventAppEnvironment.cs" />
-    <Compile Include="Auditing\Audit.cs" />
     <Compile Include="Auditing\AuditService.cs" />
-    <Compile Include="Authentication\Claim.cs" />
-    <Compile Include="Authentication\ITokenService.cs" />
-    <Compile Include="Authentication\TokenGenerateResponse.cs" />
-    <Compile Include="Authentication\TokenGenerateRequest.cs" />
     <Compile Include="Authentication\TokenService.cs" />
-    <Compile Include="Authentication\TokenStatus.cs" />
-    <Compile Include="Authentication\TokenValidateResponse.cs" />
-    <Compile Include="Logging\ILogService.cs" />
-    <Compile Include="Logging\Log.cs" />
     <Compile Include="Queueing\Dequeue\Resolvers\IAuditDequeueResolver.cs" />
     <Compile Include="Queueing\Dequeue\Resolvers\IEmailDequeueResolver.cs" />
     <Compile Include="Queueing\Dequeue\Resolvers\ILogDequeueResolver.cs" />
     <Compile Include="Queueing\Dequeue\DequeueService.cs" />
     <Compile Include="Queueing\Dequeue\Resolvers\IDequeueResolver.cs" />
-    <Compile Include="Queueing\Dequeue\IDequeueService.cs" />
-    <Compile Include="Queueing\IQueueable.cs" />
-    <Compile Include="Queueing\Enqueue\IEnqueueService.cs" />
-    <Compile Include="Queueing\QueueItem.cs" />
     <Compile Include="Logging\LogService.cs" />
-    <Compile Include="Logging\LogType.cs" />
-    <Compile Include="Mailing\Attachment.cs" />
-    <Compile Include="Mailing\Email.cs" />
     <Compile Include="Mailing\EmailService.cs" />
-    <Compile Include="Mailing\Host.cs" />
-    <Compile Include="Mailing\IEmailService.cs" />
-    <Compile Include="Mailing\Sender.cs" />
-    <Compile Include="Mailing\SmtpServerConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queueing\QueueContext.cs" />
-    <Compile Include="Queueing\QueueItemType.cs" />
     <Compile Include="Queueing\Enqueue\EnqueueService.cs" />
-    <Compile Include="Rendering\ITemplateService.cs" />
-    <Compile Include="Rendering\RenderAs.cs" />
-    <Compile Include="Rendering\TemplateType.cs" />
-    <Compile Include="Rendering\Template.cs" />
     <Compile Include="Rendering\TemplateService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +81,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj">
+      <Project>{3A4E28A5-05CF-4ADF-90FF-24B6524B6928}</Project>
+      <Name>Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>

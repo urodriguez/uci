@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Application.Contracts.Infrastructure.Mailing;
 using Domain.Aggregates;
-using Infrastructure.Crosscutting.Mailing;
 
 namespace Application.Contracts.Factories
 {
     public interface IEmailFactory
     {
-        Task<Email> CreateForUserReportRequestedAsync(User user, byte[] report);
-        Task<Email> CreateForUserCreatedAsync(User user);
-        Task<Email> CreateForUserForgotPasswordAsync(User user);
+        Task<IEmail> CreateForUserReportRequestedAsync(User user, byte[] report);
+        Task<IEmail> CreateForUserCreatedAsync(User user);
+        Task<IEmail> CreateForUserForgotPasswordAsync(User user);
     }
 }

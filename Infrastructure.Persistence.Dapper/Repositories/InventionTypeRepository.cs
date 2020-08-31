@@ -1,8 +1,8 @@
 ﻿using System.Data;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Logging;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
 
 namespace Infrastructure.Persistence.Dapper.Repositories
 {

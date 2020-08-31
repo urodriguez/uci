@@ -8,21 +8,23 @@ using Application.Contracts;
 using Application.Contracts.AggregateUpdaters;
 using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Auditing;
+using Application.Contracts.Infrastructure.Authentication;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Mailing;
+using Application.Contracts.Infrastructure.Redering;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Application.Exceptions;
+using Application.Infrastructure.Auditing;
+using Application.Infrastructure.Authentication;
 using Domain.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
 using Domain.Contracts.Services;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Auditing;
-using Infrastructure.Crosscutting.Authentication;
-using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Rendering;
 using Newtonsoft.Json;
-using Claim = Infrastructure.Crosscutting.Authentication.Claim;
+using Claim = Application.Infrastructure.Authentication.Claim;
 
 namespace Application.Services
 {

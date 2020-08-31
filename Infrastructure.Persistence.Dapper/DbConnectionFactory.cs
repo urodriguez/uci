@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Threading.Tasks;
-using Infrastructure.Crosscutting.AppSettings;
+using Application.Contracts.Infrastructure.AppSettings;
 using MiniProfiler.Integrations;
 
 namespace Infrastructure.Persistence.Dapper

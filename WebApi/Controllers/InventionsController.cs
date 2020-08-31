@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using Application.Contracts;
+using Application.Contracts.Infrastructure.Logging;
 using Application.Contracts.Services;
 using Application.Dtos;
-using Infrastructure.Crosscutting.Logging;
 
 namespace WebApi.Controllers
 {

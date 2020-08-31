@@ -1,9 +1,9 @@
-﻿using Hangfire;
+﻿using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Queueing.Dequeue;
+using Hangfire;
 using Infrastructure.Crosscutting.BackgroundProcessing.Hangfire;
 using Infrastructure.Crosscutting.DependencyInjection.Unity;
 using Infrastructure.Crosscutting.Documentation.Swagger;
-using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Queueing.Dequeue;
 using Owin;
 using GlobalConfiguration = System.Web.Http.GlobalConfiguration;
 

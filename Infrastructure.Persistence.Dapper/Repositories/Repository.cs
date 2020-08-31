@@ -4,14 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Logging;
 using DapperExtensions;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
 using Domain.Contracts.Predicates;
 using Domain.Enums;
 using Domain.Predicates;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
 using MiniProfiler.Integrations;
 using StackExchange.Profiling.Data;
 

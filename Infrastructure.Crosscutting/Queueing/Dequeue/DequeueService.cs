@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Queueing.Dequeue;
+using Application.Infrastructure.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.Resolvers;
 
 namespace Infrastructure.Crosscutting.Queueing.Dequeue

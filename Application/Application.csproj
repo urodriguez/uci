@@ -79,6 +79,23 @@
     <Compile Include="Contracts\Factories\IEmailFactory.cs" />
     <Compile Include="Contracts\Factories\ITemplateFactory.cs" />
     <Compile Include="Contracts\IInventAppContext.cs" />
+    <Compile Include="Contracts\Infrastructure\AppSettings\IAppSettingsService.cs" />
+    <Compile Include="Contracts\Infrastructure\Auditing\IAudit.cs" />
+    <Compile Include="Contracts\Infrastructure\Auditing\IAuditService.cs" />
+    <Compile Include="Contracts\Infrastructure\Authentication\ITokenService.cs" />
+    <Compile Include="Contracts\Infrastructure\Logging\ILogService.cs" />
+    <Compile Include="Contracts\Infrastructure\Logging\IMessage.cs" />
+    <Compile Include="Contracts\Infrastructure\Mailing\IAttachment.cs" />
+    <Compile Include="Contracts\Infrastructure\Mailing\IEmail.cs" />
+    <Compile Include="Contracts\Infrastructure\Mailing\IEmailService.cs" />
+    <Compile Include="Contracts\Infrastructure\Mailing\IHost.cs" />
+    <Compile Include="Contracts\Infrastructure\Mailing\ISender.cs" />
+    <Compile Include="Contracts\Infrastructure\Mailing\ISmtpServerConfiguration.cs" />
+    <Compile Include="Contracts\Infrastructure\Queueing\Dequeue\IDequeueService.cs" />
+    <Compile Include="Contracts\Infrastructure\Queueing\Enqueue\IEnqueueService.cs" />
+    <Compile Include="Contracts\Infrastructure\Queueing\IQueueable.cs" />
+    <Compile Include="Contracts\Infrastructure\Queueing\IQueueItem.cs" />
+    <Compile Include="Contracts\Infrastructure\Redering\ITemplateService.cs" />
     <Compile Include="Contracts\Services\IReportService.cs" />
     <Compile Include="Dtos\EmailTemplateRendered.cs" />
     <Compile Include="Dtos\ICrudDto.cs" />
@@ -116,6 +133,28 @@
     <Compile Include="Dtos\InventionDto.cs" />
     <Compile Include="Dtos\InventionTypeDto.cs" />
     <Compile Include="ApplicationResults\IApplicationResult.cs" />
+    <Compile Include="Infrastructure\AppSettings\InventAppEnvironment.cs" />
+    <Compile Include="Infrastructure\Auditing\Audit.cs" />
+    <Compile Include="Infrastructure\Auditing\AuditAction.cs" />
+    <Compile Include="Infrastructure\Authentication\Claim.cs" />
+    <Compile Include="Infrastructure\Authentication\TokenGenerateRequest.cs" />
+    <Compile Include="Infrastructure\Authentication\TokenGenerateResponse.cs" />
+    <Compile Include="Infrastructure\Authentication\TokenStatus.cs" />
+    <Compile Include="Infrastructure\Authentication\TokenValidateRequest.cs" />
+    <Compile Include="Infrastructure\Authentication\TokenValidateResponse.cs" />
+    <Compile Include="Infrastructure\InfrastructureCredential.cs" />
+    <Compile Include="Infrastructure\Logging\Message.cs" />
+    <Compile Include="Infrastructure\Logging\MessageType.cs" />
+    <Compile Include="Infrastructure\Mailing\Attachment.cs" />
+    <Compile Include="Infrastructure\Mailing\Email.cs" />
+    <Compile Include="Infrastructure\Mailing\Host.cs" />
+    <Compile Include="Infrastructure\Mailing\Sender.cs" />
+    <Compile Include="Infrastructure\Mailing\SmtpServerConfiguration.cs" />
+    <Compile Include="Infrastructure\Queueing\QueueItem.cs" />
+    <Compile Include="Infrastructure\Queueing\QueueItemType.cs" />
+    <Compile Include="Infrastructure\Redering\RenderAs.cs" />
+    <Compile Include="Infrastructure\Redering\Template.cs" />
+    <Compile Include="Infrastructure\Redering\TemplateType.cs" />
     <Compile Include="InventAppContext.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\CrudService.cs" />
@@ -130,10 +169,6 @@
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{F9F15293-F18A-4F3C-A62F-406DDA7EBDE7}</Project>
       <Name>Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Crosscutting\Infrastructure.Crosscutting.csproj">
-      <Project>{FE0E59F4-4656-40C8-AFDA-FD903D9EFB95}</Project>
-      <Name>Infrastructure.Crosscutting</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

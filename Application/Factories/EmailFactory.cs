@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Contracts.Factories;
+using Application.Contracts.Infrastructure.Mailing;
+using Application.Contracts.Infrastructure.Redering;
+using Application.Infrastructure.Mailing;
 using Domain.Aggregates;
-using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Rendering;
 
 namespace Application.Factories
 {
@@ -19,7 +20,7 @@ namespace Application.Factories
             _templateService = templateService;
         }
 
-        public async Task<Email> CreateForUserReportRequestedAsync(User user, byte[] report)
+        public async Task<IEmail> CreateForUserReportRequestedAsync(User user, byte[] report)
         {
             var emailBodytemplate = await _templateFactory.CreateForUserReportRequestedAsync(user);
             var emailBodyTemplateRendered = await _templateService.RenderAsync<string>(emailBodytemplate);
@@ -41,7 +42,7 @@ namespace Application.Factories
             };
         }
 
-        public async Task<Email> CreateForUserCreatedAsync(User user)
+        public async Task<IEmail> CreateForUserCreatedAsync(User user)
         {
             var emailBodytemplate = await _templateFactory.CreateForUserCreatedAsync(user);
             var emailBodyTemplateRendered = await _templateService.RenderAsync<string>(emailBodytemplate);
@@ -54,7 +55,7 @@ namespace Application.Factories
             };
         }
 
-        public async Task<Email> CreateForUserForgotPasswordAsync(User user)
+        public async Task<IEmail> CreateForUserForgotPasswordAsync(User user)
         {
             var emailBodytemplate = await _templateFactory.CreateForUserForgotPasswordAsync(user);
             var emailBodyTemplateRendered = await _templateService.RenderAsync<string>(emailBodytemplate);

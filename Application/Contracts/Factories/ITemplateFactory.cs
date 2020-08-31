@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Infrastructure.Redering;
 using Domain.Aggregates;
-using Infrastructure.Crosscutting.Rendering;
 
 namespace Application.Contracts.Factories
 {

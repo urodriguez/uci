@@ -2,8 +2,10 @@
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Authentication;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Infrastructure.Authentication;
 using RestSharp;
 
 namespace Infrastructure.Crosscutting.Authentication

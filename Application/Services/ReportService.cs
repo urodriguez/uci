@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Contracts;
 using Application.Contracts.Factories;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Authentication;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Mailing;
+using Application.Contracts.Infrastructure.Redering;
 using Application.Contracts.Services;
 using Application.Dtos;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Predicates.Factories;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Authentication;
-using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Mailing;
-using Infrastructure.Crosscutting.Rendering;
 
 namespace Application.Services
 {

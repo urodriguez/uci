@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Application.Contracts.Infrastructure.AppSettings;
 using Hangfire;
 using Hangfire.SqlServer;
 using Infrastructure.Crosscutting.AppSettings;

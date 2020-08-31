@@ -5,10 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.Compilation;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Queueing;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Queueing.Enqueue;
+using Application.Infrastructure.Logging;
+using Application.Infrastructure.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.Resolvers;
-using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -37,24 +39,24 @@ namespace Infrastructure.Crosscutting.Logging
         //Very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development
         public void LogTraceMessageAsync(string messageToLog)
         {
-            LogMessageAsync(messageToLog, LogType.Trace);
+            LogMessageAsync(messageToLog, MessageType.Trace);
         }
 
         //Information messages, which are normally enabled in production environment
         public void LogInfoMessageAsync(string messageToLog)
         {
-            LogMessageAsync(messageToLog, LogType.Info);
+            LogMessageAsync(messageToLog, MessageType.Info);
         }
 
         //Error messages - most of the time these are Exceptions
         public void LogErrorMessageAsync(string messageToLog)
         {
-            LogMessageAsync(messageToLog, LogType.Error);
+            LogMessageAsync(messageToLog, MessageType.Error);
         }
 
-        private void LogMessageAsync(string messageToLog, LogType logType)
+        private void LogMessageAsync(string messageToLog, MessageType logType)
         {
-            var log = new Log(
+            var log = new Message(
                 _appSettingsService.InfrastructureCredential,
                 "InventApp",
                 BuildManager.GetGlobalAsaxType().BaseType.Assembly.FullName.Split(',').First(),
@@ -67,7 +69,7 @@ namespace Infrastructure.Crosscutting.Logging
             ExecuteAsync("logs", Method.POST, log);
         }
 
-        public void LogAsync(Log log)
+        public void LogAsync(IMessage log)
         {
             log.Credential = _appSettingsService.InfrastructureCredential;
             ExecuteAsync("logs", Method.POST, log);
@@ -130,8 +132,8 @@ namespace Infrastructure.Crosscutting.Logging
         {
             foreach (var queueItemJsonData in queueItemsJsonData)
             {
-                var log = JsonConvert.DeserializeObject<Log>(queueItemJsonData);
-                LogAsync(log);
+                var message = JsonConvert.DeserializeObject<IMessage>(queueItemJsonData);
+                LogAsync(message);
             }
         }
 

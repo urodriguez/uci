@@ -2,9 +2,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using Application.Contracts.Factories;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Infrastructure.Redering;
 using Domain.Aggregates;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;

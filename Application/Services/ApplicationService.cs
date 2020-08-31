@@ -6,11 +6,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.ApplicationResults;
 using Application.Contracts;
+using Application.Contracts.Infrastructure.Authentication;
+using Application.Contracts.Infrastructure.Logging;
 using Application.Exceptions;
+using Application.Infrastructure.Authentication;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Exceptions;
-using Infrastructure.Crosscutting.Authentication;
-using Infrastructure.Crosscutting.Logging;
 
 namespace Application.Services
 {

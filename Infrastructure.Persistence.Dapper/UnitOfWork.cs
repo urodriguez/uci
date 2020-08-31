@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Threading.Tasks;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Logging;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Infrastructure.Persistence.Repositories;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
 using Infrastructure.Persistence.Dapper.Repositories;
 
 namespace Infrastructure.Persistence.Dapper

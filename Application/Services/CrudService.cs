@@ -7,15 +7,16 @@ using Application.Contracts;
 using Application.Contracts.AggregateUpdaters;
 using Application.Contracts.DuplicateValidators;
 using Application.Contracts.Factories;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Auditing;
+using Application.Contracts.Infrastructure.Authentication;
+using Application.Contracts.Infrastructure.Logging;
 using Application.Contracts.Services;
 using Application.Dtos;
+using Application.Infrastructure.Auditing;
 using Domain.Contracts.Aggregates;
 using Domain.Contracts.Infrastructure.Persistence;
 using Domain.Contracts.Services;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Auditing;
-using Infrastructure.Crosscutting.Authentication;
-using Infrastructure.Crosscutting.Logging;
 using Newtonsoft.Json;
 
 namespace Application.Services

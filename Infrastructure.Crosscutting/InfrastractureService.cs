@@ -1,11 +1,12 @@
 ﻿using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Queueing;
-using Infrastructure.Crosscutting.Queueing.Enqueue;
 using RestSharp;
 using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Queueing;
+using Application.Contracts.Infrastructure.Queueing.Enqueue;
 
 namespace Infrastructure.Crosscutting
 {

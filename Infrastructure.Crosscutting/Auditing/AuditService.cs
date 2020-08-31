@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using Infrastructure.Crosscutting.AppSettings;
-using Infrastructure.Crosscutting.Logging;
-using Infrastructure.Crosscutting.Queueing;
+using Application.Contracts.Infrastructure.AppSettings;
+using Application.Contracts.Infrastructure.Auditing;
+using Application.Contracts.Infrastructure.Logging;
+using Application.Contracts.Infrastructure.Queueing.Enqueue;
+using Application.Infrastructure.Auditing;
+using Application.Infrastructure.Queueing;
 using Infrastructure.Crosscutting.Queueing.Dequeue.Resolvers;
-using Infrastructure.Crosscutting.Queueing.Enqueue;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -20,7 +22,7 @@ namespace Infrastructure.Crosscutting.Auditing
             UseBaseUrl(appSettingsService.AuditingApiUrlV1);
         }
 
-        public void AuditAsync(Audit audit)
+        public void AuditAsync(IAudit audit)
         {
             audit.Credential = _appSettingsService.InfrastructureCredential;
             ExecuteAsync("audits", Method.POST, audit);
