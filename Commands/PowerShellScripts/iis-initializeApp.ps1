@@ -60,6 +60,10 @@ $credential = New-Object System.Management.Automation.PSCredential($userName, $s
 $baseProjectName = "UciRod.InventApp"
 $runtimeVersion = "v4.0"
 
+#Create App Folders
+New-Item -ItemType Directory -Force -Path WebApi
+New-Item -ItemType Directory -Force -Path WebClient
+
 #Initialize Application Pools
 Write-Host "Initializing Application Pools" -ForegroundColor Cyan
 CreateAppPool -name $baseProjectName -runtimeVersion $runtimeVersion -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
