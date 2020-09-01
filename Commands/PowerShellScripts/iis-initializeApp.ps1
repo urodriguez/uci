@@ -51,6 +51,8 @@ function AddWebApplicationToWebSite {
 }
 #FUNCIONS DECLARATION - END
 
+#BEFORE RUN THIS SCRIPT GRANT TO 'IUSR' on main Web Sites the following permissions: Read & Execute + List folder contents + Read 
+
 $userName = "ENDAVA\URodriguez"
 $secureIdentityPassword = Read-Host "Enter a Password for user identity '$userName'" -AsSecureString
 $credential = New-Object System.Management.Automation.PSCredential($userName, $secureIdentityPassword)
