@@ -8,7 +8,12 @@ export class BaseHttpService {
 
   constructor(protected readonly httpClient: HttpClient,
               protected readonly appContext: AppContext) {
-    this.baseApiURL = 'http://www.ucirod.inventapp-dev.com:8080/WebApi/api/v1.0';
+    if (window.location.host === 'localhost:4200') {
+      this.baseApiURL = 'http://www.ucirod.inventapp-dev.com:8080/WebApi/api/v1.0';  
+    } else {
+      this.baseApiURL = 'http://152.171.94.90:8080/WebApi/api/v1.0';
+    }
+    console.log("using baseApiURL = " + this.baseApiURL);
 
     if (appContext.securityToken)
       this.initializeHttpHeadersWithToken(appContext.securityToken.token);
