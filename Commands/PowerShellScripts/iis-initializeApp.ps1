@@ -62,6 +62,7 @@ $runtimeVersion = "v4.0"
 Write-Host "Initializing Application Pools" -ForegroundColor Cyan
 CreateAppPool -name $baseProjectName -runtimeVersion $runtimeVersion -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 CreateAppPool -name "$baseProjectName.WebApi" -runtimeVersion $runtimeVersion -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
+CreateAppPool -name "$baseProjectName.WebClient" -runtimeVersion $runtimeVersion -identityName $userName -identityPassword $credential.GetNetworkCredential().Password
 Write-Host "Application Pools initialized" -ForegroundColor Green
 
 #Initialize Web Sites
@@ -74,4 +75,5 @@ Write-Host "Web Site initialized" -ForegroundColor Green
 Write-Host "-------***-------" -ForegroundColor Cyan
 Write-Host "Initializing Web Applications" -ForegroundColor Cyan
 AddWebApplicationToWebSite -webSite $baseProjectName -name "WebApi"
+AddWebApplicationToWebSite -webSite $baseProjectName -name "WebClient"
 Write-Host "Web Applications initialized" -ForegroundColor Green

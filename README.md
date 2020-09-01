@@ -24,7 +24,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 }
 
 ## TODO list
-* Jenkins: Angular WebClient App with Docker
 * Jenkins: test coverage process report
 * Reporting: integration - using hangfire recurrent job
 * expose web client application to external (no localhost) URL via public ip for TEST env
@@ -148,3 +147,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
   * inventions module
   * users module
 * Jenkins: update git remote on jobs
+* Jenkins: Angular WebClient App job
