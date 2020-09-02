@@ -1,5 +1,6 @@
 {
   "name": "invent-app-wc",
+  "description": "inventions register",
   "version": "1.0.0",
   "repository": {
     "type": "git",
