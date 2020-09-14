@@ -48,7 +48,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     _baseInventAppApiUrl = $"152.171.94.90:{inventAppApiPort}";
                     ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
                     DefaultTokenExpiresTime = 30;
-                    HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase}-Test;{integratedSecuritySspi}";
+                    HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase};User ID={sqlServerUser};Password={sqlServerPassword}";
 
                     break;
                 }         
