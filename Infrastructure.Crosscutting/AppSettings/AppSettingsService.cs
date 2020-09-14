@@ -46,7 +46,7 @@ namespace Infrastructure.Crosscutting.AppSettings
                     const string sqlServerInstance = "localhost,8083";
                     _baseInfrastructureApiUrl = $"www.ucirod.infrastructure-test.com:{infrastructureApiPort}";
                     _baseInventAppApiUrl = $"152.171.94.90:{inventAppApiPort}";
-                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase}-Test;User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
+                    ConnectionString = $"Server={sqlServerInstance};Database={sqlServerInventAppDatabase};User ID={sqlServerUser};Password={sqlServerPassword};{multipleActiveResultSetsTrue}";
                     DefaultTokenExpiresTime = 30;
                     HangfireInventAppConnectionString = $"Server={sqlServerInstance};Database={sqlServerHangfireDatabase}-Test;{integratedSecuritySspi}";
 
