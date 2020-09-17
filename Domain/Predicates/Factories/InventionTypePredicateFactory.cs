@@ -14,10 +14,10 @@ namespace Domain.Predicates.Factories
             return new InventAppPredicateGroup<Invention>(
                 new List<IInventAppPredicate<Invention>>
                 {
-                    new InventAppPredicateIndividual<Invention>(u => u.Id, InventAppPredicateOperator.NotEq, id),
-                    new InventAppPredicateIndividual<Invention>(u => u.Code, InventAppPredicateOperator.Eq, code)
+                    new InventAppPredicateIndividual<Invention>(u => u.Id, ComparisonOperator.NotEq, id),
+                    new InventAppPredicateIndividual<Invention>(u => u.Code, ComparisonOperator.Eq, code)
                 },
-                InventAppPredicateOperatorGroup.And
+                ComparisonOperatorGroup.And
             );
         }
 
@@ -26,10 +26,10 @@ namespace Domain.Predicates.Factories
             return new InventAppPredicateGroup<Invention>(
                 new List<IInventAppPredicate<Invention>>
                 {
-                    new InventAppPredicateIndividual<Invention>(u => u.Id, InventAppPredicateOperator.NotEq, id),
-                    new InventAppPredicateIndividual<Invention>(u => u.Name, InventAppPredicateOperator.Eq, name)
+                    new InventAppPredicateIndividual<Invention>(u => u.Id, ComparisonOperator.NotEq, id),
+                    new InventAppPredicateIndividual<Invention>(u => u.Name, ComparisonOperator.Eq, name)
                 },
-                InventAppPredicateOperatorGroup.And
+                ComparisonOperatorGroup.And
             );
         }
     }

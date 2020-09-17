@@ -8,7 +8,7 @@ namespace Domain.Predicates
 {
     public class InventAppPredicateIndividual<TAggregateRoot> : IInventAppPredicate<TAggregateRoot> where TAggregateRoot : IAggregateRoot
     {
-        public InventAppPredicateIndividual(Expression<Func<TAggregateRoot, object>> field, InventAppPredicateOperator @operator, object value)
+        public InventAppPredicateIndividual(Expression<Func<TAggregateRoot, object>> field, ComparisonOperator @operator, object value)
         {
             Field = field;
             Operator = @operator;
@@ -16,7 +16,7 @@ namespace Domain.Predicates
         }
 
         public Expression<Func<TAggregateRoot, object>> Field { get; }
-        public InventAppPredicateOperator Operator { get; }
+        public ComparisonOperator Operator { get; }
         public object Value { get; }
 
         public void Add(IInventAppPredicate<TAggregateRoot> inventAppPredicate)

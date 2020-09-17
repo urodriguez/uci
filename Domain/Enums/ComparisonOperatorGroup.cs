@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum InventAppPredicateOperatorGroup
+    public enum ComparisonOperatorGroup
     {
         And = 0,
         Or = 1,

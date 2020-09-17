@@ -1,6 +1,6 @@
 ﻿using Domain.Contracts.Aggregates;
 using Domain.Entities;
-using Domain.Exceptions;
+using Domain.Enums;
 
 namespace Domain.Aggregates
 {
@@ -22,24 +22,21 @@ namespace Domain.Aggregates
         public string Code { get; private set; }
         public void SetCode(string code)
         {
-            if (string.IsNullOrEmpty(code)) throw new BusinessRuleException($"{EntityName}: ${PropertyName} can not be null or empty");
-            if (code.Length != 8) throw new BusinessRuleException($"{EntityName}: ${PropertyName} length must be 8");
+            ValidateRequiredString(code, new[] { 8 });
             Code = code;
         }
 
         public string Name { get; private set; }
         public void SetName(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new BusinessRuleException($"{EntityName}: ${PropertyName} can not be null or empty");
-            if (name.Length >= 32) throw new BusinessRuleException($"{EntityName}: ${PropertyName} length can not be greater than 32");
+            ValidateRequiredString(name, new[] { 4, 32 });
             Name = name;
         }
 
         public string Description { get; private set; }
         public void SetDescription(string description)
         {
-            if (string.IsNullOrEmpty(description)) throw new BusinessRuleException($"{EntityName}: ${PropertyName} can not be null or empty");
-            if (description.Length >= 128) throw new BusinessRuleException($"{EntityName}: ${PropertyName} length can not be greater than 128");
+            ValidateRequiredString(description, new[] { 4, 128 });
             Description = description;
         }
     }

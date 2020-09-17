@@ -93,9 +93,9 @@ namespace Infrastructure.Persistence.Dapper.Repositories
         {
             return Predicates.Field<TAggregateRoot>(
                 inventAppPredicate.Field,
-                inventAppPredicate.Operator == InventAppPredicateOperator.NotEq ? Operator.Eq : (Operator) inventAppPredicate.Operator,
+                inventAppPredicate.Operator == ComparisonOperator.NotEq ? Operator.Eq : (Operator) inventAppPredicate.Operator,
                 inventAppPredicate.Value,
-                inventAppPredicate.Operator == InventAppPredicateOperator.NotEq // InventAppPredicateOperator.NotEq == true => Operator.Eq (not)
+                inventAppPredicate.Operator == ComparisonOperator.NotEq // InventAppPredicateOperator.NotEq == true => Operator.Eq (not)
             );
         }
 

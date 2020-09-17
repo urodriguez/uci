@@ -36,7 +36,7 @@ namespace Domain.Aggregates
         public string Email { get; private set; }
         public void SetEmail(string email)
         {
-            if (string.IsNullOrEmpty(email)) throw new BusinessRuleException($"{EntityName}: {PropertyName} can not be null or empty");
+            ValidateRequiredString(email, new[] { 4, 128 });
             try
             {
                 var addr = new System.Net.Mail.MailAddress(email);
@@ -44,29 +44,29 @@ namespace Domain.Aggregates
             }
             catch
             {
-                throw new BusinessRuleException($"{EntityName}: {PropertyName} format is invalid ");
+                throw new BusinessRuleException($"{EntityName}: Email format is invalid ");
             }
         }
 
         public virtual string Password { get; private set; }
         public void SetPassword(string password)
         {
+            ValidateRequiredString(password, new[] { 8 });
             if (!PasswordSatisfyComplexity(password)) 
                 throw new BusinessRuleException(
-                    $"{EntityName}: {PropertyName} does not satisfy the complexity. Password complexity: letters, numbers and length 8." 
+                    $"{EntityName}: Password does not satisfy the complexity. Password complexity: letters, numbers and length 8." 
                 );
             Password = password;
         }
         private static bool PasswordSatisfyComplexity(string password)
         {
-            return !string.IsNullOrEmpty(password) && password.Length == 8; //TODO: improve complexity
+            return password.All(c => char.IsLetterOrDigit(c) || c.Equals('$'));//TODO: improve complexity
         }
 
         public string FirstName { get; private set; }
         public void SetFirstName(string firstName)
         {
-            if (string.IsNullOrEmpty(firstName)) throw new BusinessRuleException($"{EntityName}: {PropertyName} can not be null or empty");
-            if (firstName.Length >= 32) throw new BusinessRuleException($"{EntityName}: {PropertyName} length can not be greater than 32");
+            ValidateRequiredString(firstName, new[] { 4, 32 });
             FirstName = firstName;
         }
 
@@ -75,15 +75,14 @@ namespace Domain.Aggregates
         public string LastName { get; private set; }
         public void SetLastName(string lastName)
         {
-            if (string.IsNullOrEmpty(lastName)) throw new BusinessRuleException($"{EntityName}: {PropertyName} can not be null or empty");
-            if (lastName.Length >= 32) throw new BusinessRuleException($"{EntityName}: {PropertyName} length can not be greater than 32");
+            ValidateRequiredString(lastName, new[] { 4, 32 });
             LastName = lastName;
         }
 
         public virtual UserRole Role { get; private set; }
         public void SetRole(UserRole role)
         {
-            if (!Enum.IsDefined(typeof(UserRole), role)) throw new BusinessRuleException($"{EntityName}: {PropertyName} is not defined");
+            ValidateRequiredEnum(role, typeof(UserRole));
             Role = role;
         }
 

@@ -14,16 +14,16 @@ namespace Domain.Predicates.Factories
             return new InventAppPredicateGroup<User>(
                 new List<IInventAppPredicate<User>>
                 {
-                    new InventAppPredicateIndividual<User>(u => u.Id, InventAppPredicateOperator.NotEq, id),
-                    new InventAppPredicateIndividual<User>(u => u.Email, InventAppPredicateOperator.Eq, email)
+                    new InventAppPredicateIndividual<User>(u => u.Id, ComparisonOperator.NotEq, id),
+                    new InventAppPredicateIndividual<User>(u => u.Email, ComparisonOperator.Eq, email)
                 },
-                InventAppPredicateOperatorGroup.And
+                ComparisonOperatorGroup.And
             );
         }
 
         public IInventAppPredicate<User> CreateByEmail(string email)
         {
-            return new InventAppPredicateIndividual<User>(u => u.Email, InventAppPredicateOperator.Eq, email);
+            return new InventAppPredicateIndividual<User>(u => u.Email, ComparisonOperator.Eq, email);
         }
     }
 }

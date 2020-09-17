@@ -60,8 +60,8 @@
     <Compile Include="Contracts\Infrastructure\Persistence\Repositories\IUserRepository.cs" />
     <Compile Include="Contracts\Services\IRoleService.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Enums\InventAppPredicateOperatorGroup.cs" />
-    <Compile Include="Enums\InventAppPredicateOperator.cs" />
+    <Compile Include="Enums\ComparisonOperatorGroup.cs" />
+    <Compile Include="Enums\ComparisonOperator.cs" />
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Contracts\Predicates\IInventAppPredicate.cs" />
     <Compile Include="Exceptions\BusinessRuleException.cs" />

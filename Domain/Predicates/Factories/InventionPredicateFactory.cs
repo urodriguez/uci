@@ -11,7 +11,7 @@ namespace Domain.Predicates.Factories
     {
         public IInventAppPredicate<Invention> CreateByCheapest(decimal maxPrice)
         {
-            return new InventAppPredicateIndividual<Invention>(p => p.Price, InventAppPredicateOperator.Le, maxPrice);
+            return new InventAppPredicateIndividual<Invention>(p => p.Price, ComparisonOperator.Le, maxPrice);
         }
 
         public IInventAppPredicate<Invention> CreateByDistinctIdAndCode(Guid id, string code)
@@ -19,10 +19,10 @@ namespace Domain.Predicates.Factories
             return new InventAppPredicateGroup<Invention>(
                 new List<IInventAppPredicate<Invention>>
                 {
-                    new InventAppPredicateIndividual<Invention>(u => u.Id, InventAppPredicateOperator.NotEq, id),
-                    new InventAppPredicateIndividual<Invention>(u => u.Code, InventAppPredicateOperator.Eq, code)
+                    new InventAppPredicateIndividual<Invention>(u => u.Id, ComparisonOperator.NotEq, id),
+                    new InventAppPredicateIndividual<Invention>(u => u.Code, ComparisonOperator.Eq, code)
                 },
-                InventAppPredicateOperatorGroup.And
+                ComparisonOperatorGroup.And
             );
         }
 
@@ -31,10 +31,10 @@ namespace Domain.Predicates.Factories
             return new InventAppPredicateGroup<Invention>(
                 new List<IInventAppPredicate<Invention>>
                 {
-                    new InventAppPredicateIndividual<Invention>(u => u.Id, InventAppPredicateOperator.NotEq, id),
-                    new InventAppPredicateIndividual<Invention>(u => u.Name, InventAppPredicateOperator.Eq, name)
+                    new InventAppPredicateIndividual<Invention>(u => u.Id, ComparisonOperator.NotEq, id),
+                    new InventAppPredicateIndividual<Invention>(u => u.Name, ComparisonOperator.Eq, name)
                 },
-                InventAppPredicateOperatorGroup.And
+                ComparisonOperatorGroup.And
             );
         }
 
@@ -43,10 +43,10 @@ namespace Domain.Predicates.Factories
             return new InventAppPredicateGroup<Invention>(
                 new List<IInventAppPredicate<Invention>>
                 {
-                    new InventAppPredicateIndividual<Invention>(u => u.Price, InventAppPredicateOperator.Ge, minPrice),
-                    new InventAppPredicateIndividual<Invention>(u => u.Price, InventAppPredicateOperator.Le, maxPrice)
+                    new InventAppPredicateIndividual<Invention>(u => u.Price, ComparisonOperator.Ge, minPrice),
+                    new InventAppPredicateIndividual<Invention>(u => u.Price, ComparisonOperator.Le, maxPrice)
                 },
-                InventAppPredicateOperatorGroup.And
+                ComparisonOperatorGroup.And
             );
         }
     }
