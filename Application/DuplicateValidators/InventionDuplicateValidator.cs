@@ -21,13 +21,13 @@ namespace Application.DuplicateValidators
             _aggregateRootName = nameof(Invention);
         }
 
-        public async Task ValidateAsync(InventionDto inventionTypeDto)
+        public async Task ValidateAsync(InventionDto inventionCategoryDto)
         {
-            var byDistinctIdAndCode = _inventionPredicateFactory.CreateByDistinctIdAndCode(inventionTypeDto.Id, inventionTypeDto.Code);
-            if (await _unitOfWork.Inventions.AnyAsync(byDistinctIdAndCode)) throw new BusinessRuleException($"{_aggregateRootName}: code={inventionTypeDto.Code} already exits");
+            var byDistinctIdAndCode = _inventionPredicateFactory.CreateByDistinctIdAndCode(inventionCategoryDto.Id, inventionCategoryDto.Code);
+            if (await _unitOfWork.Inventions.AnyAsync(byDistinctIdAndCode)) throw new BusinessRuleException($"{_aggregateRootName}: code={inventionCategoryDto.Code} already exits");
 
-            var byDistinctIdAndName = _inventionPredicateFactory.CreateByDistinctIdAndName(inventionTypeDto.Id, inventionTypeDto.Name);
-            if (await _unitOfWork.Inventions.AnyAsync(byDistinctIdAndName)) throw new BusinessRuleException($"{_aggregateRootName}: name={inventionTypeDto.Name} already exits");
+            var byDistinctIdAndName = _inventionPredicateFactory.CreateByDistinctIdAndName(inventionCategoryDto.Id, inventionCategoryDto.Name);
+            if (await _unitOfWork.Inventions.AnyAsync(byDistinctIdAndName)) throw new BusinessRuleException($"{_aggregateRootName}: name={inventionCategoryDto.Name} already exits");
 
             //TODO: if (!_inventionCodesService.Exists(inventionDto.Code) throw new Exception($"Invention code is invalid"); //invention code needs to be validated on external service
         }

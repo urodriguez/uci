@@ -6,9 +6,9 @@ using Domain.Contracts.Infrastructure.Persistence.Repositories;
 
 namespace Infrastructure.Persistence.Dapper.Repositories
 {
-    public class InventionTypeRepository: Repository<InventionType>, IInventionTypeRepository
+    public class InventionCategoryRepository: Repository<InventionCategory>, IInventionCategoryRepository
     {
-        public InventionTypeRepository(ILogService logService, IAppSettingsService appSettingsService, IDbTransaction transaction) : base(logService, appSettingsService, transaction)
+        public InventionCategoryRepository(ILogService logService, IAppSettingsService appSettingsService, IDbTransaction transaction) : base(logService, appSettingsService, transaction)
         {
         }
     }

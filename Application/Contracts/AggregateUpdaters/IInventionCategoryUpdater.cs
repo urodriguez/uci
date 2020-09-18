@@ -3,7 +3,7 @@ using Domain.Aggregates;
 
 namespace Application.Contracts.AggregateUpdaters
 {
-    public interface IInventionTypeUpdater : IAggregateUpdater<InventionTypeDto, InventionType>
+    public interface IInventionCategoryUpdater : IAggregateUpdater<InventionCategoryDto, InventionCategory>
     {
         
     }

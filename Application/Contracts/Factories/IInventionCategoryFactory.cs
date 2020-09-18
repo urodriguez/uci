@@ -3,7 +3,7 @@ using Domain.Aggregates;
 
 namespace Application.Contracts.Factories
 {
-    public interface IInventionTypeFactory : IFactory<InventionTypeDto, InventionType>
+    public interface IInventionCategoryFactory : IFactory<InventionCategoryDto, InventionCategory>
     {
         
     }

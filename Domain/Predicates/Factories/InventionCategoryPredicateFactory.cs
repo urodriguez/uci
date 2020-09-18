@@ -7,7 +7,7 @@ using Domain.Enums;
 
 namespace Domain.Predicates.Factories
 {
-    public class InventionTypePredicateFactory : IInventionTypePredicateFactory
+    public class InventionCategoryPredicateFactory : IInventionCategoryPredicateFactory
     {
         public IInventAppPredicate<Invention> CreateByDistinctIdAndCode(Guid id, string code)
         {

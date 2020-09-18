@@ -15,6 +15,6 @@ export class User {
   }
 
   get picture(): string {
-    return 'assets/images/uciel.png';
+    return this.firstName === 'Invent' ? 'assets/images/admin.png' : 'assets/images/uciel.png';
   }
 }

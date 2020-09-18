@@ -1,0 +1,27 @@
+<nb-card status="success">
+  <nb-card-header>Invention Category</nb-card-header>
+
+  <nb-card-body>
+    <div class="form-group">
+      <label for="code" class="label">Code</label>
+      <input type="text" nbInput fullWidth id="code" placeholder="Code" [(ngModel)]="inventionCategory.code">
+    </div>
+
+    <div class="form-group">
+      <label for="name" class="label">Name</label>
+      <input type="text" nbInput fullWidth id="name" placeholder="Name" [(ngModel)]="inventionCategory.name">
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="label">Description</label>
+      <input type="text" nbInput fullWidth id="description" placeholder="Description" [(ngModel)]="inventionCategory.description">
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="text-center">
+      <button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button>
+      <button nbButton status="success" (click)="save()">Save</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

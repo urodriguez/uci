@@ -56,8 +56,8 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Invention')
 		[Price] decimal(8, 2) NOT NULL
 	)	
 
-IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'InventionType')
-	CREATE TABLE [dbo].[InventionType](
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'InventionCategory')
+	CREATE TABLE [dbo].[InventionCategory](
 		[Id] uniqueidentifier NOT NULL,
 		[Code] varchar(8) NOT NULL,
 		[Name] varchar(32) NOT NULL,

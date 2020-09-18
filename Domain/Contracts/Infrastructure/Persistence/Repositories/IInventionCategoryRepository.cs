@@ -2,7 +2,7 @@
 
 namespace Domain.Contracts.Infrastructure.Persistence.Repositories
 {
-    public interface IInventionTypeRepository : IRepository<InventionType>
+    public interface IInventionCategoryRepository : IRepository<InventionCategory>
     {
         
     }

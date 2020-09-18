@@ -14,14 +14,14 @@ using Domain.Contracts.Services;
 
 namespace Application.Services
 {
-    public class InventionTypeService : CrudService<InventionTypeDto, InventionType>, IInventionTypeService
+    public class InventionCategoryService : CrudService<InventionCategoryDto, InventionCategory>, IInventionCategoryService
     {
-        public InventionTypeService(
+        public InventionCategoryService(
             IRoleService roleService,
-            IInventionTypeFactory factory, 
-            IInventionTypeUpdater updater, 
+            IInventionCategoryFactory factory, 
+            IInventionCategoryUpdater updater, 
             IAuditService auditService,
-            IInventionTypeDuplicateValidator inventionTypeDuplicateValidator,
+            IInventionCategoryDuplicateValidator inventionCategoryDuplicateValidator,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
             ILogService logService,
@@ -32,7 +32,7 @@ namespace Application.Services
             factory,
             updater,
             auditService, 
-            inventionTypeDuplicateValidator,
+            inventionCategoryDuplicateValidator,
             tokenService,
             unitOfWork,
             logService,

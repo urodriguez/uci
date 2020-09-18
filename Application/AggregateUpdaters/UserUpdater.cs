@@ -6,14 +6,14 @@ namespace Application.AggregateUpdaters
 {
     public class UserUpdater : IUserUpdater
     {
-        public void Update(User user, UserDto dto)
+        public void Update(User inventionCategory, UserDto dto)
         {
-            user.SetEmail(dto.Email);
-            user.SetFirstName(dto.FirstName);
-            user.MiddleName = dto.MiddleName;
-            user.SetLastName(dto.LastName);
-            user.SetRole(dto.Role);
-            user.Active = dto.Active;
+            inventionCategory.SetEmail(dto.Email);
+            inventionCategory.SetFirstName(dto.FirstName);
+            inventionCategory.MiddleName = dto.MiddleName;
+            inventionCategory.SetLastName(dto.LastName);
+            inventionCategory.SetRole(dto.Role);
+            inventionCategory.Active = dto.Active;
         }
     }
 }

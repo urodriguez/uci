@@ -7,6 +7,6 @@ namespace Application.Contracts.AggregateUpdaters
         where TAggregateRoot : class, IAggregateRoot
         where TDto : ICrudDto
     {
-        void Update(TAggregateRoot aggregateRoot, TDto dto);
+        void Update(TAggregateRoot inventionCategory, TDto dto);
     }
 }

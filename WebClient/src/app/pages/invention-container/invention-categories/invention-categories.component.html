@@ -4,7 +4,14 @@
   </nb-card-header>
 
   <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
-    </ng2-smart-table>
+    <button nbButton hero shape="round" status="primary" (click)="orchestrateInventionCategoryCreateRequested()">
+      Create
+    </button>
+
+    <ngx-invention-category-table
+      [inventionCategories]="inventionCategories"
+      (inventionCategoryEditRequested)="orchestrateInventionCategoryEditRequested($event)"
+      (inventionCategoryDeleteRequested)="orchestrateInventionCategoryDeleteRequested($event)">
+    </ngx-invention-category-table>
   </nb-card-body>
 </nb-card>

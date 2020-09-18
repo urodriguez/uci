@@ -46,16 +46,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregates\Invention.cs" />
-    <Compile Include="Aggregates\InventionType.cs" />
+    <Compile Include="Aggregates\InventionCategory.cs" />
     <Compile Include="Aggregates\User.cs" />
     <Compile Include="Contracts\Aggregates\IAggregateRoot.cs" />
     <Compile Include="Contracts\Infrastructure\Persistence\IUnitOfWork.cs" />
-    <Compile Include="Contracts\Predicates\Factories\IInventionTypePredicateFactory.cs" />
+    <Compile Include="Contracts\Predicates\Factories\IInventionCategoryPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IInventionPredicateFactory.cs" />
     <Compile Include="Contracts\Predicates\Factories\IUserPredicateFactory.cs" />
     <Compile Include="Contracts\Infrastructure\Persistence\Repositories\IInventionRepository.cs" />
-    <Compile Include="Contracts\Infrastructure\Persistence\Repositories\IInventionTypeRepository.cs" />
+    <Compile Include="Contracts\Infrastructure\Persistence\Repositories\IInventionCategoryRepository.cs" />
     <Compile Include="Contracts\Infrastructure\Persistence\Repositories\IRepository.cs" />
     <Compile Include="Contracts\Infrastructure\Persistence\Repositories\IUserRepository.cs" />
     <Compile Include="Contracts\Services\IRoleService.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Contracts\Predicates\IInventAppPredicate.cs" />
     <Compile Include="Exceptions\BusinessRuleException.cs" />
-    <Compile Include="Predicates\Factories\InventionTypePredicateFactory.cs" />
+    <Compile Include="Predicates\Factories\InventionCategoryPredicateFactory.cs" />
     <Compile Include="Predicates\Factories\InventionPredicateFactory.cs" />
     <Compile Include="Predicates\Factories\UserPredicateFactory.cs" />
     <Compile Include="Predicates\InventAppPredicateIndividual.cs" />

@@ -31,6 +31,7 @@ namespace Infrastructure.Persistence.Dapper
         }
 
         public IInventionRepository Inventions { get; private set; }
+        public IInventionCategoryRepository InventionCategories { get; private set; }
         public IUserRepository Users { get; private set; }
 
         public async Task BeginTransactionAsync()
@@ -45,12 +46,15 @@ namespace Infrastructure.Persistence.Dapper
         private void InitializeRepositoriesWithTransaction(IDbTransaction transaction)
         {
             Inventions = new InventionRepository(_logService, _appSettingsService, transaction);
+            InventionCategories = new InventionCategoryRepository(_logService, _appSettingsService, transaction);
             Users = new UserRepository(_logService, _appSettingsService, transaction);
 
             _aggregatesRepositories = new Dictionary<string, object>();
             foreach (PropertyInfo property in typeof(UnitOfWork).GetProperties())
             {
-                var aggregateName = property.Name.Remove(property.Name.Length - 1);//removes the final 's'
+                var aggregateName = property.Name.EndsWith("ies") 
+                    ? property.Name.Remove(property.Name.Length - 3) + "y" //transforms the final "ies" into '"y"
+                    : property.Name.Remove(property.Name.Length - 1); //removes the final 's'
                 _aggregatesRepositories.Add(aggregateName, property.GetValue(this));
             }
         }
@@ -86,7 +90,17 @@ namespace Infrastructure.Persistence.Dapper
 
         public IRepository<TAggregateRoot> GetRepository<TAggregateRoot>() where TAggregateRoot : class, IAggregateRoot
         {
-            return (IRepository<TAggregateRoot>)_aggregatesRepositories[typeof(TAggregateRoot).Name];
+            try
+            {
+                return (IRepository<TAggregateRoot>)_aggregatesRepositories[typeof(TAggregateRoot).Name];
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new Exception(
+                    $"UnityOfWork.GetRepository: no repository is associated to {typeof(TAggregateRoot).Name}. " +
+                    $"Check if it was initialized in 'InitializeRepositoriesWithTransaction' method"
+                );
+            }
         }        
 
         //https://stackoverflow.com/questions/339063/what-is-the-difference-between-using-idisposable-vs-a-destructor-in-c

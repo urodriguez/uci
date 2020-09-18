@@ -5,6 +5,6 @@ namespace Application.Contracts.DuplicateValidators
 {
     public interface IDuplicateValidator<TDto> where TDto : ICrudDto
     {
-        Task ValidateAsync(TDto dto);
+        Task ValidateAsync(TDto inventionCategoryDto);
     }
 }

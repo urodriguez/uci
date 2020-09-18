@@ -4,14 +4,13 @@ using Domain.Aggregates;
 
 namespace Application.AggregateUpdaters
 {
-    public class InventionUpdater : IInventionUpdater
+    public class InventionCategoryUpdater : IInventionCategoryUpdater
     {
-        public void Update(Invention inventionCategory, InventionDto dto)
+        public void Update(InventionCategory inventionCategory, InventionCategoryDto dto)
         {
             inventionCategory.SetCode(dto.Code);
             inventionCategory.SetName(dto.Name);
-            inventionCategory.SetCategory(dto.Category);
-            inventionCategory.SetPrice(dto.Price);
+            inventionCategory.SetDescription(dto.Description);
         }
     }
 }

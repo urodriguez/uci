@@ -30,11 +30,11 @@ import {UsersRoutingModule} from './users-routing.module';
     NbButtonModule,
     NbDialogModule.forChild(),
     NbCheckboxModule,
+    NbSelectModule,
+    NbToastrModule.forRoot(),
     ThemeModule,
     Ng2SmartTableModule,
     FormsModule,
-    NbSelectModule,
-    NbToastrModule.forRoot(),
     UsersRoutingModule
   ],
   declarations: [

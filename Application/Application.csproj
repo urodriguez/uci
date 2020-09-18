@@ -64,7 +64,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AggregateUpdaters\InventionTypeUpdater.cs" />
+    <Compile Include="AggregateUpdaters\InventionCategoryUpdater.cs" />
     <Compile Include="AggregateUpdaters\InventionUpdater.cs" />
     <Compile Include="AggregateUpdaters\UserUpdater.cs" />
     <Compile Include="Contracts\AggregateUpdaters\IAggregateUpdater.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="ApplicationResults\ApplicationResultStatus.cs" />
     <Compile Include="ApplicationResults\OkApplicationResult.cs" />
     <Compile Include="ApplicationResults\OkEmptyResult.cs" />
-    <Compile Include="Contracts\AggregateUpdaters\IInventionTypeUpdater.cs" />
+    <Compile Include="Contracts\AggregateUpdaters\IInventionCategoryUpdater.cs" />
     <Compile Include="Contracts\AggregateUpdaters\IInventionUpdater.cs" />
     <Compile Include="Contracts\AggregateUpdaters\IUserUpdater.cs" />
     <Compile Include="Contracts\Factories\IEmailFactory.cs" />
@@ -112,26 +112,26 @@
     <Compile Include="Factories\Factory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\InventionFactory.cs" />
-    <Compile Include="Factories\InventionTypeFactory.cs" />
+    <Compile Include="Factories\InventionCategoryFactory.cs" />
     <Compile Include="DuplicateValidators\InventionDuplicateValidator.cs" />
-    <Compile Include="DuplicateValidators\InventionTypeDuplicateValidator.cs" />
+    <Compile Include="DuplicateValidators\InventionCategoryDuplicateValidator.cs" />
     <Compile Include="DuplicateValidators\UserDuplicateValidator.cs" />
     <Compile Include="Contracts\Factories\IFactory.cs" />
     <Compile Include="Contracts\Factories\IInventionFactory.cs" />
-    <Compile Include="Contracts\Factories\IInventionTypeFactory.cs" />
+    <Compile Include="Contracts\Factories\IInventionCategoryFactory.cs" />
     <Compile Include="Contracts\Factories\IUserFactory.cs" />
     <Compile Include="Contracts\DuplicateValidators\IDuplicateValidator.cs" />
     <Compile Include="Contracts\DuplicateValidators\IInventionDuplicateValidator.cs" />
-    <Compile Include="Contracts\DuplicateValidators\IInventionTypeDuplicateValidator.cs" />
+    <Compile Include="Contracts\DuplicateValidators\IInventionCategoryDuplicateValidator.cs" />
     <Compile Include="Contracts\DuplicateValidators\IUserDuplicateValidator.cs" />
     <Compile Include="Contracts\Services\IInventionService.cs" />
-    <Compile Include="Contracts\Services\IInventionTypeService.cs" />
+    <Compile Include="Contracts\Services\IInventionCategoryService.cs" />
     <Compile Include="Contracts\Services\IUserService.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Dtos\UserCredentialDto.cs" />
     <Compile Include="Dtos\InventionDto.cs" />
-    <Compile Include="Dtos\InventionTypeDto.cs" />
+    <Compile Include="Dtos\InventionCategoryDto.cs" />
     <Compile Include="ApplicationResults\IApplicationResult.cs" />
     <Compile Include="Infrastructure\AppSettings\InventAppEnvironment.cs" />
     <Compile Include="Infrastructure\Auditing\Audit.cs" />
@@ -161,7 +161,7 @@
     <Compile Include="Contracts\Services\ICrudService.cs" />
     <Compile Include="Services\InventionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\InventionTypeService.cs" />
+    <Compile Include="Services\InventionCategoryService.cs" />
     <Compile Include="Services\ReportService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>

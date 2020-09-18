@@ -14,7 +14,7 @@ http://152.171.94.90:8080/WebApi/swagger
 http://152.171.94.90:8080/WebApi/hangfire -> use cookie = { Name = "inventApp_hf_dashboard_cookie", Value = "1nv3nt4pp_h4ngf1r3_d4shb0rd" }
 
 id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
-{username: "uciel-admin", password: "admin123"}
+{email: "inventApp@gmail.com", password: "Pa$$w0rd"}
 
 {
   "code": "i_code00",
@@ -29,8 +29,7 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * expose web client application to external (no localhost) URL via public ip for TEST env
 * create index in db tables
 * create all necessary elements to create registration
-  * CRUD invention type
-  * CRUD invention
+  * CRUD invention - TODO: frontend
   * CRUD sponsor
   * CRUD sponsor/invention
   * CRUD inventor
@@ -148,3 +147,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
   * users module
 * Jenkins: update git remote on jobs
 * Jenkins: Angular WebClient App job
+* CRUD invention type

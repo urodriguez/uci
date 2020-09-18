@@ -21,10 +21,10 @@ namespace Application.DuplicateValidators
             _aggregateRootName = nameof(User);
         }
 
-        public async Task ValidateAsync(UserDto inventionTypeDto)
+        public async Task ValidateAsync(UserDto inventionCategoryDto)
         {
-            var byDistinctIdAndEmail = _userPredicateFactory.CreateByDistinctIdAndEmail(inventionTypeDto.Id, inventionTypeDto.Email);
-            if (await _unitOfWork.Users.AnyAsync(byDistinctIdAndEmail)) throw new BusinessRuleException($"{_aggregateRootName}: email={inventionTypeDto.Email} already exits");
+            var byDistinctIdAndEmail = _userPredicateFactory.CreateByDistinctIdAndEmail(inventionCategoryDto.Id, inventionCategoryDto.Email);
+            if (await _unitOfWork.Users.AnyAsync(byDistinctIdAndEmail)) throw new BusinessRuleException($"{_aggregateRootName}: email={inventionCategoryDto.Email} already exits");
         }
     }
 }

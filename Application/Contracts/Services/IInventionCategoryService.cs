@@ -2,7 +2,7 @@
 
 namespace Application.Contracts.Services
 {
-    public interface IInventionTypeService : ICrudService<InventionTypeDto>
+    public interface IInventionCategoryService : ICrudService<InventionCategoryDto>
     {
         
     }

@@ -25,9 +25,3 @@ const routes: Routes = [{
   exports: [RouterModule],
 })
 export class InventionContainerRoutingModule { }
-
-export const routedComponents = [
-  InventionContainerComponent,
-  InventionsComponent,
-  InventionCategoriesComponent,
-];

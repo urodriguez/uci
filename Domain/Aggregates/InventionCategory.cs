@@ -4,11 +4,11 @@ using Domain.Enums;
 
 namespace Domain.Aggregates
 {
-    public class InventionType : Entity, IAggregateRoot
+    public class InventionCategory : Entity, IAggregateRoot
     {
-        public InventionType() {}
+        public InventionCategory() {}
 
-        public InventionType(
+        public InventionCategory(
             string code,
             string name,
             string description
