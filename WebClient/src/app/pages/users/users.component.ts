@@ -6,7 +6,6 @@ import {UserService} from './shared/user.service';
 import {UserCreateOrUpdateComponent} from './user-create-or-update/user-create-or-update.component';
 import {User} from './shared/user.model';
 import {UserDeleteComponent} from './user-delete/user-delete.component';
-import {NbAuthJWTToken, NbAuthService} from '@nebular/auth';
 
 @Component({
   selector: 'ngx-users',

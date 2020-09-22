@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import {User} from './user.model';
+import {CrudModelFactory} from '../../../shared/factories/crud-model.factory';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserFactory {
-
-  constructor() { }
-
+export class UserFactory extends CrudModelFactory<User>{
   create(jsonData: any): User {
     return jsonData ? new User(
       jsonData.id,
@@ -18,9 +16,5 @@ export class UserFactory {
       jsonData.role,
       jsonData.active
     ) : new User();
-  }
-
-  createList(jsonDataList: any): User[] {
-    return jsonDataList ? jsonDataList.map(ud => this.create(ud)) : [];
   }
 }

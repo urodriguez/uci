@@ -5,22 +5,21 @@ import {LoginResult} from '../login/login-result.model';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 
-import {BaseHttpService} from '../../shared/base-http.service';
 import {AppContext} from '../../app-context';
+import {HttpService} from '../../shared/services/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends BaseHttpService {
-  private readonly tokensApiURL = `${this.baseApiURL}/tokens`;
-
+export class AuthService extends HttpService {
   constructor(httpClient: HttpClient,
               appContext: AppContext) {
     super(httpClient, appContext);
+    this.setResource('tokens');
   }
 
   login(userCredential: UserCredential, rememberUser: boolean = false): Observable<LoginResult> {
-    return this.httpClient.post<LoginResult>(this.tokensApiURL, userCredential)
+    return this.httpClient.post<LoginResult>(this.resourceApiUrl, userCredential)
       .pipe(
         map(response => {
           const loginResult = new LoginResult(response.status, response.securityToken);

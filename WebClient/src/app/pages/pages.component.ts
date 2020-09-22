@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {NbMenuItem} from '@nebular/theme';
 import {UserService} from './users/shared/user.service';
 import {AppContext} from '../app-context';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-pages',
@@ -18,13 +19,17 @@ export class PagesComponent implements OnInit {
   menu: NbMenuItem[];
 
   constructor(private readonly userService: UserService,
-              private readonly appContext: AppContext) {
+              private readonly appContext: AppContext,
+              private readonly router: Router) {
     if(!this.appContext.securityToken)
       this.appContext.securityToken = JSON.parse(localStorage.getItem('securityToken'));
   }
 
   ngOnInit(): void {
-    this.userService.getLogged().subscribe(lu => this.appContext.loggedUser = lu);
+    this.userService.getLogged().subscribe(
+      lu => this.appContext.loggedUser = lu,
+      error => error === 'UNAUTHENTICATED' ? this.router.navigateByUrl('/auth/login') : console.log(error)
+    );
 
     this.menu= [
       {

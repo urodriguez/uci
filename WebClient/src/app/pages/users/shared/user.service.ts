@@ -7,58 +7,23 @@ import {User} from './user.model';
 import {ResetPassword} from '../../../auth/reset-password/reset-password.model';
 import {AppContext} from '../../../app-context';
 import {UserFactory} from './user.factory';
-import {BaseHttpService} from '../../../shared/base-http.service';
+import {CrudService} from '../../../shared/services/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseHttpService {
-
-  private readonly usersApiURL = `${this.baseApiURL}/users`;
+export class UserService extends CrudService<User> {
 
   constructor(httpClient: HttpClient,
               appContext: AppContext,
-              private readonly userFactory: UserFactory) {
-    super(httpClient, appContext);
-  }
-
-  getUser(id: string): Observable<User> {
-    return this.httpClient.get<User>(`${this.usersApiURL}/${id}`, this.getHttpOptions()).pipe(
-      map(response => this.userFactory.create(response)),
-      catchError(this.handleError)
-    );
-  }
-
-  getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.usersApiURL, this.getHttpOptions()).pipe(
-      map(response => this.userFactory.createList(response)),
-      catchError(this.handleError)
-    );
-  }
-
-  create(user: User): Observable<string> {
-    return this.httpClient.post<string>(this.usersApiURL, user, this.getHttpOptions()).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  update(user: User) {
-    return this.httpClient.put(`${this.usersApiURL}/${user.id}`, user, this.getHttpOptions())
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  delete(user: User) {
-    return this.httpClient.delete(`${this.usersApiURL}/${user.id}`, this.getHttpOptions())
-      .pipe(
-        catchError(this.handleError)
-      );
+              factory: UserFactory) {
+    super(httpClient, appContext, factory);
+    this.setResource('Users');
   }
 
   resetPassword(resetPassword: ResetPassword) {
     return this.httpClient.patch(
-      `${this.usersApiURL}/logged/resetPassword`,
+      `${this.resourceApiUrl}/logged/resetPassword`,
       resetPassword,
       this.getHttpOptions()
     ).pipe(
@@ -67,15 +32,15 @@ export class UserService extends BaseHttpService {
   }
 
   getLogged(): Observable<User> {
-    return this.httpClient.get<User>(`${this.usersApiURL}/logged`, this.getHttpOptions()).pipe(
-      map(response => this.userFactory.create(response)),
+    return this.httpClient.get<User>(`${this.resourceApiUrl}/logged`, this.getHttpOptions()).pipe(
+      map(response => this.factory.create(response) as User),
       catchError(this.handleError)
     );
   }
 
   forgotPassword(email: string) {
     return this.httpClient.patch(
-      `${this.usersApiURL}/${email}/forgotPassword`,
+      `${this.resourceApiUrl}/${email}/forgotPassword`,
       {}
     ).pipe(
       catchError(this.handleError)

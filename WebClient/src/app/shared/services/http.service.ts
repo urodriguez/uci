@@ -1,10 +1,12 @@
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {throwError} from 'rxjs';
-import {AppContext} from '../app-context';
+import {AppContext} from '../../app-context';
 
-export class BaseHttpService {
+export class HttpService {
   protected readonly baseApiURL: string;
   protected httpHeaders: HttpHeaders;
+
+  protected resourceApiUrl: string;
 
   constructor(protected readonly httpClient: HttpClient,
               protected readonly appContext: AppContext) {
@@ -23,6 +25,10 @@ export class BaseHttpService {
       );
   }
 
+  setResource(resource: string): void {
+    this.resourceApiUrl = `${this.baseApiURL}/${resource}`;
+  }
+
   private initializeHttpHeadersWithToken(token: string) {
     this.httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -37,7 +43,7 @@ export class BaseHttpService {
   }
 
   protected handleError(httpErrorResponse: HttpErrorResponse) {
-    // return an observable with a user-facing error message
-    return throwError(httpErrorResponse.error);
+    // returns an observable with a user-facing error message
+    return httpErrorResponse.status !== 401 ? throwError(httpErrorResponse.error) : throwError('UNAUTHENTICATED');
   }
 }

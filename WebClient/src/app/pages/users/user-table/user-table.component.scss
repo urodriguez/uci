@@ -6,3 +6,11 @@
   font-weight: bold;
   text-align: center;
 }
+
+:host ::ng-deep ng2-smart-table tbody > tr > td > ng2-st-tbody-edit-delete > a > i[class='nb-edit'] {
+  color: darkorange;
+}
+
+:host ::ng-deep ng2-smart-table tbody > tr > td > ng2-st-tbody-edit-delete > a > i[class='nb-trash'] {
+  color: red;
+}

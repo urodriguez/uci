@@ -1,13 +1,15 @@
 import {UserRole} from './user-role.enum';
+import {CrudModel} from '../../../shared/models/crud.model';
 
-export class User {
-  constructor(public id?: string,
+export class User extends CrudModel{
+  constructor(id?: string,
               public email?: string,
               public firstName?: string,
               public middleName?: string,
               public lastName?: string,
               public role?: UserRole,
               public active?: boolean) {
+    super(id, User.name);
   }
 
   get fullName(): string {
