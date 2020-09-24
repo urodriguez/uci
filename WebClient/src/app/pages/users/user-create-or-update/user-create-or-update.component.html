@@ -1,37 +1,38 @@
 <nb-card status="success">
-  <nb-card-header>User</nb-card-header>
+  <nb-card-header>{{model.modelName}}</nb-card-header>
 
   <nb-card-body>
       <div class="form-group">
         <label for="first-name" class="label">First Name</label>
-        <input type="text" nbInput fullWidth id="first-name" placeholder="First Name" [(ngModel)]="user.firstName">
+        <input type="text" nbInput fullWidth id="first-name" placeholder="First Name" [(ngModel)]="model.firstName">
       </div>
 
       <div class="form-group">
         <label for="middle-name" class="label">Middle Name</label>
-        <input type="text" nbInput fullWidth id="middle-name" placeholder="Middle Name" [(ngModel)]="user.middleName">
+        <input type="text" nbInput fullWidth id="middle-name" placeholder="Middle Name" [(ngModel)]="model.middleName">
       </div>
 
       <div class="form-group">
         <label for="last-name" class="label">Last Name</label>
-        <input type="text" nbInput fullWidth id="last-name" placeholder="Last Name" [(ngModel)]="user.lastName">
+        <input type="text" nbInput fullWidth id="last-name" placeholder="Last Name" [(ngModel)]="model.lastName">
       </div>
 
       <div class="form-group">
         <label for="email" class="label">Email</label>
-        <input type="email" nbInput fullWidth id="email" placeholder="Email" [(ngModel)]="user.email">
+        <input type="email" nbInput fullWidth id="email" placeholder="Email" [disabled]="model.id" [(ngModel)]="model.email">
       </div>
 
       <div class="form-group">
         <label for="role" class="label">Role</label>
-        <nb-select id="role" placeholder="Role" fullWidth [(selected)]="user.role">
+        <nb-select id="role" placeholder="Role" fullWidth [(selected)]="model.role">
           <nb-option [value]="1">Admin</nb-option>
           <nb-option [value]="2">Read Only</nb-option>
+          <nb-option [value]="3">Inventor</nb-option>
         </nb-select>
       </div>
 
       <div class="form-group">
-        <nb-checkbox [(checked)]="user.active">Active</nb-checkbox>
+        <nb-checkbox [(checked)]="model.active">Active</nb-checkbox>
       </div>
   </nb-card-body>
 

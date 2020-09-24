@@ -16,37 +16,35 @@ export class UsersComponent {
 
   users: User[];
 
-  constructor(private readonly userService: UserService,
+  moduleName: string;
+  modelName: string;
+
+  constructor(private readonly modelService: UserService,
               private readonly dialogService: NbDialogService,
               private readonly toastrService: NbToastrService) {
-    this.userService.getAll().subscribe(
-      users => this.users = users,
+    this.modelService.getAll().subscribe(
+      result => this.users = result,
       errorMessage => this.showErrorToaster(errorMessage)
     );
+
+    this.moduleName = "Users";
+    this.modelName = User.name;
   }
 
-  orchestrateUserCreateRequested() {
-    this.openCreateOrUpdateDialog(new User());
-  }
-
-  orchestrateUserEditRequested(user: User) {
-    this.openCreateOrUpdateDialog(user);
-  }
-
-  orchestrateUserDeleteRequested(user: User) {
+  openDeleteView(model: User) {
     const dialogRef = this.dialogService.open(UserDeleteComponent, {
       context: {
-        user: user,
+        model: model,
       },
     });
 
-    dialogRef.onClose.subscribe((deleteUser: boolean) => {
-      if (deleteUser) {
-        this.toastrService.show('', `Deleting User`, { status: 'info' });
-        this.userService.delete(user).subscribe(
+    dialogRef.onClose.subscribe((deleteModel: boolean) => {
+      if (deleteModel) {
+        this.toastrService.show('', `Deleting ${this.modelName}`, { status: 'info' });
+        this.modelService.delete(model).subscribe(
           () => {
-            this.users = this.users.filter(u => u.id !== user.id);
-            this.toastrService.show('', `User Deleted`, { status: 'success' });
+            this.users = this.users.filter(u => u.id !== model.id);
+            this.toastrService.show('', `${this.modelName} Deleted`, { status: 'success' });
           },
           errorMessage => this.showErrorToaster(errorMessage)
         );
@@ -54,41 +52,41 @@ export class UsersComponent {
     });
   }
 
-  private openCreateOrUpdateDialog(user: User) {
+  openCreateOrUpdateView(model: User = new User()) {
     const dialogRef = this.dialogService.open(UserCreateOrUpdateComponent, {
       context: {
-        user: user,
-      },
+        model: model
+      }
     });
 
-    dialogRef.onClose.subscribe((saveUser: boolean) => {
-      if (saveUser) {
-        if (user.id == null) {
-          this.toastrService.show('', `Creating User`, { status: 'info' });
-          this.userService.create(user).subscribe(
+    dialogRef.onClose.subscribe((saveModel: boolean) => {
+      if (saveModel) {
+        if (model.id == null) {
+          this.toastrService.show('', `Creating ${this.modelName}`, { status: 'info' });
+          this.modelService.create(model).subscribe(
             id => {
-              user.id = id;
-              this.users = [...this.users, user];
-              this.toastrService.show('', `User Created`, { status: 'success' });
+              model.id = id;
+              this.users = [...this.users, model];
+              this.toastrService.show('', `${this.modelName} Created`, { status: 'success' });
             },
             errorMessage => {
               this.showErrorToaster(errorMessage);
-              this.openCreateOrUpdateDialog(user); //reopens closed dialog
+              this.openCreateOrUpdateView(model); //reopens closed dialog
             }
           );
         } else {
-          this.toastrService.show('', `Updating User`, { status: 'info' });
-          this.userService.update(user).subscribe(
+          this.toastrService.show('', `Updating ${this.modelName}`, { status: 'info' });
+          this.modelService.update(model).subscribe(
             () => {
               this.users = this.users.map(u => {
-                if (u.id === user.id) return user;
+                if (u.id === model.id) return model;
                 else return u;
               });
-              this.toastrService.show('', `User Updated`, { status: 'success' });
+              this.toastrService.show('', `${this.modelName} Updated`, { status: 'success' });
             },
             errorMessage => {
               this.showErrorToaster(errorMessage);
-              this.openCreateOrUpdateDialog(user); //reopens closed dialog
+              this.openCreateOrUpdateView(model); //reopens closed dialog
             }
           );
         }

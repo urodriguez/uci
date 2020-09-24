@@ -1,6 +1,6 @@
 <ng2-smart-table
   [settings]="settings"
-  [source]="users"
-  (edit)="editRequested($event)"
-  (delete)="deleteRequested($event)">
+  [source]="source"
+  (edit)="openUpdateView($event)"
+  (delete)="openDeleteView($event)">
 </ng2-smart-table>

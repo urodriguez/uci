@@ -1,17 +1,17 @@
 <nb-card>
   <nb-card-header>
-    Users
+    {{moduleName}}
   </nb-card-header>
 
   <nb-card-body>
-    <button nbButton hero shape="round" status="primary" (click)="orchestrateUserCreateRequested()">
+    <button nbButton hero shape="round" status="primary" (click)="openCreateOrUpdateView()">
       Create
     </button>
 
     <ngx-user-table
-      [users]="users"
-      (userEditRequested)="orchestrateUserEditRequested($event)"
-      (userDeleteRequested)="orchestrateUserDeleteRequested($event)">
+      [source]="users"
+      (onOpenUpdateView)="openCreateOrUpdateView($event)"
+      (onOpenDeleteView)="openDeleteView($event)">
     </ngx-user-table>
   </nb-card-body>
 </nb-card>

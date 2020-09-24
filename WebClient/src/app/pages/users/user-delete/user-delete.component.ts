@@ -9,7 +9,7 @@ import {NbDialogRef} from '@nebular/theme';
 })
 export class UserDeleteComponent {
   @Input()
-  user: User;
+  model: User;
 
   constructor(private readonly dialogRef: NbDialogRef<UserDeleteComponent>) { }
 

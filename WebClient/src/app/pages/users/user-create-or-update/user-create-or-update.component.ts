@@ -9,7 +9,7 @@ import {User} from '../shared/user.model';
 })
 export class UserCreateOrUpdateComponent {
   @Input()
-  user: User;
+  model: User;
 
   constructor(private readonly dialogRef: NbDialogRef<UserCreateOrUpdateComponent>) {}
 

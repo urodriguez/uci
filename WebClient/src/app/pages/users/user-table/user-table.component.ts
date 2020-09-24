@@ -8,13 +8,13 @@ import {User} from '../shared/user.model';
 })
 export class UserTableComponent {
   @Input()
-  users: User[];
+  source: User[];
 
   @Output()
-  userDeleteRequested = new EventEmitter<User>();
+  onOpenUpdateView = new EventEmitter<User>();
 
   @Output()
-  userEditRequested = new EventEmitter<User>();
+  onOpenDeleteView = new EventEmitter<User>();
 
   settings: any;
 
@@ -37,7 +37,7 @@ export class UserTableComponent {
           title: 'Last Name',
           type: 'string',
         },
-        role: {
+        roleName: {
           title: 'Role',
           type: 'string',
         },
@@ -58,11 +58,11 @@ export class UserTableComponent {
     };
   }
 
-  editRequested(event: any): void {
-    this.userEditRequested.emit(event.data);
+  openUpdateView(event: any): void {
+    this.onOpenUpdateView.emit(event.data);
   }
 
-  deleteRequested(event): void {
-    this.userDeleteRequested.emit(event.data);
+  openDeleteView(event: any): void {
+    this.onOpenDeleteView.emit(event.data);
   }
 }
