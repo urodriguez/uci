@@ -61,7 +61,7 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'InventionCategory')
 		[Id] uniqueidentifier NOT NULL,
 		[Code] varchar(8) NOT NULL,
 		[Name] varchar(32) NOT NULL,
-		[Description] varchar(128) NOT NULL
+		[Description] varchar(128)
 	)
 
 IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'QueueItem')
@@ -72,5 +72,32 @@ IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'QueueItem')
 		[Data] varchar(max) NOT NULL,
 		[QueueDate] datetime NOT NULL
 	)
+
+IF NOT EXISTS(SELECT 1 FROM sys.objects where parent_object_id = OBJECT_ID('User') and name = 'PK_User')
+	ALTER TABLE [dbo].[User] ADD CONSTRAINT PK_User PRIMARY KEY (Id)
+
+IF NOT EXISTS(SELECT 1 FROM sys.objects where parent_object_id = OBJECT_ID('Invention') and name = 'PK_Invention')
+	ALTER TABLE [dbo].[Invention] ADD CONSTRAINT PK_Invention PRIMARY KEY (Id)
+
+IF NOT EXISTS(SELECT 1 FROM sys.objects where parent_object_id = OBJECT_ID('InventionCategory') and name = 'PK_InventionCategory')
+	ALTER TABLE [dbo].[InventionCategory] ADD CONSTRAINT PK_InventionCategory PRIMARY KEY (Id)
+
+IF NOT EXISTS(SELECT 1 FROM sys.objects where parent_object_id = OBJECT_ID('QueueItem') and name = 'PK_QueueItem')
+	ALTER TABLE [dbo].[QueueItem] ADD CONSTRAINT PK_QueueItem PRIMARY KEY (Id)
+
+IF COL_LENGTH('dbo.Invention', 'UserId') IS NULL
+	ALTER TABLE [dbo].[Invention] ADD [UserId] UNIQUEIDENTIFIER NOT NULL CONSTRAINT FK_Invention_User FOREIGN KEY([UserId]) REFERENCES [dbo].[User] (Id) ON DELETE CASCADE
+
+IF COL_LENGTH('dbo.Invention', 'Category') IS NOT NULL
+	ALTER TABLE [dbo].[Invention] DROP COLUMN [Category]
+
+IF COL_LENGTH('dbo.Invention', 'CategoryId') IS NULL
+	ALTER TABLE [dbo].[Invention] ADD [CategoryId] UNIQUEIDENTIFIER NOT NULL CONSTRAINT FK_Invention_Category FOREIGN KEY([CategoryId]) REFERENCES [dbo].[InventionCategory] (Id) ON DELETE CASCADE
+
+IF COL_LENGTH('dbo.Invention', 'Description') IS NULL
+	ALTER TABLE [dbo].[Invention] ADD [Description] varchar(128)
+
+IF COL_LENGTH('dbo.Invention', 'Enable') IS NULL
+	ALTER TABLE [dbo].[Invention] ADD [Enable] bit not null default 1
 
 COMMIT TRANSACTION

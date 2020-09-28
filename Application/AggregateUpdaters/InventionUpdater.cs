@@ -10,8 +10,10 @@ namespace Application.AggregateUpdaters
         {
             inventionCategory.SetCode(dto.Code);
             inventionCategory.SetName(dto.Name);
-            inventionCategory.SetCategory(dto.Category);
+            inventionCategory.Description = dto.Description;
+            inventionCategory.CategoryId =  dto.CategoryId;
             inventionCategory.SetPrice(dto.Price);
+            inventionCategory.Enable = dto.Enable;
         }
     }
 }

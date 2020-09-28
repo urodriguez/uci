@@ -68,11 +68,11 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IUserService, UserService>(new PerResolveLifetimeManager());
 
             //Factories
-            _container.RegisterType<IEmailFactory, EmailFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IInventionFactory, InventionFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IInventionCategoryFactory, InventionCategoryFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IUserFactory, UserFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ITemplateFactory, TemplateFactory>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IEmailFactory, EmailFactory>(new PerResolveLifetimeManager());
+            _container.RegisterType<IInventionFactory, InventionFactory>(new PerResolveLifetimeManager());
+            _container.RegisterType<IInventionCategoryFactory, InventionCategoryFactory>(new PerResolveLifetimeManager());
+            _container.RegisterType<IUserFactory, UserFactory>(new PerResolveLifetimeManager());
+            _container.RegisterType<ITemplateFactory, TemplateFactory>(new PerResolveLifetimeManager());
 
             //DuplicateValidators
             _container.RegisterType<IInventionDuplicateValidator, InventionDuplicateValidator>(new PerResolveLifetimeManager());
@@ -85,14 +85,14 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<IUserUpdater, UserUpdater>(new PerResolveLifetimeManager());
 
             //Contexts
-            _container.RegisterType<IInventAppContext, InventAppContext>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IInventAppContext, InventAppContext>(new PerResolveLifetimeManager());
             #endregion
 
             #region DOMAIN
             //PredicateFactories
-            _container.RegisterType<IInventionPredicateFactory, InventionPredicateFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IInventionCategoryPredicateFactory, InventionCategoryPredicateFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IUserPredicateFactory, UserPredicateFactory>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IInventionPredicateFactory, InventionPredicateFactory>(new PerResolveLifetimeManager());
+            _container.RegisterType<IInventionCategoryPredicateFactory, InventionCategoryPredicateFactory>(new PerResolveLifetimeManager());
+            _container.RegisterType<IUserPredicateFactory, UserPredicateFactory>(new PerResolveLifetimeManager());
 
             //Services
             _container.RegisterType<IRoleService, RoleService>(new PerResolveLifetimeManager());
@@ -114,7 +114,7 @@ namespace Infrastructure.Crosscutting.DependencyInjection.Unity
             _container.RegisterType<ITokenService, TokenService>(new PerResolveLifetimeManager());
 
             //Persistence
-            _container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IDbConnectionFactory, DbConnectionFactory>(new PerResolveLifetimeManager());
             _container.RegisterType<IUnitOfWork, UnitOfWork>(new PerResolveLifetimeManager());
             #endregion
 

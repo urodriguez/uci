@@ -29,7 +29,6 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * expose web client application to external (no localhost) URL via public ip for TEST env
 * create index in db tables
 * create all necessary elements to create registration
-  * CRUD invention - TODO: frontend
   * CRUD sponsor
   * CRUD sponsor/invention
   * CRUD inventor
@@ -148,3 +147,4 @@ id: 2418E4D2-1C9D-4223-B06E-ABD7014791B7
 * Jenkins: update git remote on jobs
 * Jenkins: Angular WebClient App job
 * CRUD invention type
+* CRUD invention - TODO: frontend

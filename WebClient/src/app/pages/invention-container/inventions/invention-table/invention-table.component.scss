@@ -1,0 +1,13 @@
+:host ::ng-deep ng2-smart-table thead > tr > th > ng2-st-column-title > div > ng2-smart-table-title > a {
+  font-weight: bold;
+}
+
+:host ::ng-deep ng2-smart-table thead > tr > th {
+  font-weight: bold;
+  text-align: center;
+}
+
+:host ::ng-deep ng2-smart-table tbody > tr > td > ng2-st-tbody-edit-delete > a > i[class='nb-power-circled'] {
+  color: red;
+  font-size: 24px;
+}

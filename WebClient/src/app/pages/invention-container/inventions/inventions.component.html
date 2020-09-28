@@ -1,10 +1,12 @@
 <nb-card>
   <nb-card-header>
-    Inventions
+    {{moduleName}}
   </nb-card-header>
 
   <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
-    </ng2-smart-table>
+    <ngx-invention-table
+      [source]="inventions"
+      (onOpenStateView)="openStateView($event)">
+    </ngx-invention-table>
   </nb-card-body>
 </nb-card>

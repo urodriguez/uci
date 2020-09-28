@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Application.Contracts.Factories;
 using Application.Dtos;
 using AutoMapper;
 using Domain.Contracts.Aggregates;
+#pragma warning disable 1998
 
 namespace Application.Factories
 {
@@ -18,29 +19,24 @@ namespace Application.Factories
             _mapper = mapper;
         }
 
-        public TDto Create(TAggregateRoot aggregate)
+        public virtual async Task<TDto> CreateAsync(TAggregateRoot aggregate)
         {
             return _mapper.Map<TAggregateRoot, TDto>(aggregate);
         }
 
-        public IEnumerable<TDto> CreateFromRange(IEnumerable<TAggregateRoot> aggregates)
+        public async Task<IEnumerable<TDto>> CreateFromRange(IEnumerable<TAggregateRoot> aggregates)
         {
-            return aggregates.Select(Create);
+            var dtos = new List<TDto>();
+            foreach (var aggregate in aggregates)
+            {
+                dtos.Add(await CreateAsync(aggregate));
+            }
+            return dtos;
         }
 
         /// <summary>
         /// Creates new aggregate based on Dto information
         /// </summary>
         public abstract TAggregateRoot Create(TDto dto);
-
-        /// <summary>
-        /// Creates new aggregate based on Dto information and existing aggregate
-        /// </summary>
-        public TAggregateRoot CreateFromExisting(TDto dto, TAggregateRoot existingAggregate)
-        {
-            var aggregate = _mapper.Map<TDto, TAggregateRoot>(dto, existingAggregate);
-            return aggregate;
-        }
-
     }
 }

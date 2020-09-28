@@ -1,99 +1,62 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+
+import {NbDialogService, NbToastrService} from '@nebular/theme';
+
+import {InventionService} from './shared/invention.service';
+import {Invention} from './shared/invention.model';
+import {InventionStateComponent} from './invention-state/invention-state.component';
 
 @Component({
   selector: 'ngx-inventions',
-  templateUrl: './inventions.component.html',
   styleUrls: ['./inventions.component.scss'],
+  templateUrl: './inventions.component.html',
 })
 export class InventionsComponent {
-  settings: any;
-  source: any;
 
-  constructor() {
-    this.settings = this.getTableSettings();
-    this.source = this.getTableDataSource();
+  inventions: Invention[];
+
+  moduleName: string;
+  modelName: string;
+
+  constructor(private readonly modelService: InventionService,
+              private readonly dialogService: NbDialogService,
+              private readonly toastrService: NbToastrService) {
+    this.modelService.getAll().subscribe(
+      result => this.inventions = result,
+      errorMessage => this.showErrorToaster(errorMessage)
+    );
+
+    this.moduleName = 'Inventions';
+    this.modelName = Invention.name;
   }
 
-  getTableSettings(): any {
-    const settings = {
-      add: {
-        addButtonContent: '<i class="nb-plus"></i>',
-        createButtonContent: '<i class="nb-checkmark"></i>',
-        cancelButtonContent: '<i class="nb-close"></i>',
+  openStateView(model: Invention) {
+    const dialogRef = this.dialogService.open(InventionStateComponent, {
+      context: {
+        model: model,
       },
-      edit: {
-        editButtonContent: '<i class="nb-edit"></i>',
-        saveButtonContent: '<i class="nb-checkmark"></i>',
-        cancelButtonContent: '<i class="nb-close"></i>',
-      },
-      delete: {
-        deleteButtonContent: '<i class="nb-trash"></i>',
-        confirmDelete: true,
-      },
-      columns: {
-        id: {
-          title: 'ID',
-          type: 'number',
-        },
-        code: {
-          title: 'Code',
-          type: 'string',
-        },
-        name: {
-          title: 'Name',
-          type: 'string',
-        },
-        category: {
-          title: 'Category',
-          type: 'string',
-        },
-        price: {
-          title: 'Price',
-          type: 'number',
-        },
-      },
-    };
-    return settings;
+    });
+
+    dialogRef.onClose.subscribe((changeState: boolean) => {
+      if (changeState) {
+        this.toastrService.show('', `Changing state of ${this.modelName}`, { status: 'info' });
+        model.enable = !model.enable;
+        this.modelService.updateState(model).subscribe(
+          () => {
+            this.inventions = this.inventions.map(i => i);
+            this.toastrService.show('', `${this.modelName} state changed`, { status: 'success' });
+          },
+          errorMessage => this.showErrorToaster(errorMessage)
+        );
+      }
+    });
   }
 
-  getTableDataSource(): any[] {
-    return [
-      {
-        id: 1,
-        code: 'code01',
-        name: 'invention01',
-        category: 'food',
-        price: '28',
-      },
-      {
-        id: 2,
-        code: 'code02',
-        name: 'invention02',
-        category: 'other',
-        price: '20',
-      },
-      {
-        id: 3,
-        code: 'code03',
-        name: 'invention03',
-        category: 'clothes',
-        price: '18',
-      },
-      {
-        id: 4,
-        code: 'code04',
-        name: 'invention04',
-        category: 'technology',
-        price: '30',
-      },
-    ];
-  }
-
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
+  private showErrorToaster(errorMessage: string): void {
+    this.toastrService.show(
+      errorMessage,
+      `An error has occurred`,
+      { status: 'danger', duration: 8000, destroyByClick: false }
+    );
   }
 }

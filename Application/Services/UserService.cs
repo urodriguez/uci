@@ -169,7 +169,7 @@ namespace Application.Services
 
                 if (user == null) throw new ObjectNotFoundException($"User with Id={_inventAppContext.UserId} not found");
 
-                var userDto = _factory.Create(user);
+                var userDto = await _factory.CreateAsync(user);
 
                 return new OkApplicationResult<UserDto>
                 {

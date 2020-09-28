@@ -1,7 +1,7 @@
-﻿using Domain.Contracts.Aggregates;
+﻿using System;
+using Domain.Contracts.Aggregates;
 using Domain.Entities;
 using Domain.Enums;
-using Domain.Exceptions;
 
 namespace Domain.Aggregates
 {
@@ -10,17 +10,25 @@ namespace Domain.Aggregates
         public Invention() {}
 
         public Invention(
+            Guid userId,
             string code,
             string name,
-            string category,
-            decimal price
+            string description,
+            Guid categoryId,
+            decimal price,
+            bool enable
         )
         {
+            UserId = userId;
             SetCode(code);
             SetName(name);
-            SetCategory(category);
+            Description = description;
+            CategoryId = categoryId;
             SetPrice(price);
+            Enable = enable;
         }
+
+        public Guid UserId { get; set; }
 
         public string Code { get; private set; }
         public void SetCode(string code)
@@ -36,12 +44,9 @@ namespace Domain.Aggregates
             Name = name;
         }
 
-        public string Category { get; private set; }
-        public void SetCategory(string category)
-        {
-            ValidateRequiredString(category, new[] { 8 });
-            Category = category;
-        }
+        public string Description { get; set; }
+
+        public Guid CategoryId { get; set; }
 
         public decimal Price { get; private set;  }
         public void SetPrice(decimal price)
@@ -49,5 +54,7 @@ namespace Domain.Aggregates
             ValidateRequiredDecimal(price, ComparisonOperator.Gt, 0);
             Price = price;
         }
+
+        public bool Enable { get; set; }
     }
 }

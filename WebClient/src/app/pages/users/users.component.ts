@@ -27,7 +27,7 @@ export class UsersComponent {
       errorMessage => this.showErrorToaster(errorMessage)
     );
 
-    this.moduleName = "Users";
+    this.moduleName = 'Users';
     this.modelName = User.name;
   }
 

@@ -59,7 +59,7 @@ namespace Application.Services
             {
                 var aggregates = await _unitOfWork.GetRepository<TAggregateRoot>().GetAsync();
 
-                var dtos = _factory.CreateFromRange(aggregates);
+                var dtos = await _factory.CreateFromRange(aggregates);
 
                 return new OkApplicationResult<IEnumerable<TDto>>
                 {
@@ -76,7 +76,7 @@ namespace Application.Services
 
                 if (aggregate == null) throw new ObjectNotFoundException($"Entry with Id={id} not found");
 
-                var dto = _factory.Create(aggregate);
+                var dto = await _factory.CreateAsync(aggregate);
 
                 return new OkApplicationResult<TDto>
                 {

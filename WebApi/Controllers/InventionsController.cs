@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Application.Contracts;
 using Application.Contracts.Infrastructure.Logging;
@@ -20,5 +21,8 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("cheapest")]
         public async Task<IHttpActionResult> GetCheapest(decimal maxPrice) => await ExecuteAsync(async () => await _inventionService.GetCheapestAsync(maxPrice));
+
+        [HttpPatch]
+        public async Task<IHttpActionResult> UpdateStateAsync([FromUri] Guid id, [FromBody] InventionStateDto dto) => await ExecuteAsync(async () => await _inventionService.UpdateStateAsync(id, dto));
     }
 }
